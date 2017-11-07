@@ -131,7 +131,7 @@ $headers=$info[0]
 $region=$info[1]
 $values2 = @()
 $values = @()
-$results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/users" -Headers $headers -Method GET | ConvertFrom-Json
+$results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/users?size=1000" -Headers $headers -Method GET | ConvertFrom-Json
 $values2 = $values2+$results.users
 DO
 {
@@ -152,7 +152,7 @@ $headers=$info[0]
 $region=$info[1]
 $values2 = @()
 $values = @()
-$results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/users" -Headers $headers -Method GET | ConvertFrom-Json
+$results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/users?size=1000" -Headers $headers -Method GET | ConvertFrom-Json
 $values2 = $values2+$results.users
 DO
 {
@@ -172,7 +172,7 @@ $headers=$info[0]
 $region=$info[1]
 $values2 = @()
 $values = @()
-$results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/users" -Headers $headers -Method GET | ConvertFrom-Json
+$results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/users?size=1000" -Headers $headers -Method GET | ConvertFrom-Json
 $values2 = $values2+$results.users
 DO
 {
@@ -190,7 +190,7 @@ $headers=$info[0]
 $region=$info[1]
 $values2 = @()
 $values = @()
-$results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/users" -Headers $headers -Method GET | ConvertFrom-Json
+$results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/users?size=1000" -Headers $headers -Method GET | ConvertFrom-Json
 $values2 = $values2+$results.users
 DO
 {
