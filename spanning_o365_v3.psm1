@@ -18,7 +18,7 @@ $global:apitoken = Read-Host 'Enter Spanning API Key'
 }
 if ($global:region -eq "")
 {
-$global:region = Read-Host 'Enter Spanning Region (EU or US)'
+$global:region = Read-Host 'Enter Spanning Region (US, EU or AP)'
 }
 if ($global:adminid -eq "")
 {
@@ -131,13 +131,14 @@ $headers=$info[0]
 $region=$info[1]
 $values2 = @()
 $values = @()
-$results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/users?size=1000" -Headers $headers -Method GET | ConvertFrom-Json
+$results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/users" -Headers $headers -Method GET | ConvertFrom-Json
 $values2 = $values2+$results.users
 DO
 {
 $results = Invoke-WebRequest -uri $results.nextLink -Headers $headers -Method GET | ConvertFrom-JSON
 $values=$values+$results.users
 } Until ($results.nextlink.Length -eq 0)
+$values.count
 $values3=$values2+$values
 $temp_users = $values3
 $temp_users | where {$_.isAdmin -eq "true"}
@@ -152,13 +153,14 @@ $headers=$info[0]
 $region=$info[1]
 $values2 = @()
 $values = @()
-$results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/users?size=1000" -Headers $headers -Method GET | ConvertFrom-Json
+$results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/users" -Headers $headers -Method GET | ConvertFrom-Json
 $values2 = $values2+$results.users
 DO
 {
 $results = Invoke-WebRequest -uri $results.nextLink -Headers $headers -Method GET | ConvertFrom-JSON
 $values=$values+$results.users
 } Until ($results.nextlink.Length -eq 0)
+$values.count
 $values3=$values2+$values
 $temp_users = $values3
 $temp_users | where {$_.isAdmin -ne "true"}
@@ -172,13 +174,14 @@ $headers=$info[0]
 $region=$info[1]
 $values2 = @()
 $values = @()
-$results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/users?size=1000" -Headers $headers -Method GET | ConvertFrom-Json
+$results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/users" -Headers $headers -Method GET | ConvertFrom-Json
 $values2 = $values2+$results.users
 DO
 {
 $results = Invoke-WebRequest -uri $results.nextLink -Headers $headers -Method GET | ConvertFrom-JSON
 $values=$values+$results.users
 } Until ($results.nextlink.Length -eq 0)
+$values.count
 $values3=$values2+$values
 $temp_users = $values3
 $temp_users | where {$_.Assigned -eq "true"}
@@ -190,13 +193,14 @@ $headers=$info[0]
 $region=$info[1]
 $values2 = @()
 $values = @()
-$results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/users?size=1000" -Headers $headers -Method GET | ConvertFrom-Json
+$results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/users" -Headers $headers -Method GET | ConvertFrom-Json
 $values2 = $values2+$results.users
 DO
 {
 $results = Invoke-WebRequest -uri $results.nextLink -Headers $headers -Method GET | ConvertFrom-JSON
 $values=$values+$results.users
 } Until ($results.nextlink.Length -eq 0)
+$values.count
 $values3=$values2+$values
 $temp_users = $values3
 $temp_users | where {$_.Assigned -ne "true"}

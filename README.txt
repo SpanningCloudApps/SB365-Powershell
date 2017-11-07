@@ -8,7 +8,7 @@
 ### Authentication ###
 To find your API key, you'll need to log into the Spanning Administrative UI, where you can find it under "Settings"
 
-Region will be either EU or US. Ask your Spanning root admin for this information.
+Region will be either US, EU or AP. Ask your Spanning root admin for this information.
 
 - You can hard-code your API key, region, and API key to the module (PSM1) file if you wish to do so, at the very top of the module.
 - If credentials are present in the module (PSM1) file, you will not be prompted for them during use. 
