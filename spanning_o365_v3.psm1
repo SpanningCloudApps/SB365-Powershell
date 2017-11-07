@@ -138,7 +138,6 @@ DO
 $results = Invoke-WebRequest -uri $results.nextLink -Headers $headers -Method GET | ConvertFrom-JSON
 $values=$values+$results.users
 } Until ($results.nextlink.Length -eq 0)
-$values.count
 $values3=$values2+$values
 $temp_users = $values3
 $temp_users | where {$_.isAdmin -eq "true"}
@@ -160,7 +159,6 @@ DO
 $results = Invoke-WebRequest -uri $results.nextLink -Headers $headers -Method GET | ConvertFrom-JSON
 $values=$values+$results.users
 } Until ($results.nextlink.Length -eq 0)
-$values.count
 $values3=$values2+$values
 $temp_users = $values3
 $temp_users | where {$_.isAdmin -ne "true"}
@@ -181,7 +179,6 @@ DO
 $results = Invoke-WebRequest -uri $results.nextLink -Headers $headers -Method GET | ConvertFrom-JSON
 $values=$values+$results.users
 } Until ($results.nextlink.Length -eq 0)
-$values.count
 $values3=$values2+$values
 $temp_users = $values3
 $temp_users | where {$_.Assigned -eq "true"}
@@ -200,7 +197,6 @@ DO
 $results = Invoke-WebRequest -uri $results.nextLink -Headers $headers -Method GET | ConvertFrom-JSON
 $values=$values+$results.users
 } Until ($results.nextlink.Length -eq 0)
-$values.count
 $values3=$values2+$values
 $temp_users = $values3
 $temp_users | where {$_.Assigned -ne "true"}
