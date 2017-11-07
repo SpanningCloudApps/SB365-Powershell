@@ -97,8 +97,17 @@ param(
 $info = Get-SpanningAuthentication
 $headers=$info[0]
 $region=$info[1]
-$results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/users" -Headers $headers -Method GET | ConvertFrom-Json
-$results.users
+$values2 = @()
+$values = @()
+$results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/users?size=1000" -Headers $headers -Method GET | ConvertFrom-Json
+$values2 = $values2+$results.users
+DO
+{
+$results = Invoke-WebRequest -uri $results.nextLink -Headers $headers -Method GET | ConvertFrom-JSON
+$values=$values+$results.users
+} Until ($results.nextlink.Length -eq 0)
+$values3=$values2+$values
+$values3
 }
 
 function Get-SpanningUser{
@@ -120,8 +129,18 @@ param(
 $info = Get-SpanningAuthentication
 $headers=$info[0]
 $region=$info[1]
+$values2 = @()
+$values = @()
 $results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/users" -Headers $headers -Method GET | ConvertFrom-Json
-$temp_users = $results.users
+$values2 = $values2+$results.users
+DO
+{
+$results = Invoke-WebRequest -uri $results.nextLink -Headers $headers -Method GET | ConvertFrom-JSON
+$values=$values+$results.users
+} Until ($results.nextlink.Length -eq 0)
+$values.count
+$values3=$values2+$values
+$temp_users = $values3
 $temp_users | where {$_.isAdmin -eq "true"}
 }
 
@@ -132,8 +151,18 @@ param(
 $info = Get-SpanningAuthentication
 $headers=$info[0]
 $region=$info[1]
+$values2 = @()
+$values = @()
 $results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/users" -Headers $headers -Method GET | ConvertFrom-Json
-$temp_users = $results.users
+$values2 = $values2+$results.users
+DO
+{
+$results = Invoke-WebRequest -uri $results.nextLink -Headers $headers -Method GET | ConvertFrom-JSON
+$values=$values+$results.users
+} Until ($results.nextlink.Length -eq 0)
+$values.count
+$values3=$values2+$values
+$temp_users = $values3
 $temp_users | where {$_.isAdmin -ne "true"}
 }
 
@@ -143,8 +172,18 @@ function Get-SpanningAssignedUsers{
 $info = Get-SpanningAuthentication
 $headers=$info[0]
 $region=$info[1]
+$values2 = @()
+$values = @()
 $results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/users" -Headers $headers -Method GET | ConvertFrom-Json
-$temp_users = $results.users
+$values2 = $values2+$results.users
+DO
+{
+$results = Invoke-WebRequest -uri $results.nextLink -Headers $headers -Method GET | ConvertFrom-JSON
+$values=$values+$results.users
+} Until ($results.nextlink.Length -eq 0)
+$values.count
+$values3=$values2+$values
+$temp_users = $values3
 $temp_users | where {$_.Assigned -eq "true"}
 }
 
@@ -152,8 +191,18 @@ function Get-SpanningUnassignedUsers{
 $info = Get-SpanningAuthentication
 $headers=$info[0]
 $region=$info[1]
+$values2 = @()
+$values = @()
 $results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/users" -Headers $headers -Method GET | ConvertFrom-Json
-$temp_users = $results.users
+$values2 = $values2+$results.users
+DO
+{
+$results = Invoke-WebRequest -uri $results.nextLink -Headers $headers -Method GET | ConvertFrom-JSON
+$values=$values+$results.users
+} Until ($results.nextlink.Length -eq 0)
+$values.count
+$values3=$values2+$values
+$temp_users = $values3
 $temp_users | where {$_.Assigned -ne "true"}
 }
 
