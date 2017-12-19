@@ -1,8 +1,7 @@
 #####################################################################
 # Spanning Backup For Office 365 PowerShell Module
-# Version 1.0
-# Author Ryan Crompton
-# Copyright 2016
+# Version 3.0
+# Copyright 2018
 #####################################################################
 
 $global:region=""                                                                                                                         
