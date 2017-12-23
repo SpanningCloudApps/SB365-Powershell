@@ -8,19 +8,19 @@
 
 ## Optional authentication configuration
 You have two choices for authenticating to Spanning Backup for Office 365. 
-* You can hard-code your API key, region, and API key in the module (PSM1) file.
+* You can hard-code your API key, region, and admin email address in the module (PSM1) file.
 *  You can provide your API Token, region and admin email address in PowerShell the first time you execute a command.
 
 With either option, to connect the PowerShell module to the Spanning Backup for Office 365 REST API, you will need to generate API token and identify your region.
 
 - Acquire your API Token
     - Log in to the Spanning Administrative UI
-    - Navigagte to the Settings page
+    - Navigate to the Settings page
     - Click "Generate Token"
     - Copy and save the token. 
 - Identify your region
     - Your region will be ```US, EU or AP```.  
-    - If you are unsure which regional deployment your Spanning Backup is in, you can locate it within the URL of the administrative interface.  e.g. https://o365-**us**.spanningbackup.com/ 
+    - If you are unsure which regional deployment your Spanning Backup is in, you can locate it within the URL of the administrative interface.  e.g. [https://o365-**us**.spanningbackup.com/](https://o365-us.spanningbackup.com/)
 - **Optional:** Edit the ```.psm1``` file to hard code the auth parameters
     - Open the .psm1 file in a text editor
     - Populate the following variables with the proper values
