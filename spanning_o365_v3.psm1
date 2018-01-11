@@ -264,3 +264,69 @@ function Enable-SpanningUsersfromCSVAdvanced {
     Write-Host $updated_users.count "Users are now enabled for Spanning"
 
 }
+
+
+function Disable-SpanningUsersfromCSVAdvanced {
+    param(
+        [parameter(Mandatory = $true)]
+        [String]$path_to_csv,
+        [parameter(mandatory = $true)]
+        [Int]$column,
+        [parameter(mandatory = $true)]
+        [Int]$column_match,
+        [parameter(mandatory = $true)]
+        [String]$column_value
+    ) 
+    # get column headers because this is one of those areas that Powershell makes life unnecessarily difficult
+    $csvColumnNames = (Get-Content $path_to_csv | Select-Object -First 1).Split(",")
+    $seek_column = $csvColumnNames[$column_match] -replace '"', ""
+    $source_column = $csvColumnNames[$column] -replace '"', ""
+
+    #import the CSV file
+    $whole_csv = Import-CSV -path $path_to_csv
+
+    #import only the matching rows
+    $match_csv = Import-CSV -path $path_to_csv |where-object {$_.$seek_column -eq $column_value}
+
+    # import users list so we can validate
+    $existing_list = Get-SpanningUsers
+
+    # get list of assigned users so we can do a delta
+    $assigned_users = Get-SpanningAssignedUsers
+
+    # and now we can start doing things with it
+
+    Write-Host $whole_csv.count "rows in CSV"
+    Write-Host $match_csv.count "matches in CSV"
+    Write-Host $assigned_users.count "Spanning users currently assigned"
+    Write-Host "Processing"
+
+    # begin looping through the matched CSV
+    ForEach ($i in $match_csv) {
+        $i
+
+        #unassign UPN in designated column
+        $UserPrincipalName = $i.$source_column
+        write-host "processing" $userprincipalname
+
+        #validate against existing users so we don't throw an error
+        if ($existing_list.userPrincipalName -notcontains $userPrincipalName -eq "True") {
+            Write-Host "User" $UPN "was not found in list. Proceeding to next user"
+            continue
+        }
+
+        #once validated, we can actually execute the disable command
+
+        $info = Get-SpanningAuthentication
+        $headers = $info[0]
+        $region = $info[1]
+        $uri = "https://o365-api-$region.spanningbackup.com/user/$userPrincipalName/unassign"
+        $uri
+        $results = Invoke-WebRequest -uri $uri -Headers $headers -Method POST | ConvertFrom-Json
+        Write-host "Processing for user complete"
+        $results
+    }
+    $updated_users = Get-SpanningUnAssignedUsers
+    Write-Host $updated_users.count "Users have now be unassigned licenses."
+
+}
