@@ -7,8 +7,8 @@
 # and IS NOT officially supported by Spanning Cloud Apps.
 #############################################################################
 
-$global:region = ""                                                                                                                         
-$global:apitoken = ""                                                                                             
+$global:region = ""
+$global:apitoken = ""
 $global:adminid = ""
 
 function Get-SpanningAuthentication {
@@ -35,8 +35,8 @@ function Get-SpanningAuthentication {
 }
 
 function Clear-SpanningAuthentication {
-    $global:region = ""                                                                                                                         
-    $global:apitoken = ""                                                                                             
+    $global:region = ""
+    $global:apitoken = ""
     $global:adminid = ""
 }
 
@@ -69,7 +69,7 @@ function Enable-SpanningUser {
         [parameter(Mandatory = $true)]
         [String]
         $userPrincipalName
-    ) 
+    )
     $info = Get-SpanningAuthentication
     $headers = $info[0]
     $region = $info[1]
@@ -82,7 +82,7 @@ function Disable-SpanningUser {
         [parameter(Mandatory = $true)]
         [String]
         $userPrincipalName
-    ) 
+    )
     $info = Get-SpanningAuthentication
     $headers = $info[0]
     $region = $info[1]
@@ -92,7 +92,7 @@ function Disable-SpanningUser {
 
 function Get-SpanningUsers {
     param(
-    ) 
+    )
     $info = Get-SpanningAuthentication
     $headers = $info[0]
     $region = $info[1]
@@ -113,7 +113,7 @@ function Get-SpanningUser {
         [parameter(Mandatory = $true)]
         [String]
         $userPrincipalName
-    )	
+    )
     $info = Get-SpanningAuthentication
     $headers = $info[0]
     $region = $info[1]
@@ -123,7 +123,7 @@ function Get-SpanningUser {
 
 function Get-SpanningAdmins {
     param(
-    ) 
+    )
     $info = Get-SpanningAuthentication
     $headers = $info[0]
     $region = $info[1]
@@ -144,7 +144,7 @@ function Get-SpanningAdmins {
 
 function Get-SpanningNonAdmins {
     param(
-    ) 
+    )
     $info = Get-SpanningAuthentication
     $headers = $info[0]
     $region = $info[1]
@@ -210,7 +210,7 @@ function Enable-SpanningUsersfromCSVAdvanced {
         [Int]$column_match,
         [parameter(mandatory = $true)]
         [String]$column_value
-    ) 
+    )
     # get column headers because this is one of those areas that Powershell makes life unnecessarily difficult
     $csvColumnNames = (Get-Content $path_to_csv | Select-Object -First 1).Split(",")
     $seek_column = $csvColumnNames[$column_match] -replace '"', ""
@@ -276,7 +276,7 @@ function Disable-SpanningUsersfromCSVAdvanced {
         [Int]$column_match,
         [parameter(mandatory = $true)]
         [String]$column_value
-    ) 
+    )
     # get column headers because this is one of those areas that Powershell makes life unnecessarily difficult
     $csvColumnNames = (Get-Content $path_to_csv | Select-Object -First 1).Split(",")
     $seek_column = $csvColumnNames[$column_match] -replace '"', ""
@@ -326,7 +326,7 @@ function Disable-SpanningUsersfromCSVAdvanced {
         Write-host "Processing for user complete"
         $results
     }
-    $updated_users = Get-SpanningUnAssignedUsers
-    Write-Host $updated_users.count "Users have now be unassigned licenses."
+    $updated_users = Get-SpanningAssignedUsers
+    Write-Host $updated_users.count "Users are now enabled for Spanning."
 
 }
