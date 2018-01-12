@@ -7,7 +7,7 @@
 - Extract the files to a local folder
 
 ## Optional authentication configuration
-You have two choices for authenticating to Spanning Backup for Office 365. 
+You have two choices for authenticating to Spanning Backup for Office 365.
 * You can hard-code your API key, region, and admin email address in the module (PSM1) file.
 *  You can provide your API Token, region and admin email address in PowerShell the first time you execute a command.
 
@@ -17,7 +17,7 @@ With either option, to connect the PowerShell module to the Spanning Backup for 
     - Log in to the Spanning Administrative UI
     - Navigate to the Settings page
     - Click "Generate Token"
-    - Copy and save the token. 
+    - Copy and save the token.
 - Identify your region
     - Your region will be ```US, EU or AP```.  
     - If you are unsure which regional deployment your Spanning Backup is in, you can locate it within the URL of the administrative interface.  e.g. [https://o365-**us**.spanningbackup.com/](https://o365-us.spanningbackup.com/)
@@ -35,7 +35,7 @@ $global:adminid = ""
 ## Install the PowerShell Module
 - From the command prompt, launch PowerShell
 - Type ```Import-Module``` followed by the path to the location of the .psm1 file
-- Verify the import by typing ```Get-Module``` and check for ```spanning_o365``` 
+- Verify the import by typing ```Get-Module``` and check for ```spanning_o365```
 - Once the module is imported, you can begin executing the functions as described below
 
 
@@ -62,7 +62,7 @@ paid
 
 **Enable-SpanningUser**
 - Takes UPN as a single argument. If left blank, you will be prompted for this. Enables Spanning for the designated UPN and returns userPrincipalName and license status
- 
+
 ```
 PS /Users/Admin/SB365-Powershell> Enable-SpanningUser a@contoso.com
 
@@ -73,7 +73,7 @@ a@contoso.com          True
 
 **Disable-SpanningUser**
 - Takes UPN as a single argument. If left blank, you will be prompted for this. Disables Spanning for the designated UPN and returns userPrincipalName and license status
- 
+
 ```
 PS /Users/Admin/SB365-Powershell> Disable-SpanningUser a@contoso.com
 
@@ -100,10 +100,10 @@ assigned          : True
 isAdmin           : False
 isDeleted         : False
 ```
- 
+
 **Get-SpanningUser**
  - Takes UPN as a single argument and returns user status
- 
+
 ```
 PS /Users/Admin/SB365-Powershell> Get-SpanningUsers
 
@@ -169,7 +169,7 @@ isDeleted         : False
 ```
 
 **Get-SpanningUnassignedUsers**
-- Returns a list of all UPN's for which Spanning is not enabled 
+- Returns a list of all UPN's for which Spanning is not enabled
 
 ```
 PS /Users/Admin/SB365-Powershell> Get-SpanningUnassignedUsers
@@ -186,17 +186,17 @@ isDeleted         : False
 
 ```
 PS /Users/Admin/SB365-Powershell> Clear-SpanningAuthentication
-PS /Users/Admin/SB365-Powershell> 
+PS /Users/Admin/SB365-Powershell>
 ```
 
 **Enable-SpanningUsersfromCSVAdvanced**
- - Imports users from a CSV file. Takes 4 arguments. 
+ - Imports users from a CSV file. Takes 4 arguments.
     - The first argument is the fully qualified path to a CSV file; the CSV must contain only a single header column.
-    - The second argument is the number (starting at 0) of the column containing UserPrincipalName in the CSV. 
-    - The third argument is the number of the column which contains the attribute you wish to use to determine Spanning enablement. 
+    - The second argument is the number (starting at 0) of the column containing UserPrincipalName in the CSV.
+    - The third argument is the number of the column which contains the attribute you wish to use to determine Spanning enablement.
     - The fourth argument is the attribute string you wish to use.
 
-Take, for example, the following CSV at path c:\ps\csv_import.csv:
+Take, for example, the follow1ing CSV at path c:\ps\csv_import.csv:
 
 |Name|UPN|Department|Geography|
 |:----|:----|:----|:----|
@@ -209,4 +209,26 @@ To enable all individuals in the Finance department, the command would be:
 
 ```
 Enable-SpanningUsersfromCSVAdvanced "c:\ps\csv_import.csv" 1 2 Finance
-``` 
+```
+
+**Disable-SpanningUsersfromCSVAdvanced**
+ - Imports users from a CSV file. Takes 4 arguments.
+    - The first argument is the fully qualified path to a CSV file; the CSV must contain only a single header column.
+    - The second argument is the number (starting at 0) of the column containing UserPrincipalName in the CSV.
+    - The third argument is the number of the column which contains the attribute you wish to use to determine Spanning disablement.
+    - The fourth argument is the attribute string you wish to use.
+
+Take, for example, the follow1ing CSV at path c:\ps\csv_import.csv:
+
+|Name|UPN|Department|Geography|
+|:----|:----|:----|:----|
+|Andy|a@contoso.com|Finance|US|
+|Bob|b@contoso.com|Sales|EU|
+|Charlie|c@contosocom|Finance|EU|
+|Doug|d@contoso.com|Engineering|US|
+
+To disable all individuals in the Finance department, the command would be:
+
+```
+Disable-SpanningUsersfromCSVAdvanced "c:\ps\csv_import.csv" 1 2 Finance
+```
