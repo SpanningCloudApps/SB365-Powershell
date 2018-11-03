@@ -7,9 +7,9 @@
 # and IS NOT officially supported by Spanning Cloud Apps.
 #############################################################################
 
-$global:region = "US"
-$global:apitoken = "3e798d9a-df70-4689-bad1-28270867e3a3"
-$global:adminid = "meganb@M365x747460.OnMicrosoft.com"
+$global:region = ""
+$global:apitoken = ""
+$global:adminid = ""
 
 function Get-SpanningAuthentication {
     param(
@@ -40,7 +40,7 @@ function Clear-SpanningAuthentication {
     $global:adminid = ""
 }
 
-function Get-TenantInfo {
+function Get-SpanningTenantInfo {
     param(
     )
     $info = Get-SpanningAuthentication
@@ -52,7 +52,7 @@ function Get-TenantInfo {
     $results
 }
 
-function Get-TenantInfoPaymentStatus {
+function Get-SpanningTenantInfoPaymentStatus {
     param(
     )
     $info = Get-SpanningAuthentication
