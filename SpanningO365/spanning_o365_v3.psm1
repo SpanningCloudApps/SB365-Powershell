@@ -7,9 +7,9 @@
 # and IS NOT officially supported by Spanning Cloud Apps.
 #############################################################################
 
-$global:region = ""
-$global:apitoken = ""
-$global:adminid = ""
+$global:region = "US"
+$global:apitoken = "3e798d9a-df70-4689-bad1-28270867e3a3"
+$global:adminid = "meganb@M365x747460.OnMicrosoft.com"
 
 function Get-SpanningAuthentication {
     param(
