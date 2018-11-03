@@ -7,45 +7,133 @@
 # and IS NOT officially supported by Spanning Cloud Apps.
 #############################################################################
 
-$global:region = ""
-$global:apitoken = ""
-$global:adminid = ""
+#$global:region = ""
+#$global:apitoken = ""
+#$global:adminid = ""
 
 function Get-SpanningAuthentication {
     param(
+        [Parameter(
+            Position=0, 
+            Mandatory=$false, 
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName=$true)
+        ]
+        #[Alias('ApiToken')]
+        [String]$ApiToken,
+
+        [Parameter(
+            Position=1, 
+            Mandatory=$false, 
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName=$true)
+        ]
+        [ValidateSet('US','EU','AP')]
+        [String]$Region,
+
+        [Parameter(
+            Position=2, 
+            Mandatory=$false, 
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName=$true)
+        ]
+        [String]$AdminEmail
     )
-    if ($global:apitoken -eq "") {
-        $global:apitoken = Read-Host 'Enter Spanning API Key'
+    Write-Host "Spanning Authenticate..."  
+    if (!$PSCmdlet.SessionState.PSVariable.Get('ApiToken').Value -and !$ApiToken) {
+        $ApiToken = Read-Host 'Enter Api Token'
+        # Alternatively
+        # throw [System.ArgumentException]'You must supply a Server value'
     }
-    if ($global:region -eq "") {
-        $global:region = Read-Host 'Enter Spanning Region (US, EU or AP)'
+    if ($ApiToken) {
+        $PSCmdlet.SessionState.PSVariable.Set('ApiToken',$ApiToken)
     }
-    if ($global:adminid -eq "") {
-        $global:adminid = Read-Host 'Enter Admin Email Address'
+    #$myApiToken = $PSCmdlet.SessionState.PSVariable.Get('ApiToken').Value
+    #Write-Host "Spanning Api Token: $($myApiToken)"
+
+    #if (($global:apitoken -eq "") -or ($ApiToken -eq "")) {
+    #    $global:apitoken = Read-Host 'Enter Spanning API Key'
+    #}
+    
+    if (!$PSCmdlet.SessionState.PSVariable.Get('Region').Value -and !$Region) {
+        $Region = Read-Host 'Enter Spanning Region (US, EU or AP)'
+        # Alternatively
+        # throw [System.ArgumentException]'You must supply a Server value'
     }
-    $global:user = $adminid
-    $global:pass = $apitoken
-    $global:pair = "${user}:${pass}"
+    if ($Region) {
+        $PSCmdlet.SessionState.PSVariable.Set('Region',$Region)
+    }
+    #$myRegion = $PSCmdlet.SessionState.PSVariable.Get('Region').Value
+    #Write-Host "Spanning Region: $($myRegion)"
+
+#    if ($global:region -eq "") {
+#        $global:region = Read-Host 'Enter Spanning Region (US, EU or AP)'
+#    }
+
+    if (!$PSCmdlet.SessionState.PSVariable.Get('AdminEmail').Value -and !$AdminEmail) {
+        $AdminEmail = Read-Host 'Enter Admin Email Address'
+        # Alternatively
+        # throw [System.ArgumentException]'You must supply a Server value'
+    }
+    if ($AdminEmail) {
+        $PSCmdlet.SessionState.PSVariable.Set('AdminEmail',$AdminEmail)
+    }
+#    $myAdminEmail = $PSCmdlet.SessionState.PSVariable.Get('AdminEmail').Value
+#    Write-Host "Spanning Admin Email: $($myAdminEmail)"
+
+#    if ($global:adminid -eq "") {
+#        $global:adminid = Read-Host 'Enter Admin Email Address'
+#    }
+
+    #$global:user = $adminid
+    #$global:pass = $apitoken
+    #$global:pair = "${user}:${pass}"
+    $pair = "$($AdminEmail):$($ApiToken)"
+    $PSCmdlet.SessionState.PSVariable.Set('Pair',$pair)
+    
     $bytes = [System.Text.Encoding]::ASCII.GetBytes($pair)
     $base64 = [System.Convert]::ToBase64String($bytes)
     $basicAuthValue = "Basic $base64"
     $headers = @{ Authorization = $basicAuthValue }
-    $array2 = $headers, $global:region
+    #$array2 = $headers, $global:region
+    $array2 = $headers, $Region
+    $PSCmdlet.SessionState.PSVariable.Set('AuthInfo',$array2)
     return $array2
 }
 
 function Clear-SpanningAuthentication {
-    $global:region = ""
-    $global:apitoken = ""
-    $global:adminid = ""
+    #$global:region = ""
+    #$global:apitoken = ""
+    #$global:adminid = ""
+    $PSCmdlet.SessionState.PSVariable.Remove('Region')
+    $PSCmdlet.SessionState.PSVariable.Remove('ApiToken')
+    $PSCmdlet.SessionState.PSVariable.Remove('AdminEmail')
+    $PSCmdlet.SessionState.PSVariable.Remove('Pair')   
+    
 }
 
 function Get-SpanningTenantInfo {
     param(
+        [Parameter(
+            Position=0, 
+            Mandatory=$false, 
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName=$true)
+        ]
+        $AuthInfo
     )
-    $info = Get-SpanningAuthentication
-    $headers = $info[0]
-    $region = $info[1]
+    #$info = Get-SpanningAuthentication
+    if (!$AuthInfo -and `
+        ($PSCmdlet.SessionState.PSVariable.Get('AuthInfo').Value))
+    {
+        $AuthInfo = $PSCmdlet.SessionState.PSVariable.Get('AuthInfo').Value
+    } else  {
+        $AuthInfo = Get-SpanningAuthentication
+    }
+    #$headers = $info[0]
+    $headers = $AuthInfo[0]
+    #$region = $info[1]
+    $region = $AuthInfo[1]
     $request = "https://o365-api-$region.spanningbackup.com/tenant"
     # $request
     $results = Invoke-WebRequest -uri $request -Headers $headers | ConvertFrom-Json
