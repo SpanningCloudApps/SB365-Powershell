@@ -6,13 +6,14 @@
 # This Powershell Module is open sourced under Apache 2.0
 # and IS NOT officially supported by Spanning Cloud Apps.
 #############################################################################
-
+#https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_parameters_default_values?view=powershell-5.1
 #$global:region = ""
 #$global:apitoken = ""
 #$global:adminid = ""
 
 function Get-SpanningAuthentication {
     param(
+        [CmdletBinding()]
         [Parameter(
             Position=0, 
             Mandatory=$false, 
@@ -39,7 +40,8 @@ function Get-SpanningAuthentication {
         ]
         [String]$AdminEmail
     )
-    Write-Host "Spanning Authenticate..."  
+    Write-Verbose "Get-SpanningAuthentication..."  
+    Write-Verbose "Session ApiToken: $($PSCmdlet.SessionState.PSVariable.Get('ApiToken').Value)"
     if (!$PSCmdlet.SessionState.PSVariable.Get('ApiToken').Value -and !$ApiToken) {
         $ApiToken = Read-Host 'Enter Api Token'
         # Alternatively
@@ -96,9 +98,47 @@ function Get-SpanningAuthentication {
     $basicAuthValue = "Basic $base64"
     $headers = @{ Authorization = $basicAuthValue }
     #$array2 = $headers, $global:region
-    $array2 = $headers, $Region
-    $PSCmdlet.SessionState.PSVariable.Set('AuthInfo',$array2)
-    return $array2
+    #$array2 = $headers, $Region
+    
+    #return $array2
+    $AuthInfo = New-Object -TypeName PSCustomObject
+    $AuthInfo  | Add-Member -MemberType NoteProperty -Name Headers -Value ($headers) -PassThru | Add-Member -MemberType NoteProperty -Name Region -Value ($Region) 
+    $PSCmdlet.SessionState.PSVariable.Set('AuthInfo',$AuthInfo)
+    Write-Output $AuthInfo
+}
+
+function Get-AuthInfo{
+    param(
+        [CmdletBinding()]
+        [Parameter(
+            Position=0, 
+            Mandatory=$false, 
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName=$true)
+        ]
+        $AuthInfo
+    )
+    Write-Verbose "Get-AuthInfo"
+    if (!$AuthInfo) {
+        Write-Verbose "Get-AuthInfo: AuthInfo is null"
+        if ($PSCmdlet.SessionState.PSVariable.Get('AuthInfo').Value)
+        {
+            Write-Verbose "Get-AuthInfo with AuthInfo from SessionState"
+            $AuthInfo = $PSCmdlet.SessionState.PSVariable.Get('AuthInfo').Value
+        } else  {
+            Write-Verbose "Get-AuthInfo with the AuthInfo from Get-SpanningAuthentication"
+            $AuthInfo = Get-SpanningAuthentication
+        }
+    }
+    Write-Verbose "Get-AuthInfo with the returns this AuthInfo"
+    if ($AuthInfo){
+        Write-Verbose "Headers.Authorization: $($AuthInfo.Headers.Authorization)"
+        Write-Verbose "Region $($AuthInfo.Region)"  
+    } else {
+        Write-Verbose "AuthInfo is null"
+    } 
+
+    Write-Output $AuthInfo
 }
 
 function Clear-SpanningAuthentication {
@@ -114,6 +154,7 @@ function Clear-SpanningAuthentication {
 
 function Get-SpanningTenantInfo {
     param(
+        [CmdletBinding()]
         [Parameter(
             Position=0, 
             Mandatory=$false, 
@@ -122,22 +163,39 @@ function Get-SpanningTenantInfo {
         ]
         $AuthInfo
     )
+    Write-Verbose "Get-SpanningTenantInfo"
     #$info = Get-SpanningAuthentication
-    if (!$AuthInfo -and `
-        ($PSCmdlet.SessionState.PSVariable.Get('AuthInfo').Value))
-    {
-        $AuthInfo = $PSCmdlet.SessionState.PSVariable.Get('AuthInfo').Value
-    } else  {
-        $AuthInfo = Get-SpanningAuthentication
-    }
+     if (!$AuthInfo) {
+         if ($PSCmdlet.SessionState.PSVariable.Get('AuthInfo').Value)
+         {
+             Write-Verbose "Get-SpanningTenantInfo with AuthInfo from SessionState"
+             $AuthInfo = $PSCmdlet.SessionState.PSVariable.Get('AuthInfo').Value
+         } else  {
+             Write-Verbose "Get-SpanningTenantInfo with the AuthInfo from Get-SpanningAuthentication"
+             $AuthInfo = Get-SpanningAuthentication
+         }
+     }
+     Write-Verbose "Get-SpanningTenantInfo with the following AuthInfo"
+     if ($AuthInfo){
+         Write-Verbose "Headers.Authorization: $($AuthInfo.Headers.Authorization)"
+         Write-Verbose "Region $($AuthInfo.Region)"  
+     } else {
+         Write-Verbose "AuthInfo is null"
+     } 
+
+    #if (!$AuthInfo) {
+    #    Write-Verbose "No AuthInfo provided, checking Session State"
+    #    $AuthInfo = Get-AuthInfo 
+    #}
+
     #$headers = $info[0]
-    $headers = $AuthInfo[0]
+    $headers = $AuthInfo.Headers
     #$region = $info[1]
-    $region = $AuthInfo[1]
+    $region = $AuthInfo.Region
     $request = "https://o365-api-$region.spanningbackup.com/tenant"
     # $request
     $results = Invoke-WebRequest -uri $request -Headers $headers | ConvertFrom-Json
-    $results
+    Write-Output $results
 }
 
 function Get-SpanningTenantInfoPaymentStatus {
