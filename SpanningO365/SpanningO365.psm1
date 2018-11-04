@@ -6,14 +6,14 @@
 # This Powershell Module is open sourced under Apache 2.0
 # and IS NOT officially supported by Spanning Cloud Apps.
 #############################################################################
-#https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_parameters_default_values?view=powershell-5.1
+
 #$global:region = ""
 #$global:apitoken = ""
 #$global:adminid = ""
 
 function Get-SpanningAuthentication {
+    [CmdletBinding()]
     param(
-        [CmdletBinding()]
         [Parameter(
             Position=0, 
             Mandatory=$false, 
@@ -40,47 +40,48 @@ function Get-SpanningAuthentication {
         ]
         [String]$AdminEmail
     )
+    
     Write-Verbose "Get-SpanningAuthentication..."  
-    Write-Verbose "Session ApiToken: $($PSCmdlet.SessionState.PSVariable.Get('ApiToken').Value)"
-    if (!$PSCmdlet.SessionState.PSVariable.Get('ApiToken').Value -and !$ApiToken) {
+    Write-Verbose "Session ApiToken: $($Script:ApiToken)"
+    if (!$Script:ApiToken -and !$ApiToken) {
         $ApiToken = Read-Host 'Enter Api Token'
         # Alternatively
         # throw [System.ArgumentException]'You must supply a Server value'
     }
     if ($ApiToken) {
-        $PSCmdlet.SessionState.PSVariable.Set('ApiToken',$ApiToken)
+        $Script:ApiToken = $ApiToken
     }
-    #$myApiToken = $PSCmdlet.SessionState.PSVariable.Get('ApiToken').Value
+    #$myApiToken = $Script:ApiToken
     #Write-Host "Spanning Api Token: $($myApiToken)"
 
     #if (($global:apitoken -eq "") -or ($ApiToken -eq "")) {
     #    $global:apitoken = Read-Host 'Enter Spanning API Key'
     #}
     
-    if (!$PSCmdlet.SessionState.PSVariable.Get('Region').Value -and !$Region) {
+    if (!$Script:Region -and !$Region) {
         $Region = Read-Host 'Enter Spanning Region (US, EU or AP)'
         # Alternatively
         # throw [System.ArgumentException]'You must supply a Server value'
     }
     if ($Region) {
-        $PSCmdlet.SessionState.PSVariable.Set('Region',$Region)
+        $Script:Region = $Region
     }
-    #$myRegion = $PSCmdlet.SessionState.PSVariable.Get('Region').Value
+    #$myRegion = $Script:Region
     #Write-Host "Spanning Region: $($myRegion)"
 
 #    if ($global:region -eq "") {
 #        $global:region = Read-Host 'Enter Spanning Region (US, EU or AP)'
 #    }
 
-    if (!$PSCmdlet.SessionState.PSVariable.Get('AdminEmail').Value -and !$AdminEmail) {
+    if (!$Script:AdminEmail -and !$AdminEmail) {
         $AdminEmail = Read-Host 'Enter Admin Email Address'
         # Alternatively
         # throw [System.ArgumentException]'You must supply a Server value'
     }
     if ($AdminEmail) {
-        $PSCmdlet.SessionState.PSVariable.Set('AdminEmail',$AdminEmail)
+        $Script:AdminEmail = $AdminEmail
     }
-#    $myAdminEmail = $PSCmdlet.SessionState.PSVariable.Get('AdminEmail').Value
+#    $myAdminEmail = $Script:AdminEmail
 #    Write-Host "Spanning Admin Email: $($myAdminEmail)"
 
 #    if ($global:adminid -eq "") {
@@ -91,7 +92,7 @@ function Get-SpanningAuthentication {
     #$global:pass = $apitoken
     #$global:pair = "${user}:${pass}"
     $pair = "$($AdminEmail):$($ApiToken)"
-    $PSCmdlet.SessionState.PSVariable.Set('Pair',$pair)
+    $Script:Pair = $pair
     
     $bytes = [System.Text.Encoding]::ASCII.GetBytes($pair)
     $base64 = [System.Convert]::ToBase64String($bytes)
@@ -103,13 +104,13 @@ function Get-SpanningAuthentication {
     #return $array2
     $AuthInfo = New-Object -TypeName PSCustomObject
     $AuthInfo  | Add-Member -MemberType NoteProperty -Name Headers -Value ($headers) -PassThru | Add-Member -MemberType NoteProperty -Name Region -Value ($Region) 
-    $PSCmdlet.SessionState.PSVariable.Set('AuthInfo',$AuthInfo)
+    $Script:AuthInfo = $AuthInfo
     Write-Output $AuthInfo
 }
 
 function Get-AuthInfo{
+    [CmdletBinding()]
     param(
-        [CmdletBinding()]
         [Parameter(
             Position=0, 
             Mandatory=$false, 
@@ -121,10 +122,10 @@ function Get-AuthInfo{
     Write-Verbose "Get-AuthInfo"
     if (!$AuthInfo) {
         Write-Verbose "Get-AuthInfo: AuthInfo is null"
-        if ($PSCmdlet.SessionState.PSVariable.Get('AuthInfo').Value)
+        if ($Script:AuthInfo)
         {
             Write-Verbose "Get-AuthInfo with AuthInfo from SessionState"
-            $AuthInfo = $PSCmdlet.SessionState.PSVariable.Get('AuthInfo').Value
+            $AuthInfo = $Script:AuthInfo
         } else  {
             Write-Verbose "Get-AuthInfo with the AuthInfo from Get-SpanningAuthentication"
             $AuthInfo = Get-SpanningAuthentication
@@ -142,6 +143,8 @@ function Get-AuthInfo{
 }
 
 function Clear-SpanningAuthentication {
+    [CmdletBinding()]
+    param()
     #$global:region = ""
     #$global:apitoken = ""
     #$global:adminid = ""
@@ -149,12 +152,12 @@ function Clear-SpanningAuthentication {
     $PSCmdlet.SessionState.PSVariable.Remove('ApiToken')
     $PSCmdlet.SessionState.PSVariable.Remove('AdminEmail')
     $PSCmdlet.SessionState.PSVariable.Remove('Pair')   
-    
+    $PSCmdlet.SessionState.PSVariable.Remove('AuthInfo')
 }
 
 function Get-SpanningTenantInfo {
+    [CmdletBinding()]
     param(
-        [CmdletBinding()]
         [Parameter(
             Position=0, 
             Mandatory=$false, 
@@ -165,28 +168,28 @@ function Get-SpanningTenantInfo {
     )
     Write-Verbose "Get-SpanningTenantInfo"
     #$info = Get-SpanningAuthentication
-     if (!$AuthInfo) {
-         if ($PSCmdlet.SessionState.PSVariable.Get('AuthInfo').Value)
-         {
-             Write-Verbose "Get-SpanningTenantInfo with AuthInfo from SessionState"
-             $AuthInfo = $PSCmdlet.SessionState.PSVariable.Get('AuthInfo').Value
-         } else  {
-             Write-Verbose "Get-SpanningTenantInfo with the AuthInfo from Get-SpanningAuthentication"
-             $AuthInfo = Get-SpanningAuthentication
-         }
-     }
-     Write-Verbose "Get-SpanningTenantInfo with the following AuthInfo"
-     if ($AuthInfo){
-         Write-Verbose "Headers.Authorization: $($AuthInfo.Headers.Authorization)"
-         Write-Verbose "Region $($AuthInfo.Region)"  
-     } else {
-         Write-Verbose "AuthInfo is null"
-     } 
+    #  if (!$AuthInfo) {
+    #      if ($Script:AuthInfo)
+    #      {
+    #          Write-Verbose "Get-SpanningTenantInfo with AuthInfo from SessionState"
+    #          $AuthInfo = $Script:AuthInfo
+    #      } else  {
+    #          Write-Verbose "Get-SpanningTenantInfo with the AuthInfo from Get-SpanningAuthentication"
+    #          $AuthInfo = Get-SpanningAuthentication
+    #      }
+    #  }
+    #  Write-Verbose "Get-SpanningTenantInfo with the following AuthInfo"
+    #  if ($AuthInfo){
+    #      Write-Verbose "Headers.Authorization: $($AuthInfo.Headers.Authorization)"
+    #      Write-Verbose "Region $($AuthInfo.Region)"  
+    #  } else {
+    #      Write-Verbose "AuthInfo is null"
+    #  } 
 
-    #if (!$AuthInfo) {
-    #    Write-Verbose "No AuthInfo provided, checking Session State"
-    #    $AuthInfo = Get-AuthInfo 
-    #}
+    if (!$AuthInfo) {
+       Write-Verbose "No AuthInfo provided, checking Session State"
+       $AuthInfo = Get-AuthInfo 
+    }
 
     #$headers = $info[0]
     $headers = $AuthInfo.Headers
