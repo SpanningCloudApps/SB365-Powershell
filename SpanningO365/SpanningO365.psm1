@@ -46,7 +46,7 @@ function Get-SpanningAuthentication {
     if (!$Script:ApiToken -and !$ApiToken) {
         $ApiToken = Read-Host 'Enter Api Token'
         # Alternatively
-        # throw [System.ArgumentException]'You must supply a Server value'
+        # throw [System.ArgumentException]'You must supply an API Token value'
     }
     if ($ApiToken) {
         $Script:ApiToken = $ApiToken
@@ -61,7 +61,7 @@ function Get-SpanningAuthentication {
     if (!$Script:Region -and !$Region) {
         $Region = Read-Host 'Enter Spanning Region (US, EU or AP)'
         # Alternatively
-        # throw [System.ArgumentException]'You must supply a Server value'
+        # throw [System.ArgumentException]'You must supply a Region value'
     }
     if ($Region) {
         $Script:Region = $Region
@@ -76,7 +76,7 @@ function Get-SpanningAuthentication {
     if (!$Script:AdminEmail -and !$AdminEmail) {
         $AdminEmail = Read-Host 'Enter Admin Email Address'
         # Alternatively
-        # throw [System.ArgumentException]'You must supply a Server value'
+        # throw [System.ArgumentException]'You must supply a Admin Email value'
     }
     if ($AdminEmail) {
         $Script:AdminEmail = $AdminEmail
@@ -148,11 +148,11 @@ function Clear-SpanningAuthentication {
     #$global:region = ""
     #$global:apitoken = ""
     #$global:adminid = ""
-    $PSCmdlet.SessionState.PSVariable.Remove('Region')
-    $PSCmdlet.SessionState.PSVariable.Remove('ApiToken')
-    $PSCmdlet.SessionState.PSVariable.Remove('AdminEmail')
-    $PSCmdlet.SessionState.PSVariable.Remove('Pair')   
-    $PSCmdlet.SessionState.PSVariable.Remove('AuthInfo')
+    Remove-Variable -Scope Script -ErrorAction Ignore -Name 'Region'  
+    Remove-Variable -Scope Script -ErrorAction Ignore -Name 'ApiToken'
+    Remove-Variable -Scope Script -ErrorAction Ignore -Name 'AdminEmail'
+    Remove-Variable -Scope Script -ErrorAction Ignore -Name 'Pair'
+    Remove-Variable -Scope Script -ErrorAction Ignore -Name 'AuthInfo'
 }
 
 function Get-SpanningTenantInfo {
