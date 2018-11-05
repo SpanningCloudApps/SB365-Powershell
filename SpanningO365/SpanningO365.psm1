@@ -11,6 +11,31 @@
 #$global:apitoken = ""
 #$global:adminid = ""
 
+<#
+.Synopsis
+  Get-SpanningAuthentication creates the Spanning Auth Header needed for making all Spanning API calls.
+.DESCRIPTION
+  Matt - Add a long description about how the call loads the script level variables.
+.EXAMPLE
+  Get-SpanningAuthentication
+  Without any parameters you will be prompted for ApiToken, Region, and AdminEmail.
+.EXAMPLE
+  $myApiToken = "your api token"
+  $myAdminEmail = "admin@mytenant.onmicrosoft.com"
+  $myRegion = "US"
+
+  Get-SpanningAuthentication -ApiToken $myApiToken -Region $myRegion -AdminEmail $myAdminEmail
+
+  Supply the three parameters from variables.
+.EXAMPLE
+  Get-SpanningAuthentication -ApiToken "your api token" -Region "US" -AdminEmail "admin@mydomain.com"
+
+  Supply the three parameters on the command line.
+.NOTES
+   The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
+.LINK
+        GitHub Repository: https://github.com/spanningcloudapps
+#>
 function Get-SpanningAuthentication {
     [CmdletBinding()]
     param(
@@ -20,9 +45,7 @@ function Get-SpanningAuthentication {
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
-        #[Alias('ApiToken')]
         [String]$ApiToken,
-
         [Parameter(
             Position=1, 
             Mandatory=$false, 
@@ -31,7 +54,6 @@ function Get-SpanningAuthentication {
         ]
         [ValidateSet('US','EU','AP')]
         [String]$Region,
-
         [Parameter(
             Position=2, 
             Mandatory=$false, 
@@ -108,6 +130,10 @@ function Get-SpanningAuthentication {
     Write-Output $AuthInfo
 }
 
+<#
+.Synopsis
+   A utility function, not meant to be called directly. 
+#>
 function Get-AuthInfo{
     [CmdletBinding()]
     param(
@@ -142,6 +168,23 @@ function Get-AuthInfo{
     Write-Output $AuthInfo
 }
 
+<#
+.Synopsis
+  Clears the session Authentication variables
+.DESCRIPTION
+  Clears all script level session variables associated with authentication. 
+  This cmdlet is useful when switching bewteen environments requireing different API Tokens.
+  
+.EXAMPLE
+  Clear-SpanningAuthentication
+  Clear the session ApiToken, Region, and AdminEmail variables.
+.NOTES
+   The variables are populated by the Get-SpanningAuthentication cmdlet.
+.LINK
+    Get-SpanningAuthentication
+.LINK
+    GitHub Repository: https://github.com/spanningcloudapps
+#>
 function Clear-SpanningAuthentication {
     [CmdletBinding()]
     param()
@@ -155,6 +198,29 @@ function Clear-SpanningAuthentication {
     Remove-Variable -Scope Script -ErrorAction Ignore -Name 'AuthInfo'
 }
 
+<#
+.Synopsis
+  Returns the tenant information from the Spanning Backup Portal
+.DESCRIPTION
+  Returns the tenant information from the Spanning Backup Portal for the supplied ApiToken, Region, and AdminEmail address
+.EXAMPLE
+  Get-SpanningTenantInfo
+  Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
+.EXAMPLE
+  $myApiToken = "your api token"
+  $myAdminEmail = "admin@mytenant.onmicrosoft.com"
+  $myRegion = "US"
+
+  Get-SpanningAuthentication -ApiToken $myApiToken -Region $myRegion -AdminEmail $myAdminEmail | Get-SpanningTenantInfo
+
+  Supply the three parameters from variables to Get-SpanningAuthentication and pipe the result to Get-SpanningTennantInfo.
+.NOTES
+   The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
+.LINK
+    Get-SpanningAuthentication
+.LINK
+    GitHub Repository: https://github.com/spanningcloudapps
+#>
 function Get-SpanningTenantInfo {
     [CmdletBinding()]
     param(
