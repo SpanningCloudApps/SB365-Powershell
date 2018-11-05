@@ -234,23 +234,6 @@ function Get-SpanningTenantInfo {
     )
     Write-Verbose "Get-SpanningTenantInfo"
     #$info = Get-SpanningAuthentication
-    #  if (!$AuthInfo) {
-    #      if ($Script:AuthInfo)
-    #      {
-    #          Write-Verbose "Get-SpanningTenantInfo with AuthInfo from SessionState"
-    #          $AuthInfo = $Script:AuthInfo
-    #      } else  {
-    #          Write-Verbose "Get-SpanningTenantInfo with the AuthInfo from Get-SpanningAuthentication"
-    #          $AuthInfo = Get-SpanningAuthentication
-    #      }
-    #  }
-    #  Write-Verbose "Get-SpanningTenantInfo with the following AuthInfo"
-    #  if ($AuthInfo){
-    #      Write-Verbose "Headers.Authorization: $($AuthInfo.Headers.Authorization)"
-    #      Write-Verbose "Region $($AuthInfo.Region)"  
-    #  } else {
-    #      Write-Verbose "AuthInfo is null"
-    #  } 
 
     if (!$AuthInfo) {
        Write-Verbose "No AuthInfo provided, checking Session State"
@@ -323,17 +306,60 @@ function Get-SpanningUsers {
     $values3
 }
 
+<#
+.Synopsis
+  Returns the user license information from the Spanning Backup Portal
+.DESCRIPTION
+  Returns the user license information from the Spanning Backup Portal for the supplied user principal name. 
+  If Authentication information is not supplied, or if you have not previously called Get-SpanningAuthentication, you will be prompted for ApiToken, Region, and Admin Email
+
+.EXAMPLE
+  Get-SpanningUser -UserPrincipalName
+  Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
+.EXAMPLE
+    ToDO : Test This -> Get-AzureADGroup "Marketing" | Get-AzureAdGroupMembers | Get-SpanningUser
+    Using the AzureAD module to get the members of the 
+.NOTES
+   The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
+.LINK
+    Get-SpanningAuthentication
+.LINK
+    GitHub Repository: https://github.com/spanningcloudapps
+#>
 function Get-SpanningUser {
+    [CmdletBinding()]
     param(
-        [parameter(Mandatory = $true)]
+        [Parameter(
+            Position=0, 
+            Mandatory=$false, 
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName=$true)
+        ]
+        $AuthInfo,
+
+        [Parameter(
+            Position=1,
+            Mandatory = $true,
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName=$true)]
         [String]
-        $userPrincipalName
+        $UserPrincipalName
     )
-    $info = Get-SpanningAuthentication
-    $headers = $info[0]
-    $region = $info[1]
-    $results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/user/$userPrincipalName" -Headers $headers -Method GET | ConvertFrom-Json
-    $results
+    Write-Verbose "Get-SpanningUser"
+
+    #$info = Get-SpanningAuthentication
+    
+    if (!$AuthInfo) {
+        Write-Verbose "No AuthInfo provided, checking Session State"
+        $AuthInfo = Get-AuthInfo 
+     }
+ 
+    #$headers = $info[0]
+    $headers = $AuthInfo.Headers
+    #$region = $info[1]
+    $region = $AuthInfo.Region
+    $results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/user/$UserPrincipalName" -Headers $headers -Method GET | ConvertFrom-Json
+    Write-Output $results
 }
 
 function Get-SpanningAdmins {
