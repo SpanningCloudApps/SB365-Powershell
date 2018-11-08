@@ -262,39 +262,155 @@ function Get-SpanningTenantInfoPaymentStatus {
     $results.status
 }
 
+<#
+.Synopsis
+  Apply a license to a user account
+.DESCRIPTION
+  Apply a license to the UserPrincipalName.
+  If Authentication information is not supplied, or if you have not previously called Get-SpanningAuthentication, you will be prompted for ApiToken, Region, and Admin Email
+
+.EXAMPLE
+  Enable-SpanningUser -UserPrincipalName user@domain.com 
+  Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
+.NOTES
+   The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
+.LINK
+    Get-SpanningAuthentication
+.LINK
+    Get-SpanningUser
+.LINK
+    Disable-SpanningUser
+.LINK
+    GitHub Repository: https://github.com/spanningcloudapps
+#>
 function Enable-SpanningUser {
+    [CmdletBinding()]
     param(
-        [parameter(Mandatory = $true)]
+        [Parameter(
+            Position=0, 
+            Mandatory=$false, 
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName=$true)
+        ]
+        $AuthInfo,
+
+        [Parameter(
+            Position=1,
+            Mandatory = $true,
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName=$true)]
         [String]
-        $userPrincipalName
+        $UserPrincipalName
     )
-    $info = Get-SpanningAuthentication
-    $headers = $info[0]
-    $region = $info[1]
-    $results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/user/$userPrincipalName/assign" -Headers $headers -Method POST | ConvertFrom-Json
-    $results
+    Write-Verbose "Enable-SpanningUser"
+    #$info = Get-SpanningAuthentication
+
+    if (!$AuthInfo) {
+       Write-Verbose "No AuthInfo provided, checking Session State"
+       $AuthInfo = Get-AuthInfo 
+    }
+    #$headers = $info[0]
+    $headers = $AuthInfo.Headers   
+    #$region = $info[1]
+    $region = $AuthInfo.Region
+    $results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/user/$UserPrincipalName/assign" -Headers $headers -Method POST | ConvertFrom-Json
+    Write-Output $results
 }
 
+<#
+.Synopsis
+  Removes the user license from a licensed user
+.DESCRIPTION
+  MATT - Returns the user license information from the Spanning Backup Portal for the supplied user principal name. 
+  If Authentication information is not supplied, or if you have not previously called Get-SpanningAuthentication, you will be prompted for ApiToken, Region, and Admin Email
+
+.EXAMPLE
+  Disable-SpanningUser -UserPrincipalName user@domain.com
+  Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
+.NOTES
+   The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
+.LINK
+    Get-SpanningAuthentication
+.LINK
+    Enable-SpanningUser
+.LINK
+    GitHub Repository: https://github.com/spanningcloudapps
+#>
 function Disable-SpanningUser {
+    [CmdletBinding()]
     param(
-        [parameter(Mandatory = $true)]
+        [Parameter(
+            Position=0, 
+            Mandatory=$false, 
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName=$true)
+        ]
+        $AuthInfo,
+
+        [Parameter(
+            Position=1,
+            Mandatory = $true,
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName=$true)]
         [String]
-        $userPrincipalName
+        $UserPrincipalName
     )
-    $info = Get-SpanningAuthentication
-    $headers = $info[0]
-    $region = $info[1]
-    $results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/user/$userPrincipalName/unassign" -Headers $headers -Method POST | ConvertFrom-Json
-    $results
+    Write-Verbose "Disable-SpanningUser"
+    #$info = Get-SpanningAuthentication
+
+    if (!$AuthInfo) {
+       Write-Verbose "No AuthInfo provided, checking Session State"
+       $AuthInfo = Get-AuthInfo 
+    }
+    #$headers = $info[0]
+    $headers = $AuthInfo.Headers   
+    #$region = $info[1]
+    $region = $AuthInfo.Region
+    $results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/user/$UserPrincipalName/unassign" -Headers $headers -Method POST | ConvertFrom-Json
+    Write-Output $results
 }
 
+<#
+.Synopsis
+  Matt - Returns the user license information from the Spanning Backup Portal
+.DESCRIPTION
+  Returns the user license information from the Spanning Backup Portal for the supplied user principal name. 
+  If Authentication information is not supplied, or if you have not previously called Get-SpanningAuthentication, you will be prompted for ApiToken, Region, and Admin Email
+
+.EXAMPLE
+  Get-SpanningUsers 
+  Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
+.NOTES
+   The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
+.LINK
+    Get-SpanningAuthentication
+.LINK
+    Get-SpanningUser
+.LINK
+    GitHub Repository: https://github.com/spanningcloudapps
+#>
 function Get-SpanningUsers {
+    [CmdletBinding()]
     param(
+        [Parameter(
+            Position=0, 
+            Mandatory=$false, 
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName=$true)
+        ]
+        $AuthInfo
     )
-    $info = Get-SpanningAuthentication
-    $headers = $info[0]
-    $region = $info[1]
-    $values2 = @()
+    Write-Verbose "Get-SpanningUsers"
+    if (!$AuthInfo) {
+        Write-Verbose "No AuthInfo provided, checking Session State"
+        $AuthInfo = Get-AuthInfo 
+     }
+     #$info = Get-SpanningAuthentication
+     #$headers = $info[0]
+     $headers = $AuthInfo.Headers   
+     #$region = $info[1]
+     $region = $AuthInfo.Region
+     $values2 = @()
     $values = @()
     $results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/users?size=1000" -Headers $headers -Method GET | ConvertFrom-Json
     $values2 = $values2 + $results.users
@@ -362,12 +478,47 @@ function Get-SpanningUser {
     Write-Output $results
 }
 
+<#
+.Synopsis
+  Returns the admin users from the Spanning Backup Portal
+.DESCRIPTION
+  Returns the admin users information from the Spanning Backup Portal. 
+  If Authentication information is not supplied, or if you have not previously called Get-SpanningAuthentication, you will be prompted for ApiToken, Region, and Admin Email
+
+.EXAMPLE
+  Get-SpanningUser -UserPrincipalName
+  Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
+.EXAMPLE
+    ToDO : Test This -> Get-AzureADGroup "Marketing" | Get-AzureAdGroupMembers | Get-SpanningUser
+    Using the AzureAD module to get the members of the 
+.NOTES
+   The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
+.LINK
+    Get-SpanningAuthentication
+.LINK
+    GitHub Repository: https://github.com/spanningcloudapps
+#>
 function Get-SpanningAdmins {
+    [CmdletBinding()]
     param(
+        [Parameter(
+            Position=0, 
+            Mandatory=$false, 
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName=$true)
+        ]
+        $AuthInfo
     )
-    $info = Get-SpanningAuthentication
-    $headers = $info[0]
-    $region = $info[1]
+    Write-Verbose "Get-SpanningUsers"
+    if (!$AuthInfo) {
+        Write-Verbose "No AuthInfo provided, checking Session State"
+        $AuthInfo = Get-AuthInfo 
+     }
+     #$info = Get-SpanningAuthentication
+     #$headers = $info[0]
+     $headers = $AuthInfo.Headers   
+     #$region = $info[1]
+     $region = $AuthInfo.Region
     $values2 = @()
     $values = @()
     $results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/users" -Headers $headers -Method GET | ConvertFrom-Json
@@ -379,7 +530,7 @@ function Get-SpanningAdmins {
     $values.count
     $values3 = $values2 + $values
     $temp_users = $values3
-    $temp_users | where {$_.isAdmin -eq "true"}
+    Write-Output $temp_users | where {$_.isAdmin -eq "true"}
 }
 
 
