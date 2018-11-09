@@ -11,6 +11,9 @@
     TODO : Add Conditional features for ShouldProcess to:
         -Enable-SpanningUser
         -Disable-SpanningUser
+    TODO : Add Help clarity with Examples and definitions
+    TODO : Remove all ancillary commented variables
+    TODO : Remove redundant web calls.
 
 #>
 #$global:region = ""
