@@ -8,12 +8,6 @@
 #############################################################################
 
 <#
-    TODO : Add Conditional features for ShouldProcess to:
-        -Enable-SpanningUser
-        -Disable-SpanningUser
-#>
-
-<#
 .Synopsis
   Get-SpanningAuthentication creates the Spanning Auth Header needed for making all Spanning API calls.
 .DESCRIPTION
@@ -279,7 +273,6 @@ function Get-SpanningTenantInfoPaymentStatus {
 .DESCRIPTION
   Apply a license to the UserPrincipalName.
   If Authentication information is not supplied, or if you have not previously called Get-SpanningAuthentication, you will be prompted for ApiToken, Region, and Admin Email
-
 .EXAMPLE
   Enable-SpanningUser -UserPrincipalName user@domain.com 
   Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
@@ -295,7 +288,7 @@ function Get-SpanningTenantInfoPaymentStatus {
     GitHub Repository: https://github.com/spanningcloudapps
 #>
 function Enable-SpanningUser {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess=$true)]
     param(
         [Parameter(
             Position=0, 
@@ -323,8 +316,12 @@ function Enable-SpanningUser {
     $headers = $AuthInfo.Headers   
     #$region = $info[1]
     $region = $AuthInfo.Region
-    $results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/user/$UserPrincipalName/assign" -Headers $headers -Method POST | ConvertFrom-Json
-    Write-Output $results
+    if ($pscmdlet.ShouldProcess("$UserPrincipalName", "Enable-SpanningUser")){
+        #Actually do the work
+        Write-Verbose "Assigning license to $($UserPrincipalName)"
+        $results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/user/$UserPrincipalName/assign" -Headers $headers -Method POST | ConvertFrom-Json
+        Write-Output $results
+    }
 }
 
 <#
@@ -347,7 +344,7 @@ function Enable-SpanningUser {
     GitHub Repository: https://github.com/spanningcloudapps
 #>
 function Disable-SpanningUser {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess=$true)]
     param(
         [Parameter(
             Position=0, 
@@ -366,8 +363,7 @@ function Disable-SpanningUser {
         $UserPrincipalName
     )
     Write-Verbose "Disable-SpanningUser"
-    #$info = Get-SpanningAuthentication
-
+    
     if (!$AuthInfo) {
        Write-Verbose "No AuthInfo provided, checking Session State"
        $AuthInfo = Get-AuthInfo 
@@ -376,8 +372,13 @@ function Disable-SpanningUser {
     $headers = $AuthInfo.Headers   
     #$region = $info[1]
     $region = $AuthInfo.Region
-    $results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/user/$UserPrincipalName/unassign" -Headers $headers -Method POST | ConvertFrom-Json
-    Write-Output $results
+    
+    if ($pscmdlet.ShouldProcess("$UserPrincipalName", "Disable-SpanningUser")){
+        #Actually do the work
+        Write-Verbose "Disable license for $($UserPrincipalName)"
+        $results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/user/$UserPrincipalName/unassign" -Headers $headers -Method POST | ConvertFrom-Json
+        Write-Output $results
+    }
 }
 
 <#
