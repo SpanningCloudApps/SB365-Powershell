@@ -1,4 +1,4 @@
-# PowerShell Module for accessing the Spanning Backup for Office 365 REST API
+# Spanning Backup for Office 365 REST API PowerShell Module
 
 > NOTE: This is an open source project licensed under Apache 2.0 and is not officially supported by Spanning Cloud Apps.  If you have questions, problems or suggestions, please log an issue in this project
 
@@ -46,7 +46,7 @@ PS> Get-SpanningAuthentication -ApiToken "your api token" -Region "US" -AdminEma
 
 ### Get-SpanningTenantInfo
 
-- Returns the number of licenses available, assigned, and whether the account is paid, trial, or expired
+Returns the number of licenses available, assigned, and whether the account is paid, trial, or expired
 
 ```powershell
 PS> Get-SpanningAuthentication -ApiToken "your api token" -Region "US" -AdminEmail "admin@mydomain.com"  
@@ -59,7 +59,7 @@ licenses users assigned status
 
 ### Get-SpanningTenantInfoPaymentStatus
 
-- Returns only whether the account is on trial or is currently paid
+Returns only whether the account is on trial or is currently paid
 
 ```powershell
 PS> Get-SpanningTenantPaymentStatus
@@ -69,7 +69,7 @@ paid
 
 ### Enable-SpanningUser
 
-- Takes UPN as a single argument. If left blank, you will be prompted for this. Enables Spanning for the designated UPN and returns userPrincipalName and license status
+Takes UPN as a single argument. If left blank, you will be prompted for this. Enables Spanning for the designated UPN and returns userPrincipalName and license status
 
 ```powershell
 PS> Enable-SpanningUser a@contoso.com
@@ -81,7 +81,7 @@ a@contoso.com          True
 
 ### Disable-SpanningUser
 
-- Takes UPN as a single argument. If left blank, you will be prompted for this. Disables Spanning for the designated UPN and returns userPrincipalName and license status
+Takes UPN as a single argument. If left blank, you will be prompted for this. Disables Spanning for the designated UPN and returns userPrincipalName and license status
 
 ```powershell
 PS> Disable-SpanningUser a@contoso.com
@@ -93,7 +93,7 @@ a@contoso.com         False
 
 ### Get-SpanningUser
 
-- Takes UPN as a single argument and returns user status
+Takes UPN as a single argument and returns user status
 
 ```powershell
 PS> Get-SpanningUser -UserPrincipalName "a@contoso.com"
@@ -103,7 +103,7 @@ email              assigned  isAdmin  isDeleted
 a@contoso.com          True     True      False
 ```
 
-- Alternatively takes a UserType of `All, Assigned, Unassigned, Admin, NonAdmin`
+Alternatively takes a UserType of `All, Assigned, Unassigned, Admin, NonAdmin`
 
 ```powershell
 PS> Get-SpanningUser -UserType Admin
@@ -115,7 +115,7 @@ a@contoso.com          True     True      False
 
 ### Get-SpanningUsers
 
-- Returns an unsorted list of all users within the tenant and their status
+Returns an unsorted list of all users within the tenant and their status
 
 ```powershell
 PS> Get-SpanningUsers
@@ -135,7 +135,7 @@ isDeleted         : False
 
 ### Get-SpanningAdmins
 
-- Returns a list of all UPN's currently designated as Spanning administrators
+Returns a list of all UPN's currently designated as Spanning administrators
 
 ```powershell
 PS> Get-SpanningAdmins
@@ -149,7 +149,7 @@ isDeleted         : False
 
 ### Get-SpanningNonAdmins
 
-- Returns a list of all UPN's that are not currently designated as Spanning administrators
+Returns a list of all UPN's that are not currently designated as Spanning administrators
 
 ```powershell
 PS> Get-SpanningNonAdmins
@@ -169,7 +169,7 @@ isDeleted         : False
 
 ### Get-SpanningAssignedUsers
 
-- Returns a list of all UPN's for which Spanning is enabled
+Returns a list of all UPN's for which Spanning is enabled
 
 ```powershell
 PS> Get-SpanningAssignedUsers
@@ -195,7 +195,7 @@ isDeleted         : False
 
 ### Get-SpanningUnassignedUsers
 
-- Returns a list of all UPN's for which Spanning is not enabled
+Returns a list of all UPN's for which Spanning is not enabled
 
 ```powershell
 PS> Get-SpanningUnassignedUsers
@@ -209,18 +209,20 @@ isDeleted         : False
 
 ### Clear-SpanningAuthentication
 
-- Removes the Spanning global credentials from the session
+Removes the Spanning global credentials from the session
 
 ```powershell
 PS> Clear-SpanningAuthentication
 ```
 
-**Enable-SpanningUsersfromCSVAdvanced**
- - Imports users from a CSV file. Takes 4 arguments.
-    - The first argument is the fully qualified path to a CSV file; the CSV must contain only a single header column.
-    - The second argument is the number (starting at 0) of the column containing UserPrincipalName in the CSV.
-    - The third argument is the number of the column which contains the attribute you wish to use to determine Spanning enablement.
-    - The fourth argument is the attribute string you wish to use.
+### Enable-SpanningUsersfromCSVAdvanced
+
+Imports users from a CSV file. Takes 4 arguments.
+
+- The first argument is the fully qualified path to a CSV file; the CSV must contain only a single header column.
+- The second argument is the number (starting at 0) of the column containing UserPrincipalName in the CSV.
+- The third argument is the number of the column which contains the attribute you wish to use to determine Spanning enablement.
+- The fourth argument is the attribute string you wish to use.
 
 Take, for example, the follow1ing CSV at path c:\ps\csv_import.csv:
 
@@ -233,16 +235,18 @@ Take, for example, the follow1ing CSV at path c:\ps\csv_import.csv:
 
 To enable all individuals in the Finance department, the command would be:
 
-```
+```powershell
 Enable-SpanningUsersfromCSVAdvanced "c:\ps\csv_import.csv" 1 2 Finance
 ```
 
-**Disable-SpanningUsersfromCSVAdvanced**
- - Imports users from a CSV file. Takes 4 arguments.
-    - The first argument is the fully qualified path to a CSV file; the CSV must contain only a single header column.
-    - The second argument is the number (starting at 0) of the column containing UserPrincipalName in the CSV.
-    - The third argument is the number of the column which contains the attribute you wish to use to determine Spanning disablement.
-    - The fourth argument is the attribute string you wish to use.
+### Disable-SpanningUsersfromCSVAdvanced
+
+Imports users from a CSV file. Takes 4 arguments.
+
+- The first argument is the fully qualified path to a CSV file; the CSV must contain only a single header column.
+- The second argument is the number (starting at 0) of the column containing UserPrincipalName in the CSV.
+- The third argument is the number of the column which contains the attribute you wish to use to determine Spanning disablement.
+- The fourth argument is the attribute string you wish to use.
 
 Take, for example, the follow1ing CSV at path c:\ps\csv_import.csv:
 
@@ -255,6 +259,6 @@ Take, for example, the follow1ing CSV at path c:\ps\csv_import.csv:
 
 To disable all individuals in the Finance department, the command would be:
 
-```
+```powershell
 Disable-SpanningUsersfromCSVAdvanced "c:\ps\csv_import.csv" 1 2 Finance
 ```
