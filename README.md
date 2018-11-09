@@ -3,119 +3,142 @@
 > NOTE: This is an open source project licensed under Apache 2.0 and is not officially supported by Spanning Cloud Apps.  If you have questions, problems or suggestions, please log an issue in this project
 
 ## Download the Module
+
 - Download or clone the repository
 - Extract the files to a local folder
 
-## Optional authentication configuration
-You have two choices for authenticating to Spanning Backup for Office 365.
-* You can hard-code your API key, region, and admin email address in the module (PSM1) file.
-*  You can provide your API Token, region and admin email address in PowerShell the first time you execute a command.
+## Authentication
 
-With either option, to connect the PowerShell module to the Spanning Backup for Office 365 REST API, you will need to generate API token and identify your region.
+Use the `Get-SpanningAuthentication` cmdlet to pass your authentication parameters to the Spanning Backup for Office 365 REST API, you will need to generate API token and identify your region.
 
 - Acquire your API Token
-    - Log in to the Spanning Administrative UI
-    - Navigate to the Settings page
-    - Click "Generate Token"
-    - Copy and save the token.
+  - Log in to the Spanning Backup Administrative UI 
+  - Navigate to the **Settings** page
+  - Click **Generate Token**
+  - Copy and save the token string.
 - Identify your region
-    - Your region will be ```US, EU or AP```.  
-    - If you are unsure which regional deployment your Spanning Backup is in, you can locate it within the URL of the administrative interface.  e.g. [https://o365-**us**.spanningbackup.com/](https://o365-us.spanningbackup.com/)
-- **Optional:** Edit the ```.psm1``` file to hard code the auth parameters
-    - Open the .psm1 file in a text editor
-    - Populate the following variables with the proper values
-    - Save the .psm1 file
-
-```
-$global:region = ""
-$global:apitoken = ""
-$global:adminid = ""
-```
+  - Your region will be `US, EU or AP`.  
+  - If you are unsure which regional deployment your Spanning Backup is in, you can locate it within the URL of the administrative interface.  e.g. [https://o365-**us**.spanningbackup.com/](https://o365-us.spanningbackup.com/)
 
 ## Install the PowerShell Module
-- From the command prompt, launch PowerShell
-- Type ```Import-Module``` followed by the path to the location of the .psm1 file
-- Verify the import by typing ```Get-Module``` and check for ```spanning_o365```
-- Once the module is imported, you can begin executing the functions as described below
 
+- From the command prompt, launch PowerShell
+- Type `Import-Module` followed by the path to the `SpanningO365` module
+    ```powershell
+    Import-Module .\SpanningO365
+    ```
+- Verify the import by typing `Get-Module` and check for `SpanningO365`
+- You can view the available commands with `Get-Command`
+    ```powershell
+    Get-Command -Module SpanningO365
+    ```
+- Once the module is imported, you can begin executing the functions as described below
 
 ## Functions
 
-**Get-TenantInfo**
+### Get-SpanningAuthentication
+
+Creates the Spanning Auth Header needed for making all Spanning API calls.
+
+```powershell
+PS> Get-SpanningAuthentication -ApiToken "your api token" -Region "US" -AdminEmail "admin@mydomain.com"
+```
+
+### Get-SpanningTenantInfo
+
 - Returns the number of licenses available, assigned, and whether the account is paid, trial, or expired
 
-```
-PS /Users/Admin/SB365-Powershell> Get-TenantInfo                          
+```powershell
+PS> Get-SpanningAuthentication -ApiToken "your api token" -Region "US" -AdminEmail "admin@mydomain.com"  
+PS> Get-SpanningTenantInfo
 
-licenses users assigned status                                                                     -------- ----- -------- ------
-     124    15       15   paid      
+licenses users assigned status
+-------- ----- -------- ------
+     124    15       15   paid
 ```
 
-**Get-TenantInfoPaymentStatus**
+### Get-SpanningTenantInfoPaymentStatus
+
 - Returns only whether the account is on trial or is currently paid
 
-```
-PS /Users/Admin/SB365-Powershell> Get-TenantPaymentStatus
+```powershell
+PS> Get-SpanningTenantPaymentStatus
 
 paid
 ```
 
-**Enable-SpanningUser**
+### Enable-SpanningUser
+
 - Takes UPN as a single argument. If left blank, you will be prompted for this. Enables Spanning for the designated UPN and returns userPrincipalName and license status
 
-```
-PS /Users/Admin/SB365-Powershell> Enable-SpanningUser a@contoso.com
+```powershell
+PS> Enable-SpanningUser a@contoso.com
 
 userPrincipalName  licensed
 -----------------  --------
 a@contoso.com          True
 ```
 
-**Disable-SpanningUser**
+### Disable-SpanningUser
+
 - Takes UPN as a single argument. If left blank, you will be prompted for this. Disables Spanning for the designated UPN and returns userPrincipalName and license status
 
-```
-PS /Users/Admin/SB365-Powershell> Disable-SpanningUser a@contoso.com
+```powershell
+PS> Disable-SpanningUser a@contoso.com
 
 userPrincipalName  licensed
 -----------------  --------
 a@contoso.com         False
 ```
 
-**Get-SpanningUsers**
- - Returns an unsorted list of all users within the tenancy and their status
+### Get-SpanningUser
 
-```
-PS /Users/Admin/SB365-Powershell> Get-SpanningUsers
+- Takes UPN as a single argument and returns user status
 
-userPrincipalName : a@contoso.com
-msId              : a814f0a7-7023-4ac6-a771-5dbdd5259b0c
-assigned          : True
-isAdmin           : True
-isDeleted         : False
-
-userPrincipalName : b@contoso.com
-msId              : a814f0a7-7023-4ac6-a771-5dbdd5259b0c
-assigned          : True
-isAdmin           : False
-isDeleted         : False
-```
-
-**Get-SpanningUser**
- - Takes UPN as a single argument and returns user status
-
-```
-PS /Users/Admin/SB365-Powershell> Get-SpanningUsers
+```powershell
+PS> Get-SpanningUser -UserPrincipalName "a@contoso.com"
 
 email              assigned  isAdmin  isDeleted
 -----------------  --------  -------  ---------
 a@contoso.com          True     True      False
 ```
 
-**Get-SpanningAdmins**
-- Returns a list of all UPN's currently designated as Spanning administrators
+- Alternatively takes a UserType of `All, Assigned, Unassigned, Admin, NonAdmin`
+
+```powershell
+PS> Get-SpanningUser -UserType Admin
+
+email              assigned  isAdmin  isDeleted
+-----------------  --------  -------  ---------
+a@contoso.com          True     True      False
 ```
-PS /Users/Admin/SB365-Powershell> Get-SpanningAdmins
+
+### Get-SpanningUsers
+
+- Returns an unsorted list of all users within the tenant and their status
+
+```powershell
+PS> Get-SpanningUsers
+
+userPrincipalName : a@contoso.com
+msId              : a814f0a7-7023-4ac6-a771-5dbdd5259b0c
+assigned          : True
+isAdmin           : True
+isDeleted         : False
+
+userPrincipalName : b@contoso.com
+msId              : a814f0a7-7023-4ac6-a771-5dbdd5259b0c
+assigned          : True
+isAdmin           : False
+isDeleted         : False
+```
+
+### Get-SpanningAdmins
+
+- Returns a list of all UPN's currently designated as Spanning administrators
+
+```powershell
+PS> Get-SpanningAdmins
 
 userPrincipalName : a@contoso.com
 msId              : a814f0a7-7023-4ac6-a771-5dbdd5259b0c
@@ -124,11 +147,12 @@ isAdmin           : True
 isDeleted         : False
 ```
 
-**Get-SpanningNonAdmins**
+### Get-SpanningNonAdmins
+
 - Returns a list of all UPN's that are not currently designated as Spanning administrators
 
-```
-PS /Users/Admin/SB365-Powershell> Get-SpanningNonAdmins
+```powershell
+PS> Get-SpanningNonAdmins
 
 userPrincipalName : b@contoso.com
 msId              : a814f0a7-7023-4ac6-a771-5dbdd5259b0c
@@ -143,11 +167,12 @@ isAdmin           : False
 isDeleted         : False
 ```
 
-**Get-SpanningAssignedUsers**
+### Get-SpanningAssignedUsers
+
 - Returns a list of all UPN's for which Spanning is enabled
 
-```
-PS /Users/Admin/SB365-Powershell> Get-SpanningAssignedUsers
+```powershell
+PS> Get-SpanningAssignedUsers
 
 userPrincipalName : a@contoso.com
 msId              : a814f0a7-7023-4ac6-a771-5dbdd5259b0c
@@ -168,11 +193,12 @@ isAdmin           : False
 isDeleted         : False
 ```
 
-**Get-SpanningUnassignedUsers**
+### Get-SpanningUnassignedUsers
+
 - Returns a list of all UPN's for which Spanning is not enabled
 
-```
-PS /Users/Admin/SB365-Powershell> Get-SpanningUnassignedUsers
+```powershell
+PS> Get-SpanningUnassignedUsers
 
 userPrincipalName : d@contoso.com
 msId              : a524f0a7-7023-4ac6-a771-5dbdd5259c0d
@@ -181,12 +207,12 @@ isAdmin           : True
 isDeleted         : False
 ```
 
-**Clear-SpanningAuthentication**
+### Clear-SpanningAuthentication
+
 - Removes the Spanning global credentials from the session
 
-```
-PS /Users/Admin/SB365-Powershell> Clear-SpanningAuthentication
-PS /Users/Admin/SB365-Powershell>
+```powershell
+PS> Clear-SpanningAuthentication
 ```
 
 **Enable-SpanningUsersfromCSVAdvanced**
