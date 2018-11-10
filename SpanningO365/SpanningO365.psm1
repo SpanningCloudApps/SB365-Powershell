@@ -619,9 +619,6 @@ function Get-SpanningNonAdmins {
 .EXAMPLE
   Get-SpanningAssignedUsers 
   Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
-.EXAMPLE
-    ToDO : Test This -> Get-AzureADGroup "Marketing" | Get-AzureAdGroupMembers | Get-SpanningUser
-    Using the AzureAD module to get the members of the 
 .NOTES
    The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
 .LINK
