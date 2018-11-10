@@ -1,17 +1,21 @@
-#############################################################################
-# PowerShell Module for accessing the Spanning Backup for Office 365 REST API
-# Version 3.0
-# Copyright 2018 - Spanning Cloud Apps, LLC
-#
-# This Powershell Module is open sourced under Apache 2.0
-# and IS NOT officially supported by Spanning Cloud Apps.
-#############################################################################
+<#
+    PowerShell Module for accessing the Spanning Backup for Office 365 REST API
+    Version 3.0
+    Copyright 2018 - Spanning Cloud Apps, LLC
+
+    This Powershell Module is open sourced under Apache 2.0
+    and IS NOT officially supported by Spanning Cloud Apps.
+#>
+
+<#
+    TODO : Add Confirm
+#>
 
 <#
 .Synopsis
   Get-SpanningAuthentication creates the Spanning Auth Header needed for making all Spanning API calls.
 .DESCRIPTION
-  All cmdlets in this module use the AuthInfo returned by this cmdlet. If you omit the AuthInfo parameter the 
+  All cmdlets in this module use the AuthInfo returned by this cmdlet. If you omit the AuthInfo parameter the
   script level variables are checked and, if null, a call s made to Get-SpanningAuthentication.
 .EXAMPLE
   Get-SpanningAuthentication
@@ -27,7 +31,7 @@
   Supply the three parameters from variables.
 .EXAMPLE
   Get-SpanningAuthentication | Get-SpanningTenantInfo
-  Pipe the results of Get-SpanningAuthentication to Get-SpanningInfo. 
+  Pipe the results of Get-SpanningAuthentication to Get-SpanningInfo.
 .NOTES
   The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
 .LINK
@@ -39,30 +43,30 @@ function Get-SpanningAuthentication {
     [CmdletBinding()]
     param(
         [Parameter(
-            Position=0, 
-            Mandatory=$false, 
+            Position=0,
+            Mandatory=$false,
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
         [String]$ApiToken,
         [Parameter(
-            Position=1, 
-            Mandatory=$false, 
+            Position=1,
+            Mandatory=$false,
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
         [ValidateSet('US','EU','AP')]
         [String]$Region,
         [Parameter(
-            Position=2, 
-            Mandatory=$false, 
+            Position=2,
+            Mandatory=$false,
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
         [String]$AdminEmail
     )
-    
-    Write-Verbose "Get-SpanningAuthentication..."  
+
+    Write-Verbose "Get-SpanningAuthentication..."
     Write-Verbose "Session ApiToken: $($Script:ApiToken)"
     #Check the ApiToken
     if (!$Script:ApiToken -and !$ApiToken) {
@@ -73,7 +77,7 @@ function Get-SpanningAuthentication {
     if ($ApiToken) {
         $Script:ApiToken = $ApiToken
     }
-    #Check the Region    
+    #Check the Region
     if (!$Script:Region -and !$Region) {
         $Region = Read-Host 'Enter Spanning Region (US, EU or AP)'
         # Alternatively
@@ -82,7 +86,7 @@ function Get-SpanningAuthentication {
     if ($Region) {
         $Script:Region = $Region
     }
-    
+
     #Check AdminEmail
     if (!$Script:AdminEmail -and !$AdminEmail) {
         $AdminEmail = Read-Host 'Enter Admin Email Address'
@@ -95,7 +99,7 @@ function Get-SpanningAuthentication {
 
     $pair = "$($AdminEmail):$($ApiToken)"
     $Script:Pair = $pair
-    
+
     $bytes = [System.Text.Encoding]::ASCII.GetBytes($pair)
     $base64 = [System.Convert]::ToBase64String($bytes)
     $basicAuthValue = "Basic $base64"
@@ -103,7 +107,7 @@ function Get-SpanningAuthentication {
 
     #Create the AuthInfo Object
     $AuthInfo = New-Object -TypeName PSCustomObject
-    $AuthInfo  | Add-Member -MemberType NoteProperty -Name Headers -Value ($headers) -PassThru | Add-Member -MemberType NoteProperty -Name Region -Value ($Region) 
+    $AuthInfo  | Add-Member -MemberType NoteProperty -Name Headers -Value ($headers) -PassThru | Add-Member -MemberType NoteProperty -Name Region -Value ($Region)
     $Script:AuthInfo = $AuthInfo
 
     Write-Output $AuthInfo
@@ -111,14 +115,14 @@ function Get-SpanningAuthentication {
 
 <#
 .Synopsis
-   A utility function, not meant to be called directly. 
+   A utility function, not meant to be called directly.
 #>
 function Get-AuthInfo{
     [CmdletBinding()]
     param(
         [Parameter(
-            Position=0, 
-            Mandatory=$false, 
+            Position=0,
+            Mandatory=$false,
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
@@ -139,10 +143,10 @@ function Get-AuthInfo{
     Write-Verbose "Get-AuthInfo with the returns this AuthInfo"
     if ($AuthInfo){
         Write-Verbose "Headers.Authorization: $($AuthInfo.Headers.Authorization)"
-        Write-Verbose "Region $($AuthInfo.Region)"  
+        Write-Verbose "Region $($AuthInfo.Region)"
     } else {
         Write-Verbose "Error: AuthInfo is null."
-    } 
+    }
 
     Write-Output $AuthInfo
 }
@@ -151,9 +155,9 @@ function Get-AuthInfo{
 .Synopsis
   Clears the session Authentication variables
 .DESCRIPTION
-  Clears all script level session variables associated with authentication. 
+  Clears all script level session variables associated with authentication.
   This cmdlet is useful when switching bewteen environments requireing different API Tokens.
-  
+
 .EXAMPLE
   Clear-SpanningAuthentication
   Clear the session ApiToken, Region, and AdminEmail variables.
@@ -167,7 +171,7 @@ function Get-AuthInfo{
 function Clear-SpanningAuthentication {
     [CmdletBinding()]
     param()
-    Remove-Variable -Scope Script -ErrorAction Ignore -Name 'Region'  
+    Remove-Variable -Scope Script -ErrorAction Ignore -Name 'Region'
     Remove-Variable -Scope Script -ErrorAction Ignore -Name 'ApiToken'
     Remove-Variable -Scope Script -ErrorAction Ignore -Name 'AdminEmail'
     Remove-Variable -Scope Script -ErrorAction Ignore -Name 'Pair'
@@ -203,8 +207,8 @@ function Get-SpanningTenantInfo {
     [CmdletBinding()]
     param(
         [Parameter(
-            Position=0, 
-            Mandatory=$false, 
+            Position=0,
+            Mandatory=$false,
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
@@ -214,12 +218,12 @@ function Get-SpanningTenantInfo {
 
     if (!$AuthInfo) {
        Write-Verbose "No AuthInfo provided, checking Session State"
-       $AuthInfo = Get-AuthInfo 
+       $AuthInfo = Get-AuthInfo
     }
 
-    #$headers = $info[0]
+    #$headers = usernfo[0]
     $headers = $AuthInfo.Headers
-    #$region = $info[1]
+    #$region = usernfo[1]
     $region = $AuthInfo.Region
     $request = "https://o365-api-$region.spanningbackup.com/tenant"
     # $request
@@ -231,10 +235,10 @@ function Get-SpanningTenantInfo {
 .Synopsis
   Get the current payment status from the Spanning Portal
 .DESCRIPTION
-  Get the current payment status from the Spanning Portal. 
+  Get the current payment status from the Spanning Portal.
   If Authentication information is not supplied, or if you have not previously called Get-SpanningAuthentication, you will be prompted for ApiToken, Region, and Admin Email
 .EXAMPLE
-  Get-SpanningTenantInfoPaymentStatus 
+  Get-SpanningTenantInfoPaymentStatus
   Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
 .NOTES
    The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
@@ -249,8 +253,8 @@ function Get-SpanningTenantInfoPaymentStatus {
     [CmdletBinding()]
     param(
         [Parameter(
-            Position=0, 
-            Mandatory=$false, 
+            Position=0,
+            Mandatory=$false,
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
@@ -260,7 +264,7 @@ function Get-SpanningTenantInfoPaymentStatus {
 
     if (!$AuthInfo) {
        Write-Verbose "No AuthInfo provided, checking Session State"
-       $AuthInfo = Get-AuthInfo 
+       $AuthInfo = Get-AuthInfo
     }
 
     #Simplified call to use Get-SpanningTenantInfo
@@ -274,7 +278,7 @@ function Get-SpanningTenantInfoPaymentStatus {
   Apply a license to the UserPrincipalName.
   If Authentication information is not supplied, or if you have not previously called Get-SpanningAuthentication, you will be prompted for ApiToken, Region, and Admin Email
 .EXAMPLE
-  Enable-SpanningUser -UserPrincipalName user@domain.com 
+  Enable-SpanningUser -UserPrincipalName user@domain.com
   Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
 .NOTES
    The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
@@ -291,8 +295,8 @@ function Enable-SpanningUser {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param(
         [Parameter(
-            Position=0, 
-            Mandatory=$false, 
+            Position=0,
+            Mandatory=$false,
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
@@ -310,11 +314,11 @@ function Enable-SpanningUser {
 
     if (!$AuthInfo) {
        Write-Verbose "No AuthInfo provided, checking Session State"
-       $AuthInfo = Get-AuthInfo 
+       $AuthInfo = Get-AuthInfo
     }
-    #$headers = $info[0]
-    $headers = $AuthInfo.Headers   
-    #$region = $info[1]
+    #$headers = usernfo[0]
+    $headers = $AuthInfo.Headers
+    #$region = usernfo[1]
     $region = $AuthInfo.Region
     if ($pscmdlet.ShouldProcess("$UserPrincipalName", "Enable-SpanningUser")){
         #Actually do the work
@@ -328,7 +332,7 @@ function Enable-SpanningUser {
 .Synopsis
   Removes the user license from a licensed user
 .DESCRIPTION
-  Removes the user license asignment from the Spanning Backup Portal for the supplied user principal name. 
+  Removes the user license asignment from the Spanning Backup Portal for the supplied user principal name.
   If Authentication information is not supplied, or if you have not previously called Get-SpanningAuthentication, you will be prompted for ApiToken, Region, and Admin Email
 
 .EXAMPLE
@@ -347,8 +351,8 @@ function Disable-SpanningUser {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param(
         [Parameter(
-            Position=0, 
-            Mandatory=$false, 
+            Position=0,
+            Mandatory=$false,
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
@@ -363,16 +367,16 @@ function Disable-SpanningUser {
         $UserPrincipalName
     )
     Write-Verbose "Disable-SpanningUser"
-    
+
     if (!$AuthInfo) {
        Write-Verbose "No AuthInfo provided, checking Session State"
-       $AuthInfo = Get-AuthInfo 
+       $AuthInfo = Get-AuthInfo
     }
-    #$headers = $info[0]
-    $headers = $AuthInfo.Headers   
-    #$region = $info[1]
+    #$headers = usernfo[0]
+    $headers = $AuthInfo.Headers
+    #$region = usernfo[1]
     $region = $AuthInfo.Region
-    
+
     if ($pscmdlet.ShouldProcess("$UserPrincipalName", "Disable-SpanningUser")){
         #Actually do the work
         Write-Verbose "Disable license for $($UserPrincipalName)"
@@ -385,7 +389,7 @@ function Disable-SpanningUser {
 .Synopsis
   Returns the user information information from the Spanning Backup Portal
 .DESCRIPTION
-  Returns the user license information from the Spanning Backup Portal for the supplied user principal name. 
+  Returns the user license information from the Spanning Backup Portal for the supplied user principal name.
   If Authentication information is not supplied, or if you have not previously called Get-SpanningAuthentication, you will be prompted for ApiToken, Region, and Admin Email
 
 .EXAMPLE
@@ -406,8 +410,8 @@ function Get-SpanningUser {
     [CmdletBinding()]
     param(
         [Parameter(
-            Position=0, 
-            Mandatory=$false, 
+            Position=0,
+            Mandatory=$false,
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
@@ -422,8 +426,8 @@ function Get-SpanningUser {
         [String]
         $UserPrincipalName,
         [Parameter(
-            Position=2, 
-            Mandatory=$false, 
+            Position=2,
+            Mandatory=$false,
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true,
             ParameterSetName = "Get Multiple Users")
@@ -433,15 +437,15 @@ function Get-SpanningUser {
     )
     Write-Verbose "Get-SpanningUser"
 
-    # UserType : All (users), Admins, NonAdmins, Assigned, Unassigned 
+    # UserType : All (users), Admins, NonAdmins, Assigned, Unassigned
     if (!$AuthInfo) {
         Write-Verbose "No AuthInfo provided, checking Session State"
-        $AuthInfo = Get-AuthInfo 
+        $AuthInfo = Get-AuthInfo
      }
- 
-    #$headers = $info[0]
+
+    #$headers = usernfo[0]
     $headers = $AuthInfo.Headers
-    #$region = $info[1]
+    #$region = usernfo[1]
     $region = $AuthInfo.Region
 
     #TODO : Clean this up
@@ -469,22 +473,22 @@ function Get-SpanningUser {
         Admins
         {
             Write-Verbose 'UserType = Admins'
-            Write-Output $temp_users | where {$_.isAdmin -eq "true"}
+            Write-Output $temp_users | Where-Object {$_.isAdmin -eq "true"}
         }
         NonAdmins
         {
             Write-Verbose 'UserType = NonAdmins'
-            $temp_users | where {$_.isAdmin -ne "true"}
+            $temp_users | Where-Object {$_.isAdmin -ne "true"}
         }
         Assigned
         {
             Write-Verbose 'UserType = Assigned'
-            Write-Output $temp_users | where {$_.Assigned -eq "true"}
+            Write-Output $temp_users | Where-Object {$_.Assigned -eq "true"}
         }
         Unassigned
         {
             Write-Verbose 'UserType = Unassigned'
-            Write-Output $temp_users | where {$_.Assigned -ne "true"}
+            Write-Output $temp_users | Where-Object {$_.Assigned -ne "true"}
         }
         default
         {
@@ -500,10 +504,10 @@ function Get-SpanningUser {
 .Synopsis
   Returns the user license information for all users from the Spanning Backup Portal
 .DESCRIPTION
-  Returns the user license information from the Spanning Backup Portal for all Spanning Users. 
+  Returns the user license information from the Spanning Backup Portal for all Spanning Users.
   If Authentication information is not supplied, or if you have not previously called Get-SpanningAuthentication, you will be prompted for ApiToken, Region, and Admin Email
 .EXAMPLE
-  Get-SpanningUsers 
+  Get-SpanningUsers
   Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
 .NOTES
    The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
@@ -518,8 +522,8 @@ function Get-SpanningUsers {
     [CmdletBinding()]
     param(
         [Parameter(
-            Position=0, 
-            Mandatory=$false, 
+            Position=0,
+            Mandatory=$false,
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
@@ -528,9 +532,9 @@ function Get-SpanningUsers {
     Write-Verbose "Get-SpanningUsers"
     if (!$AuthInfo) {
         Write-Verbose "No AuthInfo provided, checking Session State"
-        $AuthInfo = Get-AuthInfo 
+        $AuthInfo = Get-AuthInfo
      }
-     
+
      Write-Output $(Get-SpanningUser -AuthInfo $AuthInfo -UserType All)
 }
 
@@ -538,7 +542,7 @@ function Get-SpanningUsers {
 .Synopsis
   Returns the admin users from the Spanning Backup Portal
 .DESCRIPTION
-  Returns the admin users information from the Spanning Backup Portal. 
+  Returns the admin users information from the Spanning Backup Portal.
   If Authentication information is not supplied, or if you have not previously called Get-SpanningAuthentication, you will be prompted for ApiToken, Region, and Admin Email
 .EXAMPLE
   Get-SpanningAdmins
@@ -556,8 +560,8 @@ function Get-SpanningAdmins {
     [CmdletBinding()]
     param(
         [Parameter(
-            Position=0, 
-            Mandatory=$false, 
+            Position=0,
+            Mandatory=$false,
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
@@ -566,9 +570,9 @@ function Get-SpanningAdmins {
     Write-Verbose "Get-SpanningAdmins"
     if (!$AuthInfo) {
         Write-Verbose "No AuthInfo provided, checking Session State"
-        $AuthInfo = Get-AuthInfo 
+        $AuthInfo = Get-AuthInfo
      }
-     
+
      Write-Output $(Get-SpanningUser -AuthInfo $AuthInfo -UserType Admins)
 }
 
@@ -576,10 +580,10 @@ function Get-SpanningAdmins {
 .Synopsis
   Returns the non-admin users from the Spanning Backup Portal
 .DESCRIPTION
-  Returns the non-admin users information from the Spanning Backup Portal. 
+  Returns the non-admin users information from the Spanning Backup Portal.
   If Authentication information is not supplied, or if you have not previously called Get-SpanningAuthentication, you will be prompted for ApiToken, Region, and Admin Email
 .EXAMPLE
-  Get-SpanningNonAdmins 
+  Get-SpanningNonAdmins
   Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
 .NOTES
    The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
@@ -594,8 +598,8 @@ function Get-SpanningNonAdmins {
     [CmdletBinding()]
     param(
         [Parameter(
-            Position=0, 
-            Mandatory=$false, 
+            Position=0,
+            Mandatory=$false,
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
@@ -604,9 +608,9 @@ function Get-SpanningNonAdmins {
     Write-Verbose "Get-SpanningNonAdmins"
     if (!$AuthInfo) {
         Write-Verbose "No AuthInfo provided, checking Session State"
-        $AuthInfo = Get-AuthInfo 
+        $AuthInfo = Get-AuthInfo
      }
-     
+
      Write-Output $(Get-SpanningUser -AuthInfo $AuthInfo -UserType NonAdmins)
 }
 
@@ -614,17 +618,17 @@ function Get-SpanningNonAdmins {
 .Synopsis
   Returns the assigned users from the Spanning Backup Portal
 .DESCRIPTION
-  Returns the assigned users information from the Spanning Backup Portal. 
+  Returns the assigned users information from the Spanning Backup Portal.
   If Authentication information is not supplied, or if you have not previously called Get-SpanningAuthentication, you will be prompted for ApiToken, Region, and Admin Email
 .EXAMPLE
-  Get-SpanningAssignedUsers 
+  Get-SpanningAssignedUsers
   Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
 .NOTES
    The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
 .LINK
     Get-SpanningAuthentication
 .LINK
-    Get-SpanningUser -UserType Assigned    
+    Get-SpanningUser -UserType Assigned
 .LINK
     GitHub Repository: https://github.com/spanningcloudapps
 #>
@@ -632,8 +636,8 @@ function Get-SpanningAssignedUsers {
     [CmdletBinding()]
     param(
         [Parameter(
-            Position=0, 
-            Mandatory=$false, 
+            Position=0,
+            Mandatory=$false,
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
@@ -642,9 +646,9 @@ function Get-SpanningAssignedUsers {
     Write-Verbose "Get-SpanningAssignedUsers"
     if (!$AuthInfo) {
         Write-Verbose "No AuthInfo provided, checking Session State"
-        $AuthInfo = Get-AuthInfo 
+        $AuthInfo = Get-AuthInfo
      }
-     
+
      Write-Output $(Get-SpanningUser -AuthInfo $AuthInfo -UserType Assigned)
 }
 
@@ -652,10 +656,10 @@ function Get-SpanningAssignedUsers {
 .Synopsis
   Returns the unassigned users from the Spanning Backup Portal
 .DESCRIPTION
-  Returns the unassigned users information from the Spanning Backup Portal. 
+  Returns the unassigned users information from the Spanning Backup Portal.
   If Authentication information is not supplied, or if you have not previously called Get-SpanningAuthentication, you will be prompted for ApiToken, Region, and Admin Email
 .EXAMPLE
-  Get-SpanningUnassignedUsers 
+  Get-SpanningUnassignedUsers
   Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
 .NOTES
    The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
@@ -670,8 +674,8 @@ function Get-SpanningUnassignedUsers {
     [CmdletBinding()]
     param(
         [Parameter(
-            Position=0, 
-            Mandatory=$false, 
+            Position=0,
+            Mandatory=$false,
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
@@ -680,33 +684,80 @@ function Get-SpanningUnassignedUsers {
     Write-Verbose "Get-SpanningUnassignedUsers"
     if (!$AuthInfo) {
         Write-Verbose "No AuthInfo provided, checking Session State"
-        $AuthInfo = Get-AuthInfo 
+        $AuthInfo = Get-AuthInfo
      }
-     
+
      Write-Output $(Get-SpanningUser -AuthInfo $AuthInfo -UserType Unassigned)
 }
 
+<#
+.Synopsis
+  Enable licenses for Spanning users from a comma seperated value file.
+.DESCRIPTION
+  Enable licenses for Spanning users from a comma seperated value file.
+  If Authentication information is not supplied, or if you have not previously called Get-SpanningAuthentication, you will be prompted for ApiToken, Region, and Admin Email
+.EXAMPLE
+  Enable-SpanningUsersfromCSVAdvanced
+  Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
+.EXAMPLE
+  Enable-SpanningUsersfromCSVAdvanced -WhatIf
+  Process the CSV file and show the accounts that could be processed.
+.NOTES
+   The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
+.LINK
+    Get-SpanningAuthentication
+.LINK
+    Disable-SpanningUsersfromCSVAdvanced
+.LINK
+    GitHub Repository: https://github.com/spanningcloudapps
+#>
+#TODO : Filter should be optional
 function Enable-SpanningUsersfromCSVAdvanced {
+    [CmdletBinding(SupportsShouldProcess=$true,
+        DefaultParametersetName='None')]
     param(
-        [parameter(Mandatory = $true)]
-        [String]$path_to_csv,
-        [parameter(mandatory = $true)]
-        [Int]$column,
-        [parameter(mandatory = $true)]
-        [Int]$column_match,
-        [parameter(mandatory = $true)]
-        [String]$column_value
+        [Parameter(
+            Position=0,
+            Mandatory=$false,
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName=$true)
+        ]
+        $AuthInfo,
+        [Parameter(Mandatory = $true)]
+        [String]$Path,
+        [Parameter(mandatory = $true)]
+        [Int]$UpnColumn,
+        [Parameter(ParameterSetName='Filter',
+            mandatory = $false)]
+        [Int]$FilterColumn,
+        [Parameter(ParameterSetName='Filter',
+            mandatory = $true)]
+        [String]$FilterColumnValue
     )
     # get column headers because this is one of those areas that Powershell makes life unnecessarily difficult
-    $csvColumnNames = (Get-Content $path_to_csv | Select-Object -First 1).Split(",")
-    $seek_column = $csvColumnNames[$column_match] -replace '"', ""
-    $source_column = $csvColumnNames[$column] -replace '"', ""
+    $csvColumnNames = (Get-Content $Path | Select-Object -First 1).Split(",")
+    $seek_column = $csvColumnNames[$FilterColumn] -replace '"', ""
+    $source_column = $csvColumnNames[$UpnColumn] -replace '"', ""
 
     #import the CSV file
-    $whole_csv = Import-CSV -path $path_to_csv
+    $whole_csv = Import-CSV -path $Path
 
     #import only the matching rows
-    $match_csv = Import-CSV -path $path_to_csv |where-object {$_.$seek_column -eq $column_value}
+    if ($FilterColumn -and $FilterColumnValue)
+    {
+        Write-Verbose "Importing from csv on column $($seek_column) with value $($FilterColumnValue)"
+        $match_csv = Import-CSV -path $Path | Where-Object {$_.$seek_column -eq $FilterColumnValue}
+    } else {
+        $match_csv = Import-CSV -path $Path
+    }
+    if (!$AuthInfo) {
+        Write-Verbose "No AuthInfo provided, checking Session State"
+        $AuthInfo = Get-AuthInfo
+     }
+     #$headers = usernfo[0]
+     $headers = $AuthInfo.Headers
+     #$region = usernfo[1]
+     $region = $AuthInfo.Region
 
     # import users list so we can validate
     $existing_list = Get-SpanningUsers
@@ -716,44 +767,74 @@ function Enable-SpanningUsersfromCSVAdvanced {
 
     # and now we can start doing things with it
 
-    Write-Host $whole_csv.count "rows in CSV"
-    Write-Host $match_csv.count "matches in CSV"
-    Write-Host $assigned_users.count "Spanning users currently assigned"
-    Write-Host "Processing"
+    Write-Verbose "$($whole_csv.count) rows in CSV"
+    Write-Verbose "$($match_csv.count) matches in CSV"
+    Write-Verbose "$($assigned_users.count) Spanning users currently assigned"
+    Write-Verbose "Processing..."
 
+    $enableCount = 0
     # begin looping through the matched CSV
-    ForEach ($i in $match_csv) {
-        $i
+    ForEach ($user in $match_csv) {
 
-        #assign UPN in designated column
-        $UserPrincipalName = $i.$source_column
-        write-host "processing" $userprincipalname
+        #Assign UPN in designated column
+        $UserPrincipalName = $user.$source_column
+        Write-Verbose "Processing $($UserPrincipalName)"
 
-        #validate against existing users so we don't throw an error
-        if ($existing_list.userPrincipalName -notcontains $userPrincipalName -eq "True") {
-            Write-Host "User" $UPN "was not found in list. Proceeding to next user"
+        #Validate against existing users so we don't throw an error
+        #if ($existing_list.userPrincipalName -notcontains $UserPrincipalName -eq "True") {
+        if ($existing_list.userPrincipalName -notcontains $UserPrincipalName) {
+            Write-Verbose "User $($UserPrincipalName) was not found in list. Proceeding to next user"
             continue
         }
 
         #once validated, we can actually execute the enable command
-
-        $info = Get-SpanningAuthentication
-        $headers = $info[0]
-        $region = $info[1]
-        $uri = "https://o365-api-$region.spanningbackup.com/user/$userPrincipalName/assign"
-        $uri
-        $results = Invoke-WebRequest -uri $uri -Headers $headers -Method POST | ConvertFrom-Json
-        Write-host "Processing for user complete"
-        $results
+        $enableCount++
+        if ($pscmdlet.ShouldProcess("$UserPrincipalName", "Enable-SpanningUser")){
+            $uri = "https://o365-api-$region.spanningbackup.com/user/$userPrincipalName/assign"
+            #$uri
+            $results = Invoke-WebRequest -uri $uri -Headers $headers -Method POST | ConvertFrom-Json
+            Write-Verbose "Processing for user complete"
+            $results
+         }
     }
-    $updated_users = Get-SpanningAssignedUsers
-    Write-Host $updated_users.count "Users are now enabled for Spanning"
 
+    if ($pscmdlet.ShouldProcess("Count of users to enable $($enableCount)")){
+        $updated_users = Get-SpanningAssignedUsers
+        Write-Verbose "$($updated_users.count) Users are now enabled for Spanning"
+    }
 }
 
-
+<#
+.Synopsis
+  Disable licenses for Spanning users from a comma seperated value file.
+.DESCRIPTION
+  Disable licenses for Spanning users from a comma seperated value file.
+  If Authentication information is not supplied, or if you have not previously called Get-SpanningAuthentication, you will be prompted for ApiToken, Region, and Admin Email
+.EXAMPLE
+  Disable-SpanningUsersfromCSVAdvanced
+  Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
+.EXAMPLE
+  Disable-SpanningUsersfromCSVAdvanced -WhatIf
+  Process the CSV file and show the accounts that could be processed.
+.NOTES
+   The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
+.LINK
+    Get-SpanningAuthentication
+.LINK
+    Enable-SpanningUsersfromCSVAdvanced
+.LINK
+    GitHub Repository: https://github.com/spanningcloudapps
+#>
 function Disable-SpanningUsersfromCSVAdvanced {
+    [CmdletBinding(SupportsShouldProcess=$true)]
     param(
+        [Parameter(
+            Position=0,
+            Mandatory=$false,
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName=$true)
+        ]
+        $AuthInfo,
         [parameter(Mandatory = $true)]
         [String]$path_to_csv,
         [parameter(mandatory = $true)]
@@ -788,11 +869,11 @@ function Disable-SpanningUsersfromCSVAdvanced {
     Write-Host "Processing"
 
     # begin looping through the matched CSV
-    ForEach ($i in $match_csv) {
-        $i
+    ForEach ($user in $match_csv) {
+        $user
 
         #unassign UPN in designated column
-        $UserPrincipalName = $i.$source_column
+        $UserPrincipalName = $user.$source_column
         write-host "processing" $userprincipalname
 
         #validate against existing users so we don't throw an error
@@ -803,14 +884,22 @@ function Disable-SpanningUsersfromCSVAdvanced {
 
         #once validated, we can actually execute the disable command
 
-        $info = Get-SpanningAuthentication
-        $headers = $info[0]
-        $region = $info[1]
-        $uri = "https://o365-api-$region.spanningbackup.com/user/$userPrincipalName/unassign"
-        $uri
-        $results = Invoke-WebRequest -uri $uri -Headers $headers -Method POST | ConvertFrom-Json
-        Write-host "Processing for user complete"
-        $results
+        if (!$AuthInfo) {
+            Write-Verbose "No AuthInfo provided, checking Session State"
+            $AuthInfo = Get-AuthInfo
+         }
+         #$headers = usernfo[0]
+         $headers = $AuthInfo.Headers
+         #$region = usernfo[1]
+         $region = $AuthInfo.Region
+
+         if ($pscmdlet.ShouldProcess("$UserPrincipalName", "Disable-SpanningUser")){
+            $uri = "https://o365-api-$region.spanningbackup.com/user/$userPrincipalName/unassign"
+            $uri
+            $results = Invoke-WebRequest -uri $uri -Headers $headers -Method POST | ConvertFrom-Json
+            Write-host "Processing for user complete"
+            $results
+         }
     }
     $updated_users = Get-SpanningAssignedUsers
     Write-Host $updated_users.count "Users are now enabled for Spanning."
