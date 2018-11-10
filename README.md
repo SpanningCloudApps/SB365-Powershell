@@ -230,7 +230,7 @@ Take, for example, the follow1ing CSV at path c:\ps\csv_import.csv:
 |:----|:----|:----|:----|
 |Andy|a@contoso.com|Finance|US|
 |Bob|b@contoso.com|Sales|EU|
-|Charlie|c@contosocom|Finance|EU|
+|Charlie|c@contoso.com|Finance|EU|
 |Doug|d@contoso.com|Engineering|US|
 
 To enable all individuals in the Finance department, the command would be:
