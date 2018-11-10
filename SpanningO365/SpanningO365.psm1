@@ -697,11 +697,15 @@ function Get-SpanningUnassignedUsers {
   Enable licenses for Spanning users from a comma seperated value file.
   If Authentication information is not supplied, or if you have not previously called Get-SpanningAuthentication, you will be prompted for ApiToken, Region, and Admin Email
 .EXAMPLE
-  Enable-SpanningUsersfromCSVAdvanced
+  Enable-SpanningUsersfromCSVAdvanced -Path .\users.csv -UpnColumn 1 -FilterColumn 2 -FilterColumnValue "Finance"
+  Enable the users with a value of Finance in the third column.
   Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
 .EXAMPLE
+  Enable-SpanningUsersfromCSVAdvanced -Path .\users.csv -UpnColumn 1 -FilterColumn 2 -FilterColumnValue "Finance" -WhatIf
+  Test what would happen if you enabled the users with a value of Finance in the third column.
+.EXAMPLE
   Enable-SpanningUsersfromCSVAdvanced -WhatIf
-  Process the CSV file and show the accounts that could be processed.
+  Process all entries in the CSV file and show the accounts that could be processed.
 .NOTES
    The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
 .LINK
@@ -711,7 +715,7 @@ function Get-SpanningUnassignedUsers {
 .LINK
     GitHub Repository: https://github.com/spanningcloudapps
 #>
-#TODO : Filter should be optional
+#TODO : Filter by column name rather than index
 function Enable-SpanningUsersfromCSVAdvanced {
     [CmdletBinding(SupportsShouldProcess=$true,
         DefaultParametersetName='None')]
@@ -742,7 +746,7 @@ function Enable-SpanningUsersfromCSVAdvanced {
     #import the CSV file
     $whole_csv = Import-CSV -path $Path
 
-    #import only the matching rows
+    #import only the matching rows if the filter is set
     if ($FilterColumn -and $FilterColumnValue)
     {
         Write-Verbose "Importing from csv on column $($seek_column) with value $($FilterColumnValue)"
@@ -794,7 +798,7 @@ function Enable-SpanningUsersfromCSVAdvanced {
             #$uri
             $results = Invoke-WebRequest -uri $uri -Headers $headers -Method POST | ConvertFrom-Json
             Write-Verbose "Processing for user complete"
-            $results
+            #$results
          }
     }
 
@@ -811,11 +815,15 @@ function Enable-SpanningUsersfromCSVAdvanced {
   Disable licenses for Spanning users from a comma seperated value file.
   If Authentication information is not supplied, or if you have not previously called Get-SpanningAuthentication, you will be prompted for ApiToken, Region, and Admin Email
 .EXAMPLE
-  Disable-SpanningUsersfromCSVAdvanced
+  Disable-SpanningUsersfromCSVAdvanced -Path .\users.csv -UpnColumn 1 -FilterColumn 2 -FilterColumnValue "Finance"
+  Disable the users with a value of Finance in the third column.
   Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
 .EXAMPLE
+  Disable-SpanningUsersfromCSVAdvanced -Path .\users.csv -UpnColumn 1 -FilterColumn 2 -FilterColumnValue "Finance" -WhatIf
+  Test what would happen if you disabled the users with a value of Finance in the third column.
+.EXAMPLE
   Disable-SpanningUsersfromCSVAdvanced -WhatIf
-  Process the CSV file and show the accounts that could be processed.
+  Process all entries in the CSV file and show the accounts that could be disable.
 .NOTES
    The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
 .LINK
@@ -826,7 +834,8 @@ function Enable-SpanningUsersfromCSVAdvanced {
     GitHub Repository: https://github.com/spanningcloudapps
 #>
 function Disable-SpanningUsersfromCSVAdvanced {
-    [CmdletBinding(SupportsShouldProcess=$true)]
+    [CmdletBinding(SupportsShouldProcess=$true,
+        DefaultParametersetName='None')]
     param(
         [Parameter(
             Position=0,
@@ -835,25 +844,42 @@ function Disable-SpanningUsersfromCSVAdvanced {
             ValueFromPipelineByPropertyName=$true)
         ]
         $AuthInfo,
-        [parameter(Mandatory = $true)]
-        [String]$path_to_csv,
-        [parameter(mandatory = $true)]
-        [Int]$column,
-        [parameter(mandatory = $true)]
-        [Int]$column_match,
-        [parameter(mandatory = $true)]
-        [String]$column_value
+        [Parameter(Mandatory = $true)]
+        [String]$Path,
+        [Parameter(mandatory = $true)]
+        [Int]$UpnColumn,
+        [Parameter(ParameterSetName='Filter',
+            mandatory = $false)]
+        [Int]$FilterColumn,
+        [Parameter(ParameterSetName='Filter',
+            mandatory = $true)]
+        [String]$FilterColumnValue
     )
     # get column headers because this is one of those areas that Powershell makes life unnecessarily difficult
-    $csvColumnNames = (Get-Content $path_to_csv | Select-Object -First 1).Split(",")
-    $seek_column = $csvColumnNames[$column_match] -replace '"', ""
-    $source_column = $csvColumnNames[$column] -replace '"', ""
+    $csvColumnNames = (Get-Content $Path | Select-Object -First 1).Split(",")
+    $seek_column = $csvColumnNames[$FilterColumn] -replace '"', ""
+    $source_column = $csvColumnNames[$UpnColumn] -replace '"', ""
 
     #import the CSV file
-    $whole_csv = Import-CSV -path $path_to_csv
+    $whole_csv = Import-CSV -path $Path
 
     #import only the matching rows
-    $match_csv = Import-CSV -path $path_to_csv |where-object {$_.$seek_column -eq $column_value}
+    if ($FilterColumn -and $FilterColumnValue)
+    {
+        Write-Verbose "Importing from csv on column $($seek_column) with value $($FilterColumnValue)"
+        $match_csv = Import-CSV -path $Path | Where-Object {$_.$seek_column -eq $FilterColumnValue}
+    } else {
+        $match_csv = Import-CSV -path $Path
+    }
+
+    if (!$AuthInfo) {
+        Write-Verbose "No AuthInfo provided, checking Session State"
+        $AuthInfo = Get-AuthInfo
+     }
+     #$headers = usernfo[0]
+     $headers = $AuthInfo.Headers
+     #$region = usernfo[1]
+     $region = $AuthInfo.Region
 
     # import users list so we can validate
     $existing_list = Get-SpanningUsers
@@ -863,45 +889,39 @@ function Disable-SpanningUsersfromCSVAdvanced {
 
     # and now we can start doing things with it
 
-    Write-Host $whole_csv.count "rows in CSV"
-    Write-Host $match_csv.count "matches in CSV"
-    Write-Host $assigned_users.count "Spanning users currently assigned"
-    Write-Host "Processing"
+    Write-Verbose "$($whole_csv.count) rows in CSV"
+    Write-Verbose "$($match_csv.count) matches in CSV"
+    Write-Verbose "$($assigned_users.count) Spanning users currently assigned"
+    Write-Verbose "Processing..."
 
+    $disableCount = 0
     # begin looping through the matched CSV
     ForEach ($user in $match_csv) {
-        $user
 
         #unassign UPN in designated column
         $UserPrincipalName = $user.$source_column
-        write-host "processing" $userprincipalname
+        Write-Verbose "Processing $($UserPrincipalName)"
 
         #validate against existing users so we don't throw an error
-        if ($existing_list.userPrincipalName -notcontains $userPrincipalName -eq "True") {
-            Write-Host "User" $UPN "was not found in list. Proceeding to next user"
+        if ($existing_list.userPrincipalName -notcontains $userPrincipalName) {
+            Write-Verbose "User $($UserPrincipalName) was not found in list. Proceeding to next user"
             continue
         }
 
         #once validated, we can actually execute the disable command
-
-        if (!$AuthInfo) {
-            Write-Verbose "No AuthInfo provided, checking Session State"
-            $AuthInfo = Get-AuthInfo
-         }
-         #$headers = usernfo[0]
-         $headers = $AuthInfo.Headers
-         #$region = usernfo[1]
-         $region = $AuthInfo.Region
-
+        $disableCount++
          if ($pscmdlet.ShouldProcess("$UserPrincipalName", "Disable-SpanningUser")){
             $uri = "https://o365-api-$region.spanningbackup.com/user/$userPrincipalName/unassign"
-            $uri
+            #$uri
             $results = Invoke-WebRequest -uri $uri -Headers $headers -Method POST | ConvertFrom-Json
-            Write-host "Processing for user complete"
-            $results
+            Write-Verbose "Processing for user '$($UserPrincipalName)' complete"
+            #$results
          }
     }
-    $updated_users = Get-SpanningAssignedUsers
-    Write-Host $updated_users.count "Users are now enabled for Spanning."
+
+    if ($pscmdlet.ShouldProcess("Count of users to disable $($disableCount)")){
+        $updated_users = Get-SpanningAssignedUsers
+        Write-Verbose "$($updated_users.count) Users are now enabled for Spanning"
+    }
 
 }
