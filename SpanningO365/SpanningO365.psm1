@@ -472,11 +472,11 @@ function Get-SpanningUser {
         $values2 = @()
         $values = @()
         $results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/users" -Headers $headers -Method GET | ConvertFrom-Json
-        $values2 = $values2 + $results.users
-        DO {
+        $values2 += $results.users
+        do {
             $results = Invoke-WebRequest -uri $results.nextLink -Headers $headers -Method GET | ConvertFrom-JSON
-            $values = $values + $results.users
-        } Until ($results.nextlink.Length -eq 0)
+            $values += $results.users
+        } until ($results.nextlink.Length -eq 0)
         $values.count
         $values3 = $values2 + $values
         $temp_users = $values3
