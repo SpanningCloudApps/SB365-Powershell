@@ -48,7 +48,9 @@ function Get-SpanningAuthentication {
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
-        [String]$ApiToken,
+        [String]
+        #The API Token from the Spanning Backup Portal Settings Page
+        $ApiToken,
         [Parameter(
             Position=1,
             Mandatory=$false,
@@ -56,14 +58,18 @@ function Get-SpanningAuthentication {
             ValueFromPipelineByPropertyName=$true)
         ]
         [ValidateSet('US','EU','AP')]
-        [String]$Region,
+        [String]
+        #The Region for your Spanning Backups
+        $Region,
         [Parameter(
             Position=2,
             Mandatory=$false,
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
-        [String]$AdminEmail
+        [String]
+        #The Admin Email address used to generate the API Token
+        $AdminEmail
     )
 
     Write-Verbose "Get-SpanningAuthentication..."
