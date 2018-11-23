@@ -277,7 +277,7 @@ function Get-SpanningTenantInfoPaymentStatus {
     }
 
     #Simplified call to use Get-SpanningTenantInfo
-    Write-Output $(Get-SpanningTenantInfo -AuthInfo $AuthInfo).status
+    Write-Output (Get-SpanningTenantInfo -AuthInfo $AuthInfo).status
 }
 
 <#
@@ -555,7 +555,7 @@ function Get-SpanningUsers {
         $AuthInfo = Get-AuthInfo
      }
 
-     Write-Output $(Get-SpanningUser -AuthInfo $AuthInfo -UserType All)
+     Write-Output (Get-SpanningUser -AuthInfo $AuthInfo -UserType All)
 }
 
 <#
@@ -594,7 +594,7 @@ function Get-SpanningAdmins {
         $AuthInfo = Get-AuthInfo
      }
 
-     Write-Output $(Get-SpanningUser -AuthInfo $AuthInfo -UserType Admins)
+     Write-Output (Get-SpanningUser -AuthInfo $AuthInfo -UserType Admins)
 }
 
 <#
@@ -633,7 +633,7 @@ function Get-SpanningNonAdmins {
         $AuthInfo = Get-AuthInfo
      }
 
-     Write-Output $(Get-SpanningUser -AuthInfo $AuthInfo -UserType NonAdmins)
+     Write-Output (Get-SpanningUser -AuthInfo $AuthInfo -UserType NonAdmins)
 }
 
 <#
@@ -672,7 +672,7 @@ function Get-SpanningAssignedUsers {
         $AuthInfo = Get-AuthInfo
      }
 
-     Write-Output $(Get-SpanningUser -AuthInfo $AuthInfo -UserType Assigned)
+     Write-Output (Get-SpanningUser -AuthInfo $AuthInfo -UserType Assigned)
 }
 
 <#
@@ -711,7 +711,7 @@ function Get-SpanningUnassignedUsers {
         $AuthInfo = Get-AuthInfo
      }
 
-     Write-Output $(Get-SpanningUser -AuthInfo $AuthInfo -UserType Unassigned)
+     Write-Output (Get-SpanningUser -AuthInfo $AuthInfo -UserType Unassigned)
 }
 
 <#
