@@ -1,6 +1,5 @@
 <#
     PowerShell Module for accessing the Spanning Backup for Office 365 REST API
-    Version 3.0
     Copyright 2018 - Spanning Cloud Apps, LLC
 
     This Powershell Module is open sourced under Apache 2.0
@@ -132,6 +131,7 @@ function Get-AuthInfo{
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
+        #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
         $AuthInfo
     )
     Write-Verbose "Get-AuthInfo"
@@ -177,6 +177,7 @@ function Get-AuthInfo{
 function Clear-SpanningAuthentication {
     [CmdletBinding()]
     param()
+    #ToDo : Add Write-Verbose
     Remove-Variable -Scope Script -ErrorAction Ignore -Name 'Region'
     Remove-Variable -Scope Script -ErrorAction Ignore -Name 'ApiToken'
     Remove-Variable -Scope Script -ErrorAction Ignore -Name 'AdminEmail'
@@ -218,6 +219,7 @@ function Get-SpanningTenantInfo {
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
+        #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
         $AuthInfo
     )
     Write-Verbose "Get-SpanningTenantInfo"
@@ -264,6 +266,7 @@ function Get-SpanningTenantInfoPaymentStatus {
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
+        #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
         $AuthInfo
     )
     Write-Verbose "Get-SpanningTenantInfoPaymentStatus"
@@ -306,6 +309,7 @@ function Enable-SpanningUser {
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
+        #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
         $AuthInfo,
 
         [Parameter(
@@ -314,6 +318,7 @@ function Enable-SpanningUser {
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)]
         [String]
+        #User Principal Name (email address) of the user to enable.
         $UserPrincipalName
     )
     Write-Verbose "Enable-SpanningUser"
@@ -362,6 +367,7 @@ function Disable-SpanningUser {
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
+        #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
         $AuthInfo,
 
         [Parameter(
@@ -371,6 +377,7 @@ function Disable-SpanningUser {
             ValueFromPipelineByPropertyName=$true)]
         [ValidateNotNullOrEmpty]
         [String]
+        #User Principal Name (email address) of the user to disable.
         $UserPrincipalName
     )
     Write-Verbose "Disable-SpanningUser"
@@ -422,6 +429,7 @@ function Get-SpanningUser {
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
+        #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
         $AuthInfo,
 
         [Parameter(
@@ -432,6 +440,7 @@ function Get-SpanningUser {
             ParameterSetName = "Get Single User")]
         [ValidateNotNullOrEmpty]
         [String]
+        #User Principal Name (email address) of the user to return.
         $UserPrincipalName,
         [Parameter(
             Position=2,
@@ -441,7 +450,9 @@ function Get-SpanningUser {
             ParameterSetName = "Get Multiple Users")
         ]
         [ValidateSet('All','Admins','NonAdmins','Assigned','Unassigned')]
-        [String]$UserType
+        [String]
+        #User type to return
+        $UserType
     )
     Write-Verbose "Get-SpanningUser"
 
@@ -535,6 +546,7 @@ function Get-SpanningUsers {
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
+        #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
         $AuthInfo
     )
     Write-Verbose "Get-SpanningUsers"
@@ -573,6 +585,7 @@ function Get-SpanningAdmins {
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
+        #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
         $AuthInfo
     )
     Write-Verbose "Get-SpanningAdmins"
@@ -611,6 +624,7 @@ function Get-SpanningNonAdmins {
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
+        #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
         $AuthInfo
     )
     Write-Verbose "Get-SpanningNonAdmins"
@@ -649,6 +663,7 @@ function Get-SpanningAssignedUsers {
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
+        #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
         $AuthInfo
     )
     Write-Verbose "Get-SpanningAssignedUsers"
@@ -687,6 +702,7 @@ function Get-SpanningUnassignedUsers {
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
+        #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
         $AuthInfo
     )
     Write-Verbose "Get-SpanningUnassignedUsers"
@@ -734,19 +750,29 @@ function Enable-SpanningUsersfromCSVAdvanced {
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
+        #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
         $AuthInfo,
-        [Parameter(Mandatory = $true)]
-        [String]$Path,
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory=$true)]
         [ValidateNotNullOrEmpty]
-        [Int]$UpnColumn,
+        [String]
+        #Path to the CSV file
+        $Path,
+        [Parameter(Mandatory=$true)]
+        [ValidateNotNullOrEmpty]
+        [Int]
+        #Column index containing the Use Principal Name
+        $UpnColumn,
         [Parameter(ParameterSetName='Filter',
             Mandatory = $false)]
-        [Int]$FilterColumn,
+        [Int]
+        #Column index of the column to filter on
+        $FilterColumn,
         [Parameter(ParameterSetName='Filter',
             Mandatory = $true)]
         [ValidateNotNullOrEmpty]
-        [String]$FilterColumnValue
+        [String]
+        #Filter string to apply to filter column for comparison
+        $FilterColumnValue
     )
     # get column headers because this is one of those areas that Powershell makes life unnecessarily difficult
     $csvColumnNames = (Get-Content $Path | Select-Object -First 1).Split(",")
@@ -853,21 +879,30 @@ function Disable-SpanningUsersfromCSVAdvanced {
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
+        #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
         $AuthInfo,
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty]
-        [String]$Path,
+        [String]
+        #Path to the CSV file
+        $Path,
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty]
-        [Int]$UpnColumn,
+        [Int]
+        #Column index containing the Use Principal Name
+        $UpnColumn,
         [Parameter(ParameterSetName='Filter',
             Mandatory = $false)]
         [ValidateNotNullOrEmpty]
-        [Int]$FilterColumn,
+        [Int]
+        #Column index of the column to filter on
+        $FilterColumn,
         [Parameter(ParameterSetName='Filter',
             Mandatory = $true)]
         [ValidateNotNullOrEmpty]
-        [String]$FilterColumnValue
+        [String]
+        #Filter string to apply to filter column for comparison
+        $FilterColumnValue
     )
     # get column headers because this is one of those areas that Powershell makes life unnecessarily difficult
     $csvColumnNames = (Get-Content $Path | Select-Object -First 1).Split(",")
