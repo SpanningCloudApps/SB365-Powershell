@@ -68,13 +68,13 @@ function Get-SpanningAuthentication {
 
     Write-Verbose "Get-SpanningAuthentication..."
     Write-Verbose "Session ApiToken: $($Script:ApiToken)"
-    #Check the ApiToken
-    if (!$Script:ApiToken -and !$ApiToken) {
+    # Check the ApiToken
+    if ([string]::IsNullOrEmpty($Script:ApiToken) -and [string]::IsNullOrEmpty($ApiToken)) {
         $ApiToken = Read-Host 'Enter Api Token'
         # Alternatively
         # throw [System.ArgumentException]'You must supply an API Token value'
     }
-    if ($ApiToken) {
+    if ([string]::IsNullOrEmpty($ApiToken)) {
         $Script:ApiToken = $ApiToken
     }
     #Check the Region
@@ -778,7 +778,7 @@ function Enable-SpanningUsersfromCSVAdvanced {
 
     $enableCount = 0
     # begin looping through the matched CSV
-    ForEach ($user in $match_csv) {
+    foreach ($user in $match_csv) {
 
         #Assign UPN in designated column
         $UserPrincipalName = $user.$source_column
@@ -896,7 +896,7 @@ function Disable-SpanningUsersfromCSVAdvanced {
 
     $disableCount = 0
     # begin looping through the matched CSV
-    ForEach ($user in $match_csv) {
+    foreach ($user in $match_csv) {
 
         #unassign UPN in designated column
         $UserPrincipalName = $user.$source_column
