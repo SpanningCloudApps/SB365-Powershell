@@ -366,9 +366,10 @@ function Disable-SpanningUser {
 
         [Parameter(
             Position=1,
-            Mandatory = $true,
+            Mandatory=$true,
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)]
+        [ValidateNotNullOrEmpty]
         [String]
         $UserPrincipalName
     )
@@ -425,10 +426,11 @@ function Get-SpanningUser {
 
         [Parameter(
             Position=1,
-            Mandatory = $true,
+            Mandatory=$true,
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true,
             ParameterSetName = "Get Single User")]
+        [ValidateNotNullOrEmpty]
         [String]
         $UserPrincipalName,
         [Parameter(
@@ -735,13 +737,15 @@ function Enable-SpanningUsersfromCSVAdvanced {
         $AuthInfo,
         [Parameter(Mandatory = $true)]
         [String]$Path,
-        [Parameter(mandatory = $true)]
+        [Parameter(Mandatory = $true)]
+        [ValidateNotNullOrEmpty]
         [Int]$UpnColumn,
         [Parameter(ParameterSetName='Filter',
-            mandatory = $false)]
+            Mandatory = $false)]
         [Int]$FilterColumn,
         [Parameter(ParameterSetName='Filter',
-            mandatory = $true)]
+            Mandatory = $true)]
+        [ValidateNotNullOrEmpty]
         [String]$FilterColumnValue
     )
     # get column headers because this is one of those areas that Powershell makes life unnecessarily difficult
@@ -851,14 +855,18 @@ function Disable-SpanningUsersfromCSVAdvanced {
         ]
         $AuthInfo,
         [Parameter(Mandatory = $true)]
+        [ValidateNotNullOrEmpty]
         [String]$Path,
-        [Parameter(mandatory = $true)]
+        [Parameter(Mandatory = $true)]
+        [ValidateNotNullOrEmpty]
         [Int]$UpnColumn,
         [Parameter(ParameterSetName='Filter',
-            mandatory = $false)]
+            Mandatory = $false)]
+        [ValidateNotNullOrEmpty]
         [Int]$FilterColumn,
         [Parameter(ParameterSetName='Filter',
-            mandatory = $true)]
+            Mandatory = $true)]
+        [ValidateNotNullOrEmpty]
         [String]$FilterColumnValue
     )
     # get column headers because this is one of those areas that Powershell makes life unnecessarily difficult
