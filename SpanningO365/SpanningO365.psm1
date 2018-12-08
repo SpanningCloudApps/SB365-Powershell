@@ -120,7 +120,15 @@ function Get-SpanningAuthentication {
 
 <#
 .Synopsis
-   A utility function, not meant to be called directly.
+   A utility function, not meant to be called directly. Returns the AuthInfo object based on input parameters.
+.DESCRIPTION
+  If Authentication information is not supplied, or if you have not previously called Get-SpanningAuthentication, you will be prompted for ApiToken, Region, and Admin Email
+.EXAMPLE
+  This function is not caled directly.
+.NOTES
+   The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
+.LINK
+    GitHub Repository: https://github.com/spanningcloudapps
 #>
 function Get-AuthInfo{
     [CmdletBinding()]
@@ -129,7 +137,8 @@ function Get-AuthInfo{
             Position=0,
             Mandatory=$false,
             ValueFromPipeline=$true,
-            ValueFromPipelineByPropertyName=$true)
+            ValueFromPipelineByPropertyName=$true,
+            HelpMessage="AuthInfo from Get-SpanningAuthentication")
         ]
         #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
         $AuthInfo
@@ -217,7 +226,8 @@ function Get-SpanningTenantInfo {
             Position=0,
             Mandatory=$false,
             ValueFromPipeline=$true,
-            ValueFromPipelineByPropertyName=$true)
+            ValueFromPipelineByPropertyName=$true,
+            HelpMessage="AuthInfo from Get-SpanningAuthentication")
         ]
         #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
         $AuthInfo
@@ -264,7 +274,8 @@ function Get-SpanningTenantInfoPaymentStatus {
             Position=0,
             Mandatory=$false,
             ValueFromPipeline=$true,
-            ValueFromPipelineByPropertyName=$true)
+            ValueFromPipelineByPropertyName=$true,
+            HelpMessage="AuthInfo from Get-SpanningAuthentication")
         ]
         #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
         $AuthInfo
@@ -307,7 +318,8 @@ function Enable-SpanningUser {
             Position=0,
             Mandatory=$false,
             ValueFromPipeline=$true,
-            ValueFromPipelineByPropertyName=$true)
+            ValueFromPipelineByPropertyName=$true,
+            HelpMessage="AuthInfo from Get-SpanningAuthentication")
         ]
         #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
         $AuthInfo,
@@ -365,7 +377,8 @@ function Disable-SpanningUser {
             Position=0,
             Mandatory=$false,
             ValueFromPipeline=$true,
-            ValueFromPipelineByPropertyName=$true)
+            ValueFromPipelineByPropertyName=$true,
+            HelpMessage="AuthInfo from Get-SpanningAuthentication")
         ]
         #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
         $AuthInfo,
@@ -427,7 +440,8 @@ function Get-SpanningUser {
             Position=0,
             Mandatory=$false,
             ValueFromPipeline=$true,
-            ValueFromPipelineByPropertyName=$true)
+            ValueFromPipelineByPropertyName=$true,
+            HelpMessage="AuthInfo from Get-SpanningAuthentication")
         ]
         #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
         $AuthInfo,
@@ -544,7 +558,8 @@ function Get-SpanningUsers {
             Position=0,
             Mandatory=$false,
             ValueFromPipeline=$true,
-            ValueFromPipelineByPropertyName=$true)
+            ValueFromPipelineByPropertyName=$true,
+            HelpMessage="AuthInfo from Get-SpanningAuthentication")
         ]
         #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
         $AuthInfo
@@ -583,7 +598,8 @@ function Get-SpanningAdmins {
             Position=0,
             Mandatory=$false,
             ValueFromPipeline=$true,
-            ValueFromPipelineByPropertyName=$true)
+            ValueFromPipelineByPropertyName=$true,
+            HelpMessage="AuthInfo from Get-SpanningAuthentication")
         ]
         #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
         $AuthInfo
@@ -622,7 +638,8 @@ function Get-SpanningNonAdmins {
             Position=0,
             Mandatory=$false,
             ValueFromPipeline=$true,
-            ValueFromPipelineByPropertyName=$true)
+            ValueFromPipelineByPropertyName=$true,
+            HelpMessage="AuthInfo from Get-SpanningAuthentication")
         ]
         #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
         $AuthInfo
@@ -661,7 +678,8 @@ function Get-SpanningAssignedUsers {
             Position=0,
             Mandatory=$false,
             ValueFromPipeline=$true,
-            ValueFromPipelineByPropertyName=$true)
+            ValueFromPipelineByPropertyName=$true,
+            HelpMessage="AuthInfo from Get-SpanningAuthentication")
         ]
         #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
         $AuthInfo
@@ -700,7 +718,8 @@ function Get-SpanningUnassignedUsers {
             Position=0,
             Mandatory=$false,
             ValueFromPipeline=$true,
-            ValueFromPipelineByPropertyName=$true)
+            ValueFromPipelineByPropertyName=$true,
+            HelpMessage="AuthInfo from Get-SpanningAuthentication")
         ]
         #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
         $AuthInfo
@@ -748,7 +767,8 @@ function Enable-SpanningUsersfromCSVAdvanced {
             Position=0,
             Mandatory=$false,
             ValueFromPipeline=$true,
-            ValueFromPipelineByPropertyName=$true)
+            ValueFromPipelineByPropertyName=$true,
+            HelpMessage="AuthInfo from Get-SpanningAuthentication")
         ]
         #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
         $AuthInfo,
@@ -877,7 +897,8 @@ function Disable-SpanningUsersfromCSVAdvanced {
             Position=0,
             Mandatory=$false,
             ValueFromPipeline=$true,
-            ValueFromPipelineByPropertyName=$true)
+            ValueFromPipelineByPropertyName=$true,
+            HelpMessage="AuthInfo from Get-SpanningAuthentication")
         ]
         #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
         $AuthInfo,
