@@ -11,7 +11,7 @@
 #>
 
 <#
-.Synopsis
+.SYNOPSIS
   Get-SpanningAuthentication creates the Spanning Auth Header needed for making all Spanning API calls.
 .DESCRIPTION
   All cmdlets in this module use the AuthInfo returned by this cmdlet. If you omit the AuthInfo parameter the
@@ -539,6 +539,8 @@ function Get-SpanningUser {
 .DESCRIPTION
   Returns the user license information from the Spanning Backup Portal for all Spanning Users.
   If Authentication information is not supplied, or if you have not previously called Get-SpanningAuthentication, you will be prompted for ApiToken, Region, and Admin Email
+.PARAMETER AuthInfo
+  This parameter takes an AuthInfo object from Get-SpanningAuthentication.
 .EXAMPLE
   Get-SpanningUsers
   Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.

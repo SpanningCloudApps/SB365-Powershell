@@ -1,4 +1,21 @@
-﻿function Clear-SpanningAuthentication {
+﻿<#
+.SYNOPSIS
+  Clears the session Authentication variables
+.DESCRIPTION
+  Clears all script level session variables associated with authentication.
+  This cmdlet is useful when switching bewteen environments requireing different API Tokens.
+
+.EXAMPLE
+  Clear-SpanningAuthentication
+  Clear the session ApiToken, Region, and AdminEmail variables.
+.NOTES
+   The variables are populated by the Get-SpanningAuthentication cmdlet.
+.LINK
+    Get-SpanningAuthentication
+.LINK
+    GitHub Repository: https://github.com/spanningcloudapps
+#>
+function Clear-SpanningAuthentication {
 
     [CmdletBinding()]
     param()

@@ -1,4 +1,24 @@
-﻿function Disable-SpanningUser {
+﻿<#
+.Synopsis
+  Removes the user license from a licensed user
+.DESCRIPTION
+  Removes the user license asignment from the Spanning Backup Portal for the supplied user principal name.
+  If Authentication information is not supplied, or if you have not previously called Get-SpanningAuthentication, you will be prompted for ApiToken, Region, and Admin Email
+.PARAMETER AuthInfo
+  The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
+.EXAMPLE
+  Disable-SpanningUser -UserPrincipalName user@domain.com
+  Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
+.NOTES
+   The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
+.LINK
+    Get-SpanningAuthentication
+.LINK
+    Enable-SpanningUser
+.LINK
+    GitHub Repository: https://github.com/spanningcloudapps
+#>
+function Disable-SpanningUser {
 
     [CmdletBinding(SupportsShouldProcess=$true)]
     param(

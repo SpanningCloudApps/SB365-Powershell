@@ -3,8 +3,8 @@
 $PrivateFunctions = Get-ChildItem "$here\Private\" -Filter '*.ps1' -Recurse | Where-Object {$_.name -NotMatch "Tests.ps1"}
 $PublicFunctions = Get-ChildItem "$here\Public\" -Filter '*.ps1' -Recurse | Where-Object {$_.name -NotMatch "Tests.ps1"}
 
-$PrivateFunctionsTests = Get-ChildItem "$here\Private\" -Filter '*Tests.ps1' -Recurse 
-$PublicFunctionsTests = Get-ChildItem "$here\Public\" -Filter '*Tests.ps1' -Recurse 
+$PrivateFunctionsTests = Get-ChildItem "$here\Private\" -Filter '*Tests.ps1' -Recurse
+$PublicFunctionsTests = Get-ChildItem "$here\Public\" -Filter '*Tests.ps1' -Recurse
 
 $Rules = Get-ScriptAnalyzerRule
 
@@ -14,7 +14,7 @@ $module = $manifest.BaseName
 
 Import-Module "$Here\*.psd1"
 
-$ModuleData = Get-Module $Module 
+$ModuleData = Get-Module $Module
 $AllFunctions = & $moduleData {Param($modulename) Get-command -CommandType Function -Module $modulename} $module
 
 $PublicFunctionPath = "$here\Public\"
@@ -25,7 +25,7 @@ if ($PrivateFunctions.count -gt 0) {
     {
 
     Describe "Testing Private Function  - $($PrivateFunction.BaseName) for Standard Processing" {
-    
+
           It "Is valid Powershell (Has no script errors)" {
 
                 $contents = Get-Content -Path $PrivateFunction.FullName -ErrorAction Stop
@@ -33,21 +33,21 @@ if ($PrivateFunctions.count -gt 0) {
                 $null = [System.Management.Automation.PSParser]::Tokenize($contents, [ref]$errors)
                 $errors.Count | Should Be 0
             }
-    
-              
-           } 
-      
+
+
+           }
+
     }
  }
 
- 
+
 if ($PublicFunctions.count -gt 0) {
 
     foreach($PublicFunction in $PublicFunctions)
     {
 
     Describe "Testing Public Function  - $($PublicFunction.BaseName) for Standard Processing" {
-       
+
           It "Is valid Powershell (Has no script errors)" {
 
                 $contents = Get-Content -Path $PublicFunction.FullName -ErrorAction Stop
@@ -55,9 +55,9 @@ if ($PublicFunctions.count -gt 0) {
                 $null = [System.Management.Automation.PSParser]::Tokenize($contents, [ref]$errors)
                 $errors.Count | Should Be 0
             }
-                  
+
             }
-            
+
             $function = $AllFunctions.Where{ $_.Name -eq $PublicFunction.BaseName}
             $publicfunctionTests = $Publicfunctionstests.Where{$_.Name -match $PublicFunction.BaseName }
 
@@ -70,7 +70,7 @@ if ($PublicFunctions.count -gt 0) {
 
 
 Describe 'ScriptAnalyzer Rule Testing' {
-        
+
         Context 'Public Functions' {
 
             It 'Passes the Script Analyzer ' {
@@ -78,7 +78,7 @@ Describe 'ScriptAnalyzer Rule Testing' {
 
                 }
         }
-         
+
          Context 'Private Functions' {
 
             It 'Passes the Script Analyzer ' {
