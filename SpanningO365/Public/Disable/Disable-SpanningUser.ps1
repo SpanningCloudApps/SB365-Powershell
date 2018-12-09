@@ -4,8 +4,7 @@
 .DESCRIPTION
   Removes the user license asignment from the Spanning Backup Portal for the supplied user principal name.
   If Authentication information is not supplied, or if you have not previously called Get-SpanningAuthentication, you will be prompted for ApiToken, Region, and Admin Email
-.PARAMETER AuthInfo
-  The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
+
 .EXAMPLE
   Disable-SpanningUser -UserPrincipalName user@domain.com
   Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
@@ -26,7 +25,8 @@ function Disable-SpanningUser {
             Position=0,
             Mandatory=$false,
             ValueFromPipeline=$true,
-            ValueFromPipelineByPropertyName=$true)
+            ValueFromPipelineByPropertyName=$true,
+            HelpMessage="AuthInfo from Get-SpanningAuthentication")
         ]
         #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
         $AuthInfo,

@@ -1,5 +1,5 @@
 ﻿<#
-.SYNOPSIS
+.Synopsis
   Returns the user license information for all users from the Spanning Backup Portal
 .DESCRIPTION
   Returns the user license information from the Spanning Backup Portal for all Spanning Users.
@@ -26,7 +26,8 @@ function Get-SpanningUsers {
             Position=0,
             Mandatory=$false,
             ValueFromPipeline=$true,
-            ValueFromPipelineByPropertyName=$true)
+            ValueFromPipelineByPropertyName=$true,
+            HelpMessage="AuthInfo from Get-SpanningAuthentication")
         ]
         #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
         $AuthInfo

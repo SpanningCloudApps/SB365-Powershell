@@ -1,5 +1,5 @@
 ﻿<#
-.SYNOPSIS
+.Synopsis
   Clears the session Authentication variables
 .DESCRIPTION
   Clears all script level session variables associated with authentication.

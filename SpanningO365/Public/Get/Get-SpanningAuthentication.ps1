@@ -1,5 +1,5 @@
 ﻿<#
-.Synopsis
+.SYNOPSIS
   Get-SpanningAuthentication creates the Spanning Auth Header needed for making all Spanning API calls.
 .DESCRIPTION
   All cmdlets in this module use the AuthInfo returned by this cmdlet. If you omit the AuthInfo parameter the

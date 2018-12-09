@@ -1,4 +1,4 @@
-﻿#
+﻿<#
 .Synopsis
   Returns the tenant information from the Spanning Backup Portal
 .DESCRIPTION
@@ -31,7 +31,8 @@ function Get-SpanningTenantInfo {
             Position=0,
             Mandatory=$false,
             ValueFromPipeline=$true,
-            ValueFromPipelineByPropertyName=$true)
+            ValueFromPipelineByPropertyName=$true,
+            HelpMessage="AuthInfo from Get-SpanningAuthentication")
         ]
         #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
         $AuthInfo
