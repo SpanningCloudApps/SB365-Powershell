@@ -1,5 +1,6 @@
-﻿<#
-.Synopsis
+﻿function Clear-SpanningAuthentication {
+<#
+.SYNOPSIS
   Clears the session Authentication variables
 .DESCRIPTION
   Clears all script level session variables associated with authentication.
@@ -15,8 +16,6 @@
 .LINK
     GitHub Repository: https://github.com/spanningcloudapps
 #>
-function Clear-SpanningAuthentication {
-
     [CmdletBinding()]
     param()
     #ToDo : Add Write-Verbose

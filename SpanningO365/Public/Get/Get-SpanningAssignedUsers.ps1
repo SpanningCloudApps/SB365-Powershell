@@ -1,5 +1,5 @@
 ﻿<#
-.Synopsis
+.SYNOPSIS
   Returns the assigned users from the Spanning Backup Portal
 .DESCRIPTION
   Returns the assigned users information from the Spanning Backup Portal.

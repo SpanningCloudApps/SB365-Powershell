@@ -1,5 +1,5 @@
 ﻿<#
-.Synopsis
+.SYNOPSIS
   Enable licenses for Spanning users from a comma seperated value file.
 .DESCRIPTION
   Enable licenses for Spanning users from a comma seperated value file.

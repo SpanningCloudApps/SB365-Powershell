@@ -1,30 +1,31 @@
-﻿<#
-.Synopsis
-  Returns the tenant information from the Spanning Backup Portal
-.DESCRIPTION
-  Returns the tenant information from the Spanning Backup Portal for the supplied ApiToken, Region, and AdminEmail address
-.EXAMPLE
-  Get-SpanningTenantInfo
-  Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
-.EXAMPLE
-  $myApiToken = "your api token"
-  $myAdminEmail = "admin@mytenant.onmicrosoft.com"
-  $myRegion = "US"
+﻿function Get-SpanningTenantInfo {
+    <#
+    .SYNOPSIS
+        Returns the tenant information from the Spanning Backup Portal
+    .DESCRIPTION
+        Returns the tenant information from the Spanning Backup Portal for the supplied ApiToken, Region, and AdminEmail address
+    .PARAMETER AuthInfo
+        This parameter takes an AuthInfo object from Get-SpanningAuthentication.
+    .EXAMPLE
+        Get-SpanningTenantInfo
+        Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
+    .EXAMPLE
+        $myApiToken = "your api token"
+        $myAdminEmail = "admin@mytenant.onmicrosoft.com"
+        $myRegion = "US"
 
-  Get-SpanningAuthentication -ApiToken $myApiToken -Region $myRegion -AdminEmail $myAdminEmail | Get-SpanningTenantInfo
+        Get-SpanningAuthentication -ApiToken $myApiToken -Region $myRegion -AdminEmail $myAdminEmail | Get-SpanningTenantInfo
 
-  Supply the three parameters from variables to Get-SpanningAuthentication and pipe the result to Get-SpanningTennantInfo.
-.NOTES
-   The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
-.LINK
-    Get-SpanningAuthentication
-.LINK
-    Get-SpanningTenantInfoPaymentStatus
-.LINK
-    GitHub Repository: https://github.com/spanningcloudapps
-#>
-function Get-SpanningTenantInfo {
-
+        Supply the three parameters from variables to Get-SpanningAuthentication and pipe the result to Get-SpanningTennantInfo.
+    .NOTES
+        The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
+    .LINK
+        Get-SpanningAuthentication
+    .LINK
+        Get-SpanningTenantInfoPaymentStatus
+    .LINK
+        GitHub Repository: https://github.com/spanningcloudapps
+    #>
     [CmdletBinding()]
     param(
         [Parameter(

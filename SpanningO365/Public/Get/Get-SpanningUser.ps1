@@ -1,26 +1,30 @@
-﻿<#
-.Synopsis
-  Returns the user information information from the Spanning Backup Portal
-.DESCRIPTION
-  Returns the user license information from the Spanning Backup Portal for the supplied user principal name.
-  If Authentication information is not supplied, or if you have not previously called Get-SpanningAuthentication, you will be prompted for ApiToken, Region, and Admin Email
-
-.EXAMPLE
-  Get-SpanningUser -UserPrincipalName
-  Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
-.EXAMPLE
-  Get-SpanningUser -UserType Admins
-  Return only Admin Users
-  Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
-.NOTES
-   The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
-.LINK
-    Get-SpanningAuthentication
-.LINK
-    GitHub Repository: https://github.com/spanningcloudapps
-#>
-function Get-SpanningUser {
-
+﻿function Get-SpanningUser {
+    <#
+    .SYNOPSIS
+        Returns the user information information from the Spanning Backup Portal
+    .DESCRIPTION
+        Returns the user license information from the Spanning Backup Portal for the supplied user principal name.
+        If Authentication information is not supplied, or if you have not previously called Get-SpanningAuthentication, you will be prompted for ApiToken, Region, and Admin Email
+    .PARAMETER AuthInfo
+        This parameter takes an AuthInfo object from Get-SpanningAuthentication.
+    .PARAMETER UserPrincipalName
+        This parameter is the UPN of the user to disable.
+    .PARAMETER UserType
+        This parameter filters to specific user types from the set All, Admins, NonAdmins, Assigned, Unassigned.
+    .EXAMPLE
+        Get-SpanningUser -UserPrincipalName
+        Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
+    .EXAMPLE
+        Get-SpanningUser -UserType Admins
+        Return only Admin Users
+        Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
+    .NOTES
+        The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
+    .LINK
+        Get-SpanningAuthentication
+    .LINK
+        GitHub Repository: https://github.com/spanningcloudapps
+    #>
     [CmdletBinding()]
     param(
         [Parameter(

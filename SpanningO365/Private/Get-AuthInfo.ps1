@@ -1,5 +1,5 @@
 ﻿<#
-.Synopsis
+.SYNOPSIS
    A utility function, not meant to be called directly. Returns the AuthInfo object based on input parameters.
 .DESCRIPTION
   If Authentication information is not supplied, or if you have not previously called Get-SpanningAuthentication, you will be prompted for ApiToken, Region, and Admin Email

@@ -1,5 +1,5 @@
 ﻿<#
-.Synopsis
+.SYNOPSIS
   Returns the admin users from the Spanning Backup Portal
 .DESCRIPTION
   Returns the admin users information from the Spanning Backup Portal.

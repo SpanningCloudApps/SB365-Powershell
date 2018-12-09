@@ -1,30 +1,39 @@
-﻿<#
-.Synopsis
-  Disable licenses for Spanning users from a comma seperated value file.
-.DESCRIPTION
-  Disable licenses for Spanning users from a comma seperated value file.
-  If Authentication information is not supplied, or if you have not previously called Get-SpanningAuthentication, you will be prompted for ApiToken, Region, and Admin Email
-.EXAMPLE
-  Disable-SpanningUsersfromCSVAdvanced -Path .\users.csv -UpnColumn 1 -FilterColumn 2 -FilterColumnValue "Finance"
-  Disable the users with a value of Finance in the third column.
-  Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
-.EXAMPLE
-  Disable-SpanningUsersfromCSVAdvanced -Path .\users.csv -UpnColumn 1 -FilterColumn 2 -FilterColumnValue "Finance" -WhatIf
-  Test what would happen if you disabled the users with a value of Finance in the third column.
-.EXAMPLE
-  Disable-SpanningUsersfromCSVAdvanced -WhatIf
-  Process all entries in the CSV file and show the accounts that could be disable.
-.NOTES
-   The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
-.LINK
-    Get-SpanningAuthentication
-.LINK
-    Enable-SpanningUsersfromCSVAdvanced
-.LINK
-    GitHub Repository: https://github.com/spanningcloudapps
-#>
-function Disable-SpanningUsersfromCSVAdvanced {
-
+﻿function Disable-SpanningUsersfromCSVAdvanced {
+    <#
+    .SYNOPSIS
+        Disable licenses for Spanning users from a comma seperated value file.
+    .DESCRIPTION
+        Disable licenses for Spanning users from a comma seperated value file.
+        If Authentication information is not supplied, or if you have not previously called Get-SpanningAuthentication, you will be prompted for ApiToken, Region, and Admin Email
+    .PARAMETER AuthInfo
+        This parameter takes an AuthInfo object from Get-SpanningAuthentication.
+    .PARAMETER Path
+        The path to the CSV file.
+    .PARAMETER UpnColumn
+        The column containint the user UPN.
+    .PARAMETER FilterColumn
+        The column to apply the filter to.
+    .PARAMETER FilterColumnValue
+        The value to filter on.
+    .EXAMPLE
+        Disable-SpanningUsersfromCSVAdvanced -Path .\users.csv -UpnColumn 1 -FilterColumn 2 -FilterColumnValue "Finance"
+        Disable the users with a value of Finance in the third column.
+        Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
+    .EXAMPLE
+        Disable-SpanningUsersfromCSVAdvanced -Path .\users.csv -UpnColumn 1 -FilterColumn 2 -FilterColumnValue "Finance" -WhatIf
+        Test what would happen if you disabled the users with a value of Finance in the third column.
+    .EXAMPLE
+        Disable-SpanningUsersfromCSVAdvanced -WhatIf
+        Process all entries in the CSV file and show the accounts that could be disable.
+    .NOTES
+        The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
+    .LINK
+        Get-SpanningAuthentication
+    .LINK
+        Enable-SpanningUsersfromCSVAdvanced
+    .LINK
+        GitHub Repository: https://github.com/spanningcloudapps
+    #>
     [CmdletBinding(SupportsShouldProcess=$true,
         DefaultParametersetName='None')]
     param(
