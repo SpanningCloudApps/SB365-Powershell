@@ -1,4 +1,5 @@
 ﻿function Get-SpanningAdmins {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "", Justification="Backward compatibility")]
     <#
     .SYNOPSIS
         Returns the admin users from the Spanning Backup Portal

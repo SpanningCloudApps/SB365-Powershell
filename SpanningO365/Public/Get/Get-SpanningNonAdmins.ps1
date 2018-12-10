@@ -1,4 +1,5 @@
 ﻿function Get-SpanningNonAdmins {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "", Justification="Backward compatibility")]
     <#
     .SYNOPSIS
         Returns the non-admin users from the Spanning Backup Portal

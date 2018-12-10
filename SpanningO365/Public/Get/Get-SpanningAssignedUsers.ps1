@@ -1,4 +1,5 @@
 ﻿function Get-SpanningAssignedUsers {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "", Justification="Backward compatibility")]
     <#
     .SYNOPSIS
         Returns the assigned users from the Spanning Backup Portal

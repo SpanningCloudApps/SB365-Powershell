@@ -1,4 +1,5 @@
 ﻿function Get-SpanningUsers {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "", Justification="Backward compatibility")]
     <#
     .SYNOPSIS
     Returns the user license information for all users from the Spanning Backup Portal

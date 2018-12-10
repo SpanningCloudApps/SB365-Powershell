@@ -129,7 +129,7 @@
             #$uri
             $results = Invoke-WebRequest -uri $uri -Headers $headers -Method POST | ConvertFrom-Json
             Write-Verbose "Processing for user complete"
-            #$results
+            Write-Output $results
          }
     }
 
