@@ -34,7 +34,6 @@
     .LINK
         GitHub Repository: https://github.com/spanningcloudapps
     #>
-    #TODO : Filter by column name rather than index
     [CmdletBinding(SupportsShouldProcess=$true,
         DefaultParametersetName='None')]
     param(
@@ -69,6 +68,7 @@
         #Filter string to apply to filter column for comparison
         $FilterColumnValue
     )
+    #TODO : Filter by column name rather than index
     # get column headers because this is one of those areas that Powershell makes life unnecessarily difficult
     $csvColumnNames = (Get-Content $Path | Select-Object -First 1).Split(",")
     $seek_column = $csvColumnNames[$FilterColumn] -replace '"', ""
