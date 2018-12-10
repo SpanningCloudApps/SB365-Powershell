@@ -8,7 +8,7 @@
     .PARAMETER AuthInfo
         This parameter takes an AuthInfo object from Get-SpanningAuthentication.
     .PARAMETER UserPrincipalName
-        This parameter is the UPN of the user to disable.
+        This parameter is the UPN of the user to enable.
     .EXAMPLE
         Enable-SpanningUser -UserPrincipalName user@domain.com
         Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.

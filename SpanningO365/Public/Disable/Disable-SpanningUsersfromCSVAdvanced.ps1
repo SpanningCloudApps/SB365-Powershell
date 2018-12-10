@@ -1,4 +1,4 @@
-﻿function Disable-SpanningUsersfromCSVAdvanced {
+﻿function Disable-SpanningUsersFromCSVAdvanced {
     <#
     .SYNOPSIS
         Disable licenses for Spanning users from a comma seperated value file.
