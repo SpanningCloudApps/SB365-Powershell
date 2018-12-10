@@ -1,1 +1,4 @@
-test*
+test*.ps1
+test*.csv
+test*.txt
+test.ignore
