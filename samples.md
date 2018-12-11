@@ -87,6 +87,9 @@ Connect-AzureAd
 Get-AzureADGroup -SearchString "Sales Team" | Get-AzureADGroupMember | foreach {Enable-SpanningUser $_.UserPrincipalName }
 ```
 
+## License Users with an Office 365 License
+
 ## Disable Spanning Users
 
 Show -WhatIf switch
+
