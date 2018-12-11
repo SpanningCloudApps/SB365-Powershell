@@ -105,7 +105,7 @@
             $Function.Parameters.FilterColumn.ParameterType.FullName | Should be 'System.Int32'
             }
         It 'FilterColumn Parameter is member of ParameterSets' {
-            [String]$Function.Parameters.FilterColumn.ParameterSets.Keys | Should Be 'Filter'
+            [String]$Function.Parameters.FilterColumn.ParameterSets.Keys | Should Be '__AllParameterSets'
             }
         It 'FilterColumn Parameter Position is defined correctly' {
             [String]$Function.Parameters.FilterColumn.Attributes.Position | Should be '-2147483648'
@@ -136,7 +136,7 @@
             $Function.Parameters.FilterColumnValue.ParameterType.FullName | Should be 'System.String'
             }
         It 'FilterColumnValue Parameter is member of ParameterSets' {
-            [String]$Function.Parameters.FilterColumnValue.ParameterSets.Keys | Should Be 'Filter'
+            [String]$Function.Parameters.FilterColumnValue.ParameterSets.Keys | Should Be '__AllParameterSets'
             }
         It 'FilterColumnValue Parameter Position is defined correctly' {
             [String]$Function.Parameters.FilterColumnValue.Attributes.Position | Should be '-2147483648'
@@ -182,7 +182,9 @@
                 $function.CmdletBinding | should be 'True'
                 $function.Definition.Contains('param') -or  $function.Definition.Contains('Param') | should be 'True'
             }
-
+    
     }
 
  }
+
+
