@@ -1,4 +1,19 @@
-﻿$Here = Split-Path -Parent $MyInvocation.MyCommand.Path
+﻿#Check for Module Dependencies
+if (-not (Get-InstalledModule -Name Pester -ErrorAction SilentlyContinue)){
+    Write-Warning -Message "You need Pester to run these tests."
+    Exit
+}
+
+if (-not (Get-InstalledModule -Name PSScriptAnalyzer -ErrorAction SilentlyContinue)){
+    Write-Warning -Message "You need PSScriptAnalyzer to run these tests."
+    Exit
+}
+
+if (-not (Get-InstalledModule -Name PesterHelpers -ErrorAction SilentlyContinue)){
+    Write-Warning -Message "You may want PesterHelpers to write new tests."
+}
+
+$Here = Split-Path -Parent $MyInvocation.MyCommand.Path
 
 $PrivateFunctions = Get-ChildItem "$here\Private\" -Filter '*.ps1' -Recurse | Where-Object {$_.name -NotMatch "Tests.ps1"}
 $PublicFunctions = Get-ChildItem "$here\Public\" -Filter '*.ps1' -Recurse | Where-Object {$_.name -NotMatch "Tests.ps1"}
