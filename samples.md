@@ -10,9 +10,9 @@ In order to authenticate with the Spanning Backup for Office 365 API you need an
 
 Now that you have the API Token you only need to know your region and the email address of the administrator for executing the commands. (Your region was selected when you installed the app for the first time. You can determin your region from the URL of the portal:
 
-- https://o365-**us**.spanningbackup.com/ is the **US** Region for the United States
-- https://o365-**eu**.spanningbackup.com/ is the **EU** Region for Europe
-- https://o365-**ap**.spanningbackup.com/ is the **AP** Region for Australia/Pacific
+- https<span></span>://o365-**us**.spanningbackup.com/ is the **US** Region for the United States
+- https<span></span>://o365-**eu**.spanningbackup.com/ is the **EU** Region for Europe
+- https<span></span>://o365-**ap**.spanningbackup.com/ is the **AP** Region for Australia/Pacific
 
 ```plaintext
 For these examples we will use the following information:
