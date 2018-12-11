@@ -39,8 +39,8 @@
         It 'Path Parameter is Identified as Mandatory being True' {
             [String]$Function.Parameters.Path.Attributes.Mandatory | Should be 'True'
             }
-        It 'Path Parameter is of ValidateNotNullOrEmptyAttribute Type' {
-            $Function.Parameters.Path.ParameterType.FullName | Should be 'System.Management.Automation.ValidateNotNullOrEmptyAttribute'
+        It 'Path Parameter is of String Type' {
+            $Function.Parameters.Path.ParameterType.FullName | Should be 'System.String'
             }
         It 'Path Parameter is member of ParameterSets' {
             [String]$Function.Parameters.Path.ParameterSets.Keys | Should Be '__AllParameterSets'
@@ -55,7 +55,7 @@
             [String]$Function.Parameters.Path.Attributes.ValueFromPipelineByPropertyName | Should be 'False'
             }
         It 'Does Path Parameter use advanced parameter Validation? ' {
-            $Function.Parameters.Path.Attributes.TypeID.Name -contains 'ValidateNotNullOrEmptyAttribute' | Should Be 'False'
+            $Function.Parameters.Path.Attributes.TypeID.Name -contains 'ValidateNotNullOrEmptyAttribute' | Should Be 'True'
             $Function.Parameters.Path.Attributes.TypeID.Name -contains 'ValidateNotNullAttribute' | Should Be 'False'
             $Function.Parameters.Path.Attributes.TypeID.Name -contains 'ValidateScript' | Should Be 'False'
             $Function.Parameters.Path.Attributes.TypeID.Name -contains 'ValidateRangeAttribute' | Should Be 'False'
@@ -70,8 +70,8 @@
         It 'UpnColumn Parameter is Identified as Mandatory being True' {
             [String]$Function.Parameters.UpnColumn.Attributes.Mandatory | Should be 'True'
             }
-        It 'UpnColumn Parameter is of ValidateNotNullOrEmptyAttribute Type' {
-            $Function.Parameters.UpnColumn.ParameterType.FullName | Should be 'System.Management.Automation.ValidateNotNullOrEmptyAttribute'
+        It 'UpnColumn Parameter is of Int32 Type' {
+            $Function.Parameters.UpnColumn.ParameterType.FullName | Should be 'System.Int32'
             }
         It 'UpnColumn Parameter is member of ParameterSets' {
             [String]$Function.Parameters.UpnColumn.ParameterSets.Keys | Should Be '__AllParameterSets'
@@ -86,7 +86,7 @@
             [String]$Function.Parameters.UpnColumn.Attributes.ValueFromPipelineByPropertyName | Should be 'False'
             }
         It 'Does UpnColumn Parameter use advanced parameter Validation? ' {
-            $Function.Parameters.UpnColumn.Attributes.TypeID.Name -contains 'ValidateNotNullOrEmptyAttribute' | Should Be 'False'
+            $Function.Parameters.UpnColumn.Attributes.TypeID.Name -contains 'ValidateNotNullOrEmptyAttribute' | Should Be 'True'
             $Function.Parameters.UpnColumn.Attributes.TypeID.Name -contains 'ValidateNotNullAttribute' | Should Be 'False'
             $Function.Parameters.UpnColumn.Attributes.TypeID.Name -contains 'ValidateScript' | Should Be 'False'
             $Function.Parameters.UpnColumn.Attributes.TypeID.Name -contains 'ValidateRangeAttribute' | Should Be 'False'
@@ -132,8 +132,8 @@
         It 'FilterColumnValue Parameter is Identified as Mandatory being True' {
             [String]$Function.Parameters.FilterColumnValue.Attributes.Mandatory | Should be 'True'
             }
-        It 'FilterColumnValue Parameter is of ValidateNotNullOrEmptyAttribute Type' {
-            $Function.Parameters.FilterColumnValue.ParameterType.FullName | Should be 'System.Management.Automation.ValidateNotNullOrEmptyAttribute'
+        It 'FilterColumnValue Parameter is of String Type' {
+            $Function.Parameters.FilterColumnValue.ParameterType.FullName | Should be 'System.String'
             }
         It 'FilterColumnValue Parameter is member of ParameterSets' {
             [String]$Function.Parameters.FilterColumnValue.ParameterSets.Keys | Should Be 'Filter'
@@ -148,7 +148,7 @@
             [String]$Function.Parameters.FilterColumnValue.Attributes.ValueFromPipelineByPropertyName | Should be 'False'
             }
         It 'Does FilterColumnValue Parameter use advanced parameter Validation? ' {
-            $Function.Parameters.FilterColumnValue.Attributes.TypeID.Name -contains 'ValidateNotNullOrEmptyAttribute' | Should Be 'False'
+            $Function.Parameters.FilterColumnValue.Attributes.TypeID.Name -contains 'ValidateNotNullOrEmptyAttribute' | Should Be 'True'
             $Function.Parameters.FilterColumnValue.Attributes.TypeID.Name -contains 'ValidateNotNullAttribute' | Should Be 'False'
             $Function.Parameters.FilterColumnValue.Attributes.TypeID.Name -contains 'ValidateScript' | Should Be 'False'
             $Function.Parameters.FilterColumnValue.Attributes.TypeID.Name -contains 'ValidateRangeAttribute' | Should Be 'False'

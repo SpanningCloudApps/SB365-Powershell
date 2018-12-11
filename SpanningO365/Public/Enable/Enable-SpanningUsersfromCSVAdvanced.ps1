@@ -41,32 +41,22 @@
             Position=0,
             Mandatory=$false,
             ValueFromPipeline=$true,
-            ValueFromPipelineByPropertyName=$true,
-            HelpMessage="AuthInfo from Get-SpanningAuthentication")
+            ValueFromPipelineByPropertyName=$true)
         ]
-        #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
-        $AuthInfo,
+        $AuthInfo,#The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
         [Parameter(Mandatory=$true)]
-        [ValidateNotNullOrEmpty]
-        [String]
-        #Path to the CSV file
-        $Path,
+        [ValidateNotNullOrEmpty()]
+        [String]$Path,
         [Parameter(Mandatory=$true)]
-        [ValidateNotNullOrEmpty]
-        [Int]
-        #Column index containing the Use Principal Name
-        $UpnColumn,
+        [ValidateNotNullOrEmpty()]#Column index containing the Use Principal Name
+        [Int]$UpnColumn,
         [Parameter(ParameterSetName='Filter',
-            Mandatory = $false)]
-        [Int]
-        #Column index of the column to filter on
-        $FilterColumn,
+            Mandatory = $false)]#Column index of the column to filter on
+        [Int]$FilterColumn,
         [Parameter(ParameterSetName='Filter',
             Mandatory = $true)]
-        [ValidateNotNullOrEmpty]
-        [String]
-        #Filter string to apply to filter column for comparison
-        $FilterColumnValue
+        [ValidateNotNullOrEmpty()]#Filter string to apply to filter column for comparison
+        [String]$FilterColumnValue
     )
     #TODO : Filter by column name rather than index
     # get column headers because this is one of those areas that Powershell makes life unnecessarily difficult
