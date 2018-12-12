@@ -8,7 +8,7 @@ In order to authenticate with the Spanning Backup for Office 365 API you need an
 1. In the **API Token** section click **Generate Token**. Note: if the button says **Revoke Token** a token has already been generated. You either need to revoke and regenerate the token or find out who has the token.
 1. Record the API Token in a safe place. Once you navigate away from the page it will not be shown again.
 
-Now that you have the API Token you only need to know your region and the email address of the administrator for executing the commands. (Your region was selected when you installed the app for the first time. You can determin your region from the URL of the portal:
+Now that you have the API Token you only need to know your region and the email address of the administrator for executing the commands. (Your region was selected when you installed the app for the first time. You can determine your region from the URL of the portal:
 
 - https<span></span>://o365-**us**.spanningbackup.com/ is the **US** Region for the United States
 - https<span></span>://o365-**eu**.spanningbackup.com/ is the **EU** Region for Europe
@@ -32,7 +32,7 @@ Get-SpanningAuthentication -ApiToken "2a4d91f3-dc91-46c5-bfa9-a6f0adefed33" `
     -Region "US" -AdminEmail "MeganB@doghousetoys.com"
 ```
 
-This does two things, it returns an **AuthInfo** object and stores the **AuthInfo** in a session varaible. The benefit of the object is that you can use the PowerShell pipeline to send the AuthInfo to another Spanning function. For example to get a list of Administrators in one line you could execute:
+This does two things, it returns an **AuthInfo** object and stores the **AuthInfo** in a session variable. The benefit of the object is that you can use the PowerShell pipeline to send the AuthInfo to another Spanning function. For example to get a list of Administrators in one line you could execute:
 
 ```powershell
 Get-SpanningAuthentication -ApiToken "2a4d91f3-dc91-46c5-bfa9-a6f0adefed33" `
@@ -56,7 +56,7 @@ Clear-SpanningAuthentication
 
 ## Listing Users
 
-You can list the different users from the Spanning Portal with the **Get-User** function. This function can take either a specific UPN for a user or a user type enumeration of:
+You can list the different users from the Spanning Portal with the **Get-SpanningUser** function. This function can take either a specific UPN for a user or a user type enumeration of:
 
 - All: All users in the Spanning portal
 - Admins: Users assigned to the Admin Role
@@ -76,7 +76,7 @@ To determine the currently assigned Administrators:
 Get-SpanningUser -UserType Admins
 ```
 
-For backwards compatability to the previous version of the module you can still explicitly call the following functions and retrieve the associated users:
+For backwards compatibility to the previous version of the module you can still explicitly call the following functions and retrieve the associated users:
 
 ```powershell
 Get-SpanningAdmins
@@ -100,7 +100,7 @@ Get-SpanningUsers
 
 ## Get Tenant Information
 
-You can use PowerShell to determine the status of your Spanning tenant and current payment status. The **Get-SpanningTenantInfo** function returns the number of licenses, users, assignments, and payment status. The **Get-SpanningTenantPaymentInfo** retuirns only the payment status.
+You can use PowerShell to determine the status of your Spanning tenant and current payment status. The **Get-SpanningTenantInfo** function returns the number of licenses, users, assignments, and payment status. The **Get-SpanningTenantPaymentInfo** returns only the payment status.
 
 ```powershell
 Get-SpanningTenantInfo
@@ -126,7 +126,7 @@ trial
 
 ## Enabling Users
 
-Users are enabled or licensed for Spanning Backup for Office 365 using the **Enable-SpanningUser** function. This function takes a UserPrincipalName and applies a Spanning license to the user. Once enabled, the user will be included in the next scheduled backup. The **Enable-SpanningUser** function accepts input from the pipeline and can be included in more complex user and group queries if necessary. See the Advanced Use Cases section later in this article.
+Users are enabled or licensed for Spanning Backup for Office 365 using the **Enable-SpanningUser** function. This function takes a UserPrincipalName and applies a Spanning license to the user. Once enabled, the user will be included in the next scheduled backup. The **Enable-SpanningUser** function accepts input from the pipeline and can be included in more complex user and group queries if necessary. See the [Advanced Use Cases](#advanced) section later in this article.
 
 ```powershell
 Enable-SpanningUser -UserPrincipalName "MeganB@doghousetoys.com"
@@ -191,7 +191,7 @@ userPrincipalName          licensed
 cheyenne@doghousetoys.com  False
 ```
 
-In the event you wish to remove licenses in bulk you can use the **Disable-SpanningUserFromCSVAdvanced** function or the alternatives in the Advanced Use Cases section later in this article. Like it's counterpart **Enable-SpanningUserFromCSVAdvanced** you can either disable all users listed in the CSV file or provide a filter column and filter value.
+In the event you wish to remove licenses in bulk you can use the **Disable-SpanningUserFromCSVAdvanced** function or the alternatives in the [Advanced Use Cases](#advanced) section later in this article. Like it's counterpart **Enable-SpanningUserFromCSVAdvanced** you can either disable all users listed in the CSV file or provide a filter column and filter value.
 
 ```powershell
 Disable-SpanningUserFromCSVAdvanced  -Path "C:\Test\Users.csv" -UpnColumn 1
@@ -223,6 +223,8 @@ userPrincipalName          licensed
 willa@doghousetoys.com     False
 cheyenne@doghousetoys.com  False
 ```
+
+## <a name="advanced"></a>Advanced Use Cases
 
 ## Enable all Unassigned Users
 
