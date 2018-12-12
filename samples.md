@@ -240,7 +240,8 @@ $cred = Get-Credential -Message "Azure AD Admin" -UserName "ruby@doghousetoys.co
 #Uses AzureAd Module
 Connect-AzureAd -Credential $cred
 
-Get-AzureADGroup -SearchString "Sales Team" | Get-AzureADGroupMember | foreach {Enable-SpanningUser -UserPrincipalName $_.UserPrincipalName }
+Get-AzureADGroup -SearchString "Sales Team" | Get-AzureADGroupMember | `
+    foreach {Enable-SpanningUser -UserPrincipalName $_.UserPrincipalName }
 ```
 
 ### License Users with an Office 365 License
