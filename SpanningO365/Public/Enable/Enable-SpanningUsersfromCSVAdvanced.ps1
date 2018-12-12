@@ -34,7 +34,8 @@
     .LINK
         GitHub Repository: https://github.com/spanningcloudapps
     #>
-    [CmdletBinding(SupportsShouldProcess=$true)]
+    [CmdletBinding(SupportsShouldProcess=$true,
+        DefaultParametersetName='None')]
     param(
         [Parameter(Position=0,Mandatory=$false,ValueFromPipeline=$true,ValueFromPipelineByPropertyName=$true)]
         $AuthInfo,#The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
@@ -44,9 +45,11 @@
         [Parameter(Mandatory=$true)]
         [ValidateNotNullOrEmpty()]#Column index containing the Use Principal Name
         [Int]$UpnColumn,
-        [Parameter(Mandatory = $false)]#Column index of the column to filter on
+        [Parameter(ParameterSetName='Filter',
+            Mandatory = $false)]#Column index of the column to filter on
         [Int]$FilterColumn,
-        [Parameter(Mandatory = $true)]
+        [Parameter(ParameterSetName='Filter',
+            Mandatory = $true)]
         [ValidateNotNullOrEmpty()]#Filter string to apply to filter column for comparison
         [String]$FilterColumnValue
     )

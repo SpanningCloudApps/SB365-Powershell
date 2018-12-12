@@ -47,24 +47,24 @@
         #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
         $AuthInfo,
         [Parameter(Mandatory = $true)]
-        [ValidateNotNullOrEmpty]
+        [ValidateNotNullOrEmpty()]
         [String]
         #Path to the CSV file
         $Path,
         [Parameter(Mandatory = $true)]
-        [ValidateNotNullOrEmpty]
+        [ValidateNotNullOrEmpty()]
         [Int]
         #Column index containing the Use Principal Name
         $UpnColumn,
         [Parameter(ParameterSetName='Filter',
             Mandatory = $false)]
-        [ValidateNotNullOrEmpty]
+        [ValidateNotNullOrEmpty()]
         [Int]
         #Column index of the column to filter on
         $FilterColumn,
         [Parameter(ParameterSetName='Filter',
             Mandatory = $true)]
-        [ValidateNotNullOrEmpty]
+        [ValidateNotNullOrEmpty()]
         [String]
         #Filter string to apply to filter column for comparison
         $FilterColumnValue

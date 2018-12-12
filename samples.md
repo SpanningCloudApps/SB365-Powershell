@@ -100,24 +100,91 @@ Get-SpanningUsers
 
 ## Get Tenant Information
 
+You can use PowerShell to determine the status of your Spanning tenant and current payment status. The **Get-SpanningTenantInfo** function returns the number of licenses, users, assignments, and payment status. The **Get-SpanningTenantPaymentInfo** retuirns only the payment status.
 
-
+```powershell
 Get-SpanningTenantInfo
-Get-SpanningTenantPaymentInfo
+
+licenses users assigned status
+-------- ----- -------- ------
+100      106   9        trial
+```
+
+```powershell
+Get-SpanningTenantInfoPaymentStatus
+
+trial
+```
 
 ## Enabling Users
 
-Enable-SpanningUser
-Enable-SpanningUserFromCSVAdvanced
+Users are enabled or licensed for Spanning Backup for Office 365 using the **Enable-SpanningUser** function. This function takes a UserPrincipalName and applies a Spanning license to the user. Once enabled, the user will be included in the next scheduled backup. The **Enable-SpanningUser** function accepts input from the pipeline and can be included in more complex user and group queries if necessary. See the Advanced Use Cases section later in this article.
+
+```powershell
+Enable-SpanningUser -UserPrincipalName "MeganB@doghousetoys.com"
+```
+
+If you have a comma separated value file and want to use it for bulk licensing you can use the **Enable-SpanningUserFromCSVAdvanced** function. If your CSV file is formatted as follows:
+
+```plaintext
+Name,UPN,Department,Geography
+Willa,willa@doghousetoys.com,Finance,US
+Kobe,kobe@doghousetoys.com,Sales,EU
+Jazzy,jazzy@doghousetoys.com,Finance,EU
+Cheyenne,cheyenne@doghousetoys.com,Finance,US
+```
+
+You have two options depending on how you wish to license your users. You can apply licenses to all users by referencing the path to the file and the UPN Column of 1 (CSV uses a zero based index for columns) and by omitting the user filter:
+
+```powershell
+Enable-SpanningUserFromCSVAdvanced -Path "C:\Test\Users.csv" -UpnColumn 1
+```
+
+The result should be displayed as follows:
+
+```plaintext
+userPrincipalName          licensed
+-------------------------  --------
+willa@doghousetoys.com     True
+kobe@doghousetoys.com      True
+jazzy@doghousetoys.com     True
+cheyenne@doghousetoys.com  True
+```
+
+Another option is to use a filter to include only those users matching your filter criteria. For example if you only want to limit your licensing to the US Geography you could use the following filter:
+
+```powershell
+Enable-SpanningUserFromCSVAdvanced  -Path "C:\Test\Users.csv" -UpnColumn 1 -FilterColumn 3 -FilterColumnValue "US"
+```
+
+The result will be displayed as follows:
+
+```plaintext
+userPrincipalName          licensed
+-------------------------  --------
+willa@doghousetoys.com     True
+cheyenne@doghousetoys.com  True
+```
+
 
 ## Disabling Users
 
 Disable-SpanningUser
+```powershell
+
+```
+
 Disable-SpanningUserFromCSVAdvanced
+```powershell
+
+```
+
 
 ```powershell
 
 ```
+
+## Enable all Unassigned Users
 
 ## License an Azure AD Group
 
