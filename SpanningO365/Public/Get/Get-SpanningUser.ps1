@@ -36,17 +36,15 @@
         ]
         #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
         $AuthInfo,
-
         [Parameter(
             Position=1,
             Mandatory=$true,
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true,
             ParameterSetName = "Get Single User")]
-        [ValidateNotNullOrEmpty]
-        [String]
+        [ValidateNotNullOrEmpty()]
         #User Principal Name (email address) of the user to return.
-        $UserPrincipalName,
+        [string]$UserPrincipalName,
         [Parameter(
             Position=2,
             Mandatory=$false,
@@ -55,9 +53,8 @@
             ParameterSetName = "Get Multiple Users")
         ]
         [ValidateSet('All','Admins','NonAdmins','Assigned','Unassigned')]
-        [String]
         #User type to return
-        $UserType
+        [string]$UserType
     )
     Write-Verbose "Get-SpanningUser"
 
