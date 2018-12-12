@@ -21,7 +21,7 @@
     .LINK
         GitHub Repository: https://github.com/spanningcloudapps
     #>
-    [CmdletBinding(SupportsShouldProcess=$true)]
+    [CmdletBinding(SupportsShouldProcess=$true,ConfirmImpact = 'High')]
     param(
         [Parameter(
             Position=0,
@@ -38,7 +38,7 @@
             Mandatory=$true,
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)]
-        [ValidateNotNullOrEmpty]
+        [ValidateNotNullOrEmpty()]
         [String]
         #User Principal Name (email address) of the user to disable.
         $UserPrincipalName

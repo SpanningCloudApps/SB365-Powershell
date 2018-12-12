@@ -104,7 +104,11 @@ You can use PowerShell to determine the status of your Spanning tenant and curre
 
 ```powershell
 Get-SpanningTenantInfo
+```
 
+Will return a status like this:
+
+```plaintext
 licenses users assigned status
 -------- ----- -------- ------
 100      106   9        trial
@@ -112,7 +116,11 @@ licenses users assigned status
 
 ```powershell
 Get-SpanningTenantInfoPaymentStatus
+```
 
+Will only return the payment status:
+
+```plaintext
 trial
 ```
 
@@ -154,7 +162,8 @@ cheyenne@doghousetoys.com  True
 Another option is to use a filter to include only those users matching your filter criteria. For example if you only want to limit your licensing to the US Geography you could use the following filter:
 
 ```powershell
-Enable-SpanningUserFromCSVAdvanced  -Path "C:\Test\Users.csv" -UpnColumn 1 -FilterColumn 3 -FilterColumnValue "US"
+Enable-SpanningUserFromCSVAdvanced  -Path "C:\Test\Users.csv" -UpnColumn 1 `
+    -FilterColumn 3 -FilterColumnValue "US"
 ```
 
 The result will be displayed as follows:
@@ -166,22 +175,53 @@ willa@doghousetoys.com     True
 cheyenne@doghousetoys.com  True
 ```
 
-
 ## Disabling Users
 
-Disable-SpanningUser
-```powershell
+If you need to revoke a Spanning Backup for Office 365 license you can use the **Disable-SpanningUser** function. This function requires a UPN for the target user. You will be prompted to confirm the removal of the license as this will also delete the associated backups for the user.
 
+```powershell
+Disable-SpanningUser -UserPrincipalName "cheyenne@doghousetoys.com"
 ```
 
-Disable-SpanningUserFromCSVAdvanced
-```powershell
+The result will confirm the license removal.
 
+```plaintext
+userPrincipalName          licensed
+-----------------          --------
+cheyenne@doghousetoys.com  False
 ```
 
+In the event you wish to remove licenses in bulk you can use the **Disable-SpanningUserFromCSVAdvanced** function or the alternatives in the Advanced Use Cases section later in this article. Like it's counterpart **Enable-SpanningUserFromCSVAdvanced** you can either disable all users listed in the CSV file or provide a filter column and filter value.
 
 ```powershell
+Disable-SpanningUserFromCSVAdvanced  -Path "C:\Test\Users.csv" -UpnColumn 1
+```
 
+The result should be:
+
+```plaintext
+userPrincipalName          licensed
+-------------------------  --------
+willa@doghousetoys.com     False
+kobe@doghousetoys.com      False
+jazzy@doghousetoys.com     False
+cheyenne@doghousetoys.com  False
+```
+
+You can also use a filter on your CSV file if you only wish to remove licenses from a subset of users in the file. The process is the same as the **Enable-SpanningUserFromCSVAdvanced** function.
+
+```powershell
+Disable-SpanningUserFromCSVAdvanced  -Path "C:\Test\Users.csv" -UpnColumn 1 `
+    -FilterColumn 3 -FilterColumnValue "US"
+```
+
+The result should be:
+
+```plaintext
+userPrincipalName          licensed
+-------------------------  --------
+willa@doghousetoys.com     False
+cheyenne@doghousetoys.com  False
 ```
 
 ## Enable all Unassigned Users

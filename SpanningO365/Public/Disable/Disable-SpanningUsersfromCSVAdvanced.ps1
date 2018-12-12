@@ -35,6 +35,7 @@
         GitHub Repository: https://github.com/spanningcloudapps
     #>
     [CmdletBinding(SupportsShouldProcess=$true,
+        ConfirmImpact = 'High',
         DefaultParametersetName='None')]
     param(
         [Parameter(
@@ -133,11 +134,6 @@
          }
     }
 
-    if ($pscmdlet.ShouldProcess("Count of users to disable $($disableCount)")){
-        $updated_users = Get-SpanningAssignedUsers
-        Write-Verbose "$($updated_users.count) Users are now enabled for Spanning"
-    }
-
-
+    $updated_users = Get-SpanningAssignedUsers
+    Write-Verbose "$($updated_users.count) Users are now enabled for Spanning"
 }
-
