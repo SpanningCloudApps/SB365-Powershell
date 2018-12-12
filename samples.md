@@ -259,7 +259,27 @@ Select userPrincipalName, msId, assigned, isAdmin, isDeleted | `
 Export-Csv -Path .\sample.csv -NoTypeInformation
 ```
 
-### Disable Spanning Users
+### Confirm Your Script with -WhatIf
 
-Show -WhatIf switch
+In the event you wish to enable or disable users in bulk you can use the **-WhatIf** switch to test the results of your command without actually applying the command to your tenant. For example if you are using the CSV file above and want to test you script you could use the functions like this:
 
+```powershell
+$users2activate = Get-Content -Path "C:\Test\Users.csv"
+
+foreach ($user in $users2activate){
+    Enable-SpanningUser -UserPrincipalName $user.UPN -WhatIf
+}
+```
+
+PowerShell will not actually enable the license. It will return What if: statements.
+
+```plaintext
+What if: Performing the operation "Enable-SpanningUser" on target "willa@doghousetoys.com".
+What if: Performing the operation "Enable-SpanningUser" on target "kobe@doghousetoys.com
+What if: Performing the operation "Enable-SpanningUser" on target "jazzy@doghousetoys.com".
+What if: Performing the operation "Enable-SpanningUser" on target "cheyenne@doghousetoys.com".
+```
+
+## Thank You!
+
+Thank you for reading this far. If you have problems or successes please let me know. I'd love to hear how you are using the module!
