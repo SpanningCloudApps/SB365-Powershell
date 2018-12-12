@@ -18,7 +18,7 @@ Now that you have the API Token you only need to know your region and the email 
 For these examples we will use the following information:
 - API Token: 2a4d91f3-dc91-46c5-bfa9-a6f0adefed33
 - Region: US
-- Admin Email: MeganB@doghousetoys.com
+- Admin Email: ruby@doghousetoys.com
 ```
 
 ## Authenticate with Get-SpanningAuthentication
@@ -29,21 +29,21 @@ The **Get-SpanningAuthentication** function creates the necessary authentication
 
 ```powershell
 Get-SpanningAuthentication -ApiToken "2a4d91f3-dc91-46c5-bfa9-a6f0adefed33" `
-    -Region "US" -AdminEmail "MeganB@doghousetoys.com"
+    -Region "US" -AdminEmail "ruby@doghousetoys.com"
 ```
 
 This does two things, it returns an **AuthInfo** object and stores the **AuthInfo** in a session variable. The benefit of the object is that you can use the PowerShell pipeline to send the AuthInfo to another Spanning function. For example to get a list of Administrators in one line you could execute:
 
 ```powershell
 Get-SpanningAuthentication -ApiToken "2a4d91f3-dc91-46c5-bfa9-a6f0adefed33" `
-    -Region "US" -AdminEmail "MeganB@doghousetoys.com" | Get-SpanningAdmins
+    -Region "US" -AdminEmail "ruby@doghousetoys.com" | Get-SpanningAdmins
 ```
 
 Alternatively, you could store the **AuthInfo** in a variable and reuse it:
 
 ```powershell
 $myAuthinfo = Get-SpanningAuthentication -ApiToken "2a4d91f3-dc91-46c5-bfa9-a6f0adefed33" `
-    -Region "US" -AdminEmail "MeganB@doghousetoys.com"
+    -Region "US" -AdminEmail "ruby@doghousetoys.com"
 
 Get-SpanningAdmins -AuthInfo $myAuthinfo
 ```
@@ -64,10 +64,10 @@ You can list the different users from the Spanning Portal with the **Get-Spannin
 - Assigned: Users assigned a Spanning Backup for Office 365 license
 - Unassigned: Users who are not assigned a Spanning Backup for Office 365 license
 
-To retrieve the status of a single user "MeganB@doghousetoys.com":
+To retrieve the status of a single user "ruby@doghousetoys.com":
 
 ```powershell
-Get-SpanningUser -UserPrincipalName "MeganB@doghousetoys.com"
+Get-SpanningUser -UserPrincipalName "ruby@doghousetoys.com"
 ```
 
 To determine the currently assigned Administrators:
@@ -129,7 +129,7 @@ trial
 Users are enabled or licensed for Spanning Backup for Office 365 using the **Enable-SpanningUser** function. This function takes a UserPrincipalName and applies a Spanning license to the user. Once enabled, the user will be included in the next scheduled backup. The **Enable-SpanningUser** function accepts input from the pipeline and can be included in more complex user and group queries if necessary. See the [Advanced Use Cases](#advanced) section later in this article.
 
 ```powershell
-Enable-SpanningUser -UserPrincipalName "MeganB@doghousetoys.com"
+Enable-SpanningUser -UserPrincipalName "ruby@doghousetoys.com"
 ```
 
 If you have a comma separated value file and want to use it for bulk licensing you can use the **Enable-SpanningUserFromCSVAdvanced** function. If your CSV file is formatted as follows:
@@ -180,7 +180,7 @@ cheyenne@doghousetoys.com  True
 If you need to revoke a Spanning Backup for Office 365 license you can use the **Disable-SpanningUser** function. This function requires a UPN for the target user. You will be prompted to confirm the removal of the license as this will also delete the associated backups for the user.
 
 ```powershell
-Disable-SpanningUser -UserPrincipalName "cheyenne@doghousetoys.com"
+Disable-SpanningUser -UserPrincipalName "kobe@doghousetoys.com"
 ```
 
 The result will confirm the license removal.
@@ -188,7 +188,7 @@ The result will confirm the license removal.
 ```plaintext
 userPrincipalName          licensed
 -----------------          --------
-cheyenne@doghousetoys.com  False
+kobe@doghousetoys.com      False
 ```
 
 In the event you wish to remove licenses in bulk you can use the **Disable-SpanningUserFromCSVAdvanced** function or the alternatives in the [Advanced Use Cases](#advanced) section later in this article. Like it's counterpart **Enable-SpanningUserFromCSVAdvanced** you can either disable all users listed in the CSV file or provide a filter column and filter value.
@@ -235,13 +235,20 @@ The PowerShell module for Spanning Backup for Office 365 supports the pipeline f
 Get an Azure Group and Enable a Spanning User for each group member
 
 ```powershell
-#Uses AzureAd Module
-Connect-AzureAd
+$cred = Get-Credential -Message "Azure AD Admin" -UserName "ruby@doghousetoys.com"
 
-Get-AzureADGroup -SearchString "Sales Team" | Get-AzureADGroupMember | foreach {Enable-SpanningUser $_.UserPrincipalName }
+#Uses AzureAd Module
+Connect-AzureAd -Credential $cred
+
+Get-AzureADGroup -SearchString "Sales Team" | Get-AzureADGroupMember | foreach {Enable-SpanningUser -UserPrincipalName $_.UserPrincipalName }
 ```
 
 ### License Users with an Office 365 License
+
+```powershell
+#This sample is incomplete
+Get-AzureADUser | Where {$_.AssignedLicenses.Count -ne 0 }
+```
 
 ### Disable Spanning Users
 
