@@ -251,6 +251,14 @@ Get-AzureADGroup -SearchString "Sales Team" | Get-AzureADGroupMember | `
 Get-AzureADUser | Where {$_.AssignedLicenses.Count -ne 0 }
 ```
 
+### Export Unlicensed Users to CSV
+
+```powershell
+Get-SpanningUnassignedUsers | `
+Select userPrincipalName, msId, assigned, isAdmin, isDeleted | `
+Export-Csv -Path .\sample.csv -NoTypeInformation
+```
+
 ### Disable Spanning Users
 
 Show -WhatIf switch
