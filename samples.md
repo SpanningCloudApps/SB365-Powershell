@@ -64,7 +64,7 @@ You can list the different users from the Spanning Portal with the **Get-Spannin
 - Assigned: Users assigned a Spanning Backup for Office 365 license
 - Unassigned: Users who are not assigned a Spanning Backup for Office 365 license
 
-To retrieve the status of a simgle user "MeganB@doghousetoys.com":
+To retrieve the status of a single user "MeganB@doghousetoys.com":
 
 ```powershell
 Get-SpanningUser -UserPrincipalName "MeganB@doghousetoys.com"
@@ -226,9 +226,11 @@ cheyenne@doghousetoys.com  False
 
 ## <a name="advanced"></a>Advanced Use Cases
 
-## Enable all Unassigned Users
+The PowerShell module for Spanning Backup for Office 365 supports the pipeline for many common tasks. This sections details a few key scenarios that you can apply to your organizations managements of Spanning Backup for Office 365 licensing.
 
-## License an Azure AD Group
+### Enable all Unassigned Users
+
+### License an Azure AD Group
 
 Get an Azure Group and Enable a Spanning User for each group member
 
@@ -239,9 +241,9 @@ Connect-AzureAd
 Get-AzureADGroup -SearchString "Sales Team" | Get-AzureADGroupMember | foreach {Enable-SpanningUser $_.UserPrincipalName }
 ```
 
-## License Users with an Office 365 License
+### License Users with an Office 365 License
 
-## Disable Spanning Users
+### Disable Spanning Users
 
 Show -WhatIf switch
 
