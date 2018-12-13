@@ -18,7 +18,7 @@ Use the `Get-SpanningAuthentication` cmdlet to pass your authentication paramete
   - Copy and save the token string.
 - Identify your region
   - Your region will be `US, EU or AP`.
-  - If you are unsure which regional deployment your Spanning Backup is in, you can locate it within the URL of the administrative interface.  e.g. [https://o365-**us**.spanningbackup.com/](https://o365-us.spanningbackup.com/)
+  - If you are unsure which regional deployment your Spanning Backup is in, you can locate it within the URL of the administrative interface.  e.g. https<span></span>://o365-**us**.spanningbackup.com/
 
 ## Install the PowerShell Module
 
