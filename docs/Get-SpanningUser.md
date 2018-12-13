@@ -30,7 +30,7 @@ If Authentication information is not supplied, or if you have not previously cal
 
 ### EXAMPLE 1
 ```
-Get-SpanningUser -UserPrincipalName
+Get-SpanningUser -UserPrincipalName ruby@doghousetoys.com
 ```
 
 Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
@@ -46,9 +46,7 @@ Without any parameters you will be prompted for ApiToken, Region, and AdminEmail
 ## PARAMETERS
 
 ### -AuthInfo
-The AuthInfo result from Get-SpanningAuthentication.
-If not provided the Script varable will be checked.
-If null you will be prompted.
+This parameter takes an AuthInfo object from Get-SpanningAuthentication.
 
 ```yaml
 Type: Object
@@ -63,7 +61,7 @@ Accept wildcard characters: False
 ```
 
 ### -UserPrincipalName
-User Principal Name (email address) of the user to return.
+This parameter is the UPN of the user to disable.
 
 ```yaml
 Type: String
@@ -78,7 +76,7 @@ Accept wildcard characters: False
 ```
 
 ### -UserType
-User type to return
+This parameter filters to specific user types from the set All, Admins, NonAdmins, Assigned, Unassigned.
 
 ```yaml
 Type: String
@@ -93,7 +91,8 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable.
+For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 

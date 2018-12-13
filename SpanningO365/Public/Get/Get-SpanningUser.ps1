@@ -12,7 +12,7 @@
     .PARAMETER UserType
         This parameter filters to specific user types from the set All, Admins, NonAdmins, Assigned, Unassigned.
     .EXAMPLE
-        Get-SpanningUser -UserPrincipalName
+        Get-SpanningUser -UserPrincipalName ruby@doghousetoys.com
         Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
     .EXAMPLE
         Get-SpanningUser -UserType Admins
