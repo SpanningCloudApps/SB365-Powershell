@@ -14,8 +14,7 @@ Returns the user information information from the Spanning Backup Portal
 
 ### Get Single User
 ```
-Get-SpanningUser [[-AuthInfo] <Object>] [-UserPrincipalName] <ValidateNotNullOrEmptyAttribute>
- [<CommonParameters>]
+Get-SpanningUser [[-AuthInfo] <Object>] [-UserPrincipalName] <String> [<CommonParameters>]
 ```
 
 ### Get Multiple Users
@@ -67,7 +66,7 @@ Accept wildcard characters: False
 User Principal Name (email address) of the user to return.
 
 ```yaml
-Type: ValidateNotNullOrEmptyAttribute
+Type: String
 Parameter Sets: Get Single User
 Aliases:
 
@@ -94,8 +93,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable.
-For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 

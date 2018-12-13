@@ -5,7 +5,7 @@ online version:
 schema: 2.0.0
 ---
 
-# Disable-SpanningUsersfromCSVAdvanced
+# Disable-SpanningUsersFromCSVAdvanced
 
 ## SYNOPSIS
 Disable licenses for Spanning users from a comma seperated value file.
@@ -14,15 +14,14 @@ Disable licenses for Spanning users from a comma seperated value file.
 
 ### None (Default)
 ```
-Disable-SpanningUsersfromCSVAdvanced [[-AuthInfo] <Object>] -Path <ValidateNotNullOrEmptyAttribute>
- -UpnColumn <ValidateNotNullOrEmptyAttribute> [-WhatIf] [-Confirm] [<CommonParameters>]
+Disable-SpanningUsersFromCSVAdvanced [[-AuthInfo] <Object>] -Path <String> -UpnColumn <Int32> [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ### Filter
 ```
-Disable-SpanningUsersfromCSVAdvanced [[-AuthInfo] <Object>] -Path <ValidateNotNullOrEmptyAttribute>
- -UpnColumn <ValidateNotNullOrEmptyAttribute> [-FilterColumn <ValidateNotNullOrEmptyAttribute>]
- -FilterColumnValue <ValidateNotNullOrEmptyAttribute> [-WhatIf] [-Confirm] [<CommonParameters>]
+Disable-SpanningUsersFromCSVAdvanced [[-AuthInfo] <Object>] -Path <String> -UpnColumn <Int32>
+ [-FilterColumn <Int32>] -FilterColumnValue <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -76,7 +75,7 @@ Accept wildcard characters: False
 Path to the CSV file
 
 ```yaml
-Type: ValidateNotNullOrEmptyAttribute
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -91,7 +90,7 @@ Accept wildcard characters: False
 Column index containing the Use Principal Name
 
 ```yaml
-Type: ValidateNotNullOrEmptyAttribute
+Type: Int32
 Parameter Sets: (All)
 Aliases:
 
@@ -106,7 +105,7 @@ Accept wildcard characters: False
 Column index of the column to filter on
 
 ```yaml
-Type: ValidateNotNullOrEmptyAttribute
+Type: Int32
 Parameter Sets: Filter
 Aliases:
 
@@ -121,7 +120,7 @@ Accept wildcard characters: False
 Filter string to apply to filter column for comparison
 
 ```yaml
-Type: ValidateNotNullOrEmptyAttribute
+Type: String
 Parameter Sets: Filter
 Aliases:
 
@@ -164,8 +163,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable.
-For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
