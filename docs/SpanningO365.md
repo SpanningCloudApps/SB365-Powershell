@@ -1,14 +1,12 @@
 ---
 Module Name: SpanningO365
-Module Guid: {{ Update Module Guid }}
-Download Help Link: {{ Update Download Link }}
-Help Version: {{ Update Help Version }}
-Locale: {{ Update Locale }}
+Module Guid: 2029a86b-b4ef-4306-83f0-aac212dbee83
+Locale: en-US
 ---
 
 # SpanningO365 Module
 ## Description
-{{Manually Enter Description Here}}
+The **Spanningo365** module enables administrators to use the Spanning Backup for Office 365 API in PowerShell scripts and automation projects. Once Authenticated an Administrator can use the functions in the module to evaluate licensed and unlicensed users, enable and disable licenses, and determin the status of the Spanning tenant.
 
 ## SpanningO365 Cmdlets
 ### [Clear-SpanningAuthentication](Clear-SpanningAuthentication.md)

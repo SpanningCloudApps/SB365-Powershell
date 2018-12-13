@@ -1,30 +1,7 @@
-﻿# ReadMe.md
-## about_ReadMe.md
-
-```
-ABOUT TOPIC NOTE:
-The first header of the about topic should be the topic name.
-The second header contains the lookup name used by the help system.
-
-IE:
-# Some Help Topic Name
-## SomeHelpTopicFileName
-
-This will be transformed into the text file
-as `about_SomeHelpTopicFileName`.
-Do not include file extensions.
-The second header should have no spaces.
-```
+﻿# About SpanningO365 PowerShell Module
 
 # SHORT DESCRIPTION
-{{ Short Description Placeholder }}
-
-```
-ABOUT TOPIC NOTE:
-About topics can be no longer than 80 characters wide when rendered to text.
-Any topics greater than 80 characters will be automatically wrapped.
-The generated about topic will be encoded UTF-8.
-```
+The **Spanningo365** module enables administrators to use the Spanning Backup for Office 365 API in PowerShell scripts and automation projects. Once Authenticated an Administrator can use the functions in the module to evaluate licensed and unlicensed users, enable and disable licenses, and determin the status of the Spanning tenant.
 
 # LONG DESCRIPTION
 {{ Long Description Placeholder }}
@@ -33,7 +10,7 @@ The generated about topic will be encoded UTF-8.
 {{ Optional Subtopic Placeholder }}
 
 # EXAMPLES
-{{ Code or descriptive examples of how to leverage the functions described. }}
+Example of use can be found in the [Usage Samples](..\samples.md).
 
 # NOTE
 {{ Note Placeholder - Additional information that a user needs to know.}}
