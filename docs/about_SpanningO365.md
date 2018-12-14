@@ -10,7 +10,7 @@ The **Spanningo365** module enables administrators to use the Spanning Backup fo
 {{ Optional Subtopic Placeholder }}
 
 # EXAMPLES
-Example of use can be found in the [Usage Samples](..\samples.md).
+Example of use can be found in the [Usage Samples](../samples.md).
 
 # NOTE
 {{ Note Placeholder - Additional information that a user needs to know.}}
