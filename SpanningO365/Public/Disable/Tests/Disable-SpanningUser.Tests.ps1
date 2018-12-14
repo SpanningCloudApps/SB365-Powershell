@@ -39,8 +39,8 @@
         It 'UserPrincipalName Parameter is Identified as Mandatory being True' {
             [String]$Function.Parameters.UserPrincipalName.Attributes.Mandatory | Should be 'True'
             }
-        It 'UserPrincipalName Parameter is of ValidateNotNullOrEmptyAttribute Type' {
-            $Function.Parameters.UserPrincipalName.ParameterType.FullName | Should be 'System.Management.Automation.ValidateNotNullOrEmptyAttribute'
+        It 'UserPrincipalName Parameter is of String Type' {
+            $Function.Parameters.UserPrincipalName.ParameterType.FullName | Should be 'System.String'
             }
         It 'UserPrincipalName Parameter is member of ParameterSets' {
             [String]$Function.Parameters.UserPrincipalName.ParameterSets.Keys | Should Be '__AllParameterSets'
@@ -55,7 +55,7 @@
             [String]$Function.Parameters.UserPrincipalName.Attributes.ValueFromPipelineByPropertyName | Should be 'True'
             }
         It 'Does UserPrincipalName Parameter use advanced parameter Validation? ' {
-            $Function.Parameters.UserPrincipalName.Attributes.TypeID.Name -contains 'ValidateNotNullOrEmptyAttribute' | Should Be 'False'
+            $Function.Parameters.UserPrincipalName.Attributes.TypeID.Name -contains 'ValidateNotNullOrEmptyAttribute' | Should Be 'True'
             $Function.Parameters.UserPrincipalName.Attributes.TypeID.Name -contains 'ValidateNotNullAttribute' | Should Be 'False'
             $Function.Parameters.UserPrincipalName.Attributes.TypeID.Name -contains 'ValidateScript' | Should Be 'False'
             $Function.Parameters.UserPrincipalName.Attributes.TypeID.Name -contains 'ValidateRangeAttribute' | Should Be 'False'
