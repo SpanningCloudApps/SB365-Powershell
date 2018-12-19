@@ -1,0 +1,9 @@
+# Mac Files
+.DS_Store
+
+# Misc. Test Files
+test*.ps1
+test*.csv
+test*.txt
+test.ignore
+
