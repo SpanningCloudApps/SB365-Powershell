@@ -40,6 +40,4 @@ You can view the detailed documentation in the [Documentation](./docs/about_Span
 
 ## Introductory Video
 
-<script src="//fast.wistia.com/embed/medias/7j46uee1ko.jsonp" async></script>
-<script src="//fast.wistia.com/assets/external/E-v1.js" async></script>
-<span class="wistia_embed wistia_async_7j46uee1ko popover=true popoverAnimateThumbnail=true" style="display:inline-block;height:169px;width:300px">&nbsp;</span>
+<iframe allowtransparency="true" title="Wistia video player" allowFullscreen frameborder="0" scrolling="no" class="wistia_embed" name="wistia_embed" src="https://fast.wistia.net/embed/iframe/7j46uee1ko" width="400" height="225"></iframe>
