@@ -40,4 +40,4 @@ You can view the detailed documentation in the [Documentation](./docs/about_Span
 
 ## Introductory Video
 
-<iframe allowtransparency="true" title="Wistia video player" allowFullscreen frameborder="0" scrolling="no" class="wistia_embed" name="wistia_embed" src="https://fast.wistia.net/embed/iframe/7j46uee1ko" width="400" height="225"></iframe>
+[![Watch the introduction video.](./docs/images/video-placeholder.jpg)](https://spanning.wistia.com/medias/7j46uee1ko)
