@@ -37,3 +37,7 @@ Use the `Get-SpanningAuthentication` cmdlet to pass your authentication paramete
 ## Documentation
 
 You can view the detailed documentation in the [Documentation](./docs/about_SpanningO365.md). A great place to start by reviewing the [Usage Samples](samples.md). If you have any questions or comments please raise an issue and we'll follow up.
+
+## Introductory Video
+
+[![Watch the introduction video.](./docs/images/video-placeholder.jpg)](https://spanning.wistia.com/medias/7j46uee1ko)
