@@ -79,7 +79,8 @@
             $results = Invoke-WebRequest -uri $results.nextLink -Headers $headers -Method GET | ConvertFrom-JSON
             $values += $results.users
         } until ($results.nextlink.Length -eq 0)
-        $values.count
+
+        #$values.count
         $values3 = $values2 + $values
         $temp_users = $values3
     }
@@ -99,7 +100,7 @@
         NonAdmins
         {
             Write-Verbose 'UserType = NonAdmins'
-            $temp_users | Where-Object {$_.isAdmin -ne "true"}
+            Write-Output $temp_users | Where-Object {$_.isAdmin -ne "true"}
         }
         Assigned
         {

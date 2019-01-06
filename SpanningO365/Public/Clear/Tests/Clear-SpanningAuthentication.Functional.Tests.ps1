@@ -16,7 +16,7 @@ InModuleScope SpanningO365{
 
       It "Clear-SpanningAuthentication removes variables" {
         Clear-SpanningAuthentication
-        $Script:ApiToken | Should -Be $null
+        $Script:AuthInfo | Should -Be $null
       }
 
     }
