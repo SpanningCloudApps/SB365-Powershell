@@ -1,12 +1,11 @@
 Describe 'Get-SpanningUser Functional Tests' {
   Mock -CommandName Invoke-WebRequest -Verifiable -MockWith {
-    #nextlink
-    #users
+    #This mock creates a data set of two users for the first request. It returns a nextLink to validate the loop.
     $restResult = @{
       nextLink="https://o365-api-us.spanningbackup.com/users?msIdOffset=42317567-8833-4b6b-863f-07bb5d58e484&sortPropOffset=HumaydZ%40M365x186877.onmicrosoft.com&size=50"
       users=@()
     }
-    #$restResult = @()
+    #User Result
     $restResult.users += [PSCustomObject]@{
         userPrincipalName = "admin@M365x186877.onmicrosoft.com"
         msId              = "2206806c-7a66-4a1b-b3b1-7fa00909e9b1"
@@ -27,6 +26,7 @@ Describe 'Get-SpanningUser Functional Tests' {
     $uri -like "https://o365-api-??.spanningbackup.com/users"
   } -ModuleName SpanningO365
 
+  #This mock creates two additional users for the second request and returns a blank next link to stop the loop
   Mock -CommandName Invoke-WebRequest -Verifiable -MockWith {
     $restResult = @{
       nextLink=""
@@ -43,7 +43,7 @@ Describe 'Get-SpanningUser Functional Tests' {
     $restResult.users += [PSCustomObject]@{
         userPrincipalName = "willa@M365x186877.OnMicrosoft.com"
         msId              = "77a78e20-1933-4aa6-ba63-50d48470242b"
-        assigned          = "False"
+        assigned          = "True"
         isAdmin           = "False"
         isDeleted         = "False"
       }
@@ -76,5 +76,18 @@ Describe 'Get-SpanningUser Functional Tests' {
       $users -is [array] | Should Be $true
     }
 
+    It "Get-SpanningUser -UserType Assigned has 2 Users" {
+      $users = Get-SpanningUser -AuthInfo $auth -UserType Assigned
+      $users.Count | Should -Be 2
+      # Assert
+      Assert-VerifiableMock
+    }
+
+    It "Get-SpanningUser -UserType All has 4 Users" {
+      $users = Get-SpanningUser -AuthInfo $auth -UserType All
+      $users.Count | Should -Be 4
+      # Assert
+      Assert-VerifiableMock
+    }
   }
 }
