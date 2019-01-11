@@ -57,7 +57,8 @@
     if ($pscmdlet.ShouldProcess("$UserPrincipalName", "Disable-SpanningUser")){
         #Actually do the work
         Write-Verbose "Disable license for $($UserPrincipalName)"
-        $results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/user/$UserPrincipalName/unassign" -Headers $headers -Method POST | ConvertFrom-Json
+        #$results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/user/$UserPrincipalName/unassign" -Headers $headers -Method POST | ConvertFrom-Json
+        $results = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User -UserPrincipalName $UserPrincipalName -RequestAction Unassign
         Write-Output $results
     }
 

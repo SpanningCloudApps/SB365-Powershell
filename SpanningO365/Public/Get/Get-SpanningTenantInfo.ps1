@@ -46,12 +46,16 @@
     }
 
     #$headers = usernfo[0]
-    $headers = $AuthInfo.Headers
+    #$headers = $AuthInfo.Headers
     #$region = usernfo[1]
-    $region = $AuthInfo.Region
-    $request = "https://o365-api-$region.spanningbackup.com/tenant"
+    #$region = $AuthInfo.Region
+    #$request = "https://o365-api-$region.spanningbackup.com/tenant"
     # $request
-    $results = Invoke-WebRequest -uri $request -Headers $headers | ConvertFrom-Json
+    #$results = Invoke-WebRequest -uri $request -Headers $headers | ConvertFrom-Json
+    #Write-Output $results
+
+    $results = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType Tenant
+
     Write-Output $results
 
 }

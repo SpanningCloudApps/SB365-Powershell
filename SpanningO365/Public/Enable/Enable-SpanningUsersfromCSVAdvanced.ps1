@@ -110,6 +110,7 @@
         #once validated, we can actually execute the enable command
         $enableCount++
         if ($pscmdlet.ShouldProcess("$UserPrincipalName", "Enable-SpanningUser")){
+            #ToDo Use Enable-SpanningUser
             $uri = "https://o365-api-$region.spanningbackup.com/user/$userPrincipalName/assign"
             #$uri
             $results = Invoke-WebRequest -uri $uri -Headers $headers -Method POST | ConvertFrom-Json
