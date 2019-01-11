@@ -46,7 +46,7 @@
             Mandatory=$false,
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)]
-        [ValidateSet('Assign','Unassign')]
+        [ValidateSet('List','Assign','Unassign')]
         [String]
         #Action to take on UPN
         $RequestAction
@@ -67,17 +67,28 @@
 
     switch ( $RequestType )
     {
-      Tenant
-      {
-        Write-Verbose "Invoke-SpanningRequest Tenant"
-        $request = "https://o365-api-$region.spanningbackup.com/tenant"
-      }
       User
       {
-        if ($UserPrincipalName -eq $null)
+        if ([string]::IsNullOrEmpty($UserPrincipalName))
         {
           Write-Verbose "Invoke-SpanningRequest UPN null"
           $request = "https://o365-api-$region.spanningbackup.com/users"
+           #TODO : Clean this up
+          $values2 = @()
+          $values = @()
+          $response = Invoke-WebRequest -uri $request -Headers $headers -Method GET -UseBasicParsing | ConvertFrom-Json
+          $values2 += $response.users
+          do {
+              $response = Invoke-WebRequest -uri $response.nextLink -Headers $headers -Method GET -UseBasicParsing | ConvertFrom-JSON
+              $values += $response.users
+          } until ($response.nextlink.Length -eq 0)
+
+          #$values.count
+          $values3 = $values2 + $values
+          $results = $values3
+
+          Write-Verbose "Invoke-SpanningRequest User Loop"
+
         } else {
           switch ($RequestAction) {
             Assign {
@@ -95,12 +106,18 @@
               $request = "https://o365-api-$region.spanningbackup.com/user/$UserPrincipalName"
             }
           }
+          Write-Verbose "Invoke-SpanningRequest: $($request)"
+          $results = Invoke-WebRequest -uri $request -Headers $headers -Method $method -UseBasicParsing | ConvertFrom-Json
         }
       }
+      Tenant
+      {
+        Write-Verbose "Invoke-SpanningRequest Tenant"
+        $request = "https://o365-api-$region.spanningbackup.com/tenant"
+        Write-Verbose "Invoke-SpanningRequest: $($request)"
+        $results = Invoke-WebRequest -uri $request -Headers $headers -Method $method -UseBasicParsing | ConvertFrom-Json
+      }
     }
-
-    Write-Verbose "Invoke-SpanningRequest: $($request)"
-    $results = Invoke-WebRequest -uri $request -Headers $headers -Method $method | ConvertFrom-Json
 
     Write-Output $results
 

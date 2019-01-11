@@ -65,25 +65,28 @@
      }
 
     #$headers = usernfo[0]
-    $headers = $AuthInfo.Headers
+    # $headers = $AuthInfo.Headers
     #$region = usernfo[1]
-    $region = $AuthInfo.Region
+    # $region = $AuthInfo.Region
 
-    #TODO : Clean this up
+    # #TODO : Clean this up
     if ($UserType){
-        $values2 = @()
-        $values = @()
-        $results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/users" -Headers $headers -Method GET | ConvertFrom-Json
-        $values2 += $results.users
-        do {
-            $results = Invoke-WebRequest -uri $results.nextLink -Headers $headers -Method GET | ConvertFrom-JSON
-            $values += $results.users
-        } until ($results.nextlink.Length -eq 0)
+        $temp_users = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User
+    #     $values2 = @()
+    #     $values = @()
+    #     $results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/users" -Headers $headers -Method GET | ConvertFrom-Json
+    #     $values2 += $results.users
+    #     do {
+    #         $results = Invoke-WebRequest -uri $results.nextLink -Headers $headers -Method GET | ConvertFrom-JSON
+    #         $values += $results.users
+    #     } until ($results.nextlink.Length -eq 0)
 
-        #$values.count
-        $values3 = $values2 + $values
-        $temp_users = $values3
+    #     #$values.count
+    #     $values3 = $values2 + $values
+    #     $temp_users = $values3
     }
+
+
 
     switch ( $UserType )
     {
