@@ -111,9 +111,10 @@
         $enableCount++
         if ($pscmdlet.ShouldProcess("$UserPrincipalName", "Enable-SpanningUser")){
             #ToDo Use Enable-SpanningUser
-            $uri = "https://o365-api-$region.spanningbackup.com/user/$userPrincipalName/assign"
+            #$uri = "https://o365-api-$region.spanningbackup.com/user/$userPrincipalName/assign"
             #$uri
-            $results = Invoke-WebRequest -uri $uri -Headers $headers -Method POST | ConvertFrom-Json
+            #$results = Invoke-WebRequest -uri $uri -Headers $headers -Method POST | ConvertFrom-Json
+            $results = Enable-SpanningUser -AuthInfo $AuthInfo -UserPrincipalName $UserPrincipalName
             Write-Verbose "Processing for user complete"
             Write-Output $results
          }
