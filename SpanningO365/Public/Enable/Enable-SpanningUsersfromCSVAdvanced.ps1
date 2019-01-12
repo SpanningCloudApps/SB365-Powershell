@@ -75,9 +75,9 @@
         $AuthInfo = Get-AuthInfo
      }
      #$headers = usernfo[0]
-     $headers = $AuthInfo.Headers
+     #$headers = $AuthInfo.Headers
      #$region = usernfo[1]
-     $region = $AuthInfo.Region
+     #$region = $AuthInfo.Region
 
     # import users list so we can validate
     $existing_list = Get-SpanningUsers

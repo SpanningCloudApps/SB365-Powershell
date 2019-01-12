@@ -50,9 +50,9 @@
        $AuthInfo = Get-AuthInfo
     }
     #$headers = usernfo[0]
-    $headers = $AuthInfo.Headers
+    #$headers = $AuthInfo.Headers
     #$region = usernfo[1]
-    $region = $AuthInfo.Region
+    #$region = $AuthInfo.Region
 
     if ($pscmdlet.ShouldProcess("$UserPrincipalName", "Disable-SpanningUser")){
         #Actually do the work
