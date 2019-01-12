@@ -33,36 +33,98 @@
         It 'Has Parameter Help Text for AuthInfo '{
             $function.Definition.Contains('.PARAMETER AuthInfo') | Should Be 'True'
             }
-        It 'Has a Parameter called UserType' {
-            $Function.Parameters.Keys.Contains('UserType') | Should Be 'True'
+        It 'Has a Parameter called RequestType' {
+            $Function.Parameters.Keys.Contains('RequestType') | Should Be 'True'
             }
-        It 'UserType Parameter is Identified as Mandatory being False' {
-            [String]$Function.Parameters.UserType.Attributes.Mandatory | Should be 'False'
+        It 'RequestType Parameter is Identified as Mandatory being True' {
+            [String]$Function.Parameters.RequestType.Attributes.Mandatory | Should be 'True'
             }
-        It 'UserType Parameter is of String Type' {
-            $Function.Parameters.UserType.ParameterType.FullName | Should be 'System.String'
+        It 'RequestType Parameter is of String Type' {
+            $Function.Parameters.RequestType.ParameterType.FullName | Should be 'System.String'
             }
-        It 'UserType Parameter is member of ParameterSets' {
-            [String]$Function.Parameters.UserType.ParameterSets.Keys | Should Be 'Get Multiple Users'
+        It 'RequestType Parameter is member of ParameterSets' {
+            [String]$Function.Parameters.RequestType.ParameterSets.Keys | Should Be '__AllParameterSets'
             }
-        It 'UserType Parameter Position is defined correctly' {
-            [String]$Function.Parameters.UserType.Attributes.Position | Should be '2'
+        It 'RequestType Parameter Position is defined correctly' {
+            [String]$Function.Parameters.RequestType.Attributes.Position | Should be '1'
             }
-        It 'Does UserType Parameter Accept Pipeline Input?' {
-            [String]$Function.Parameters.UserType.Attributes.ValueFromPipeline | Should be 'True'
+        It 'Does RequestType Parameter Accept Pipeline Input?' {
+            [String]$Function.Parameters.RequestType.Attributes.ValueFromPipeline | Should be 'True'
             }
-        It 'Does UserType Parameter Accept Pipeline Input by PropertyName?' {
-            [String]$Function.Parameters.UserType.Attributes.ValueFromPipelineByPropertyName | Should be 'True'
+        It 'Does RequestType Parameter Accept Pipeline Input by PropertyName?' {
+            [String]$Function.Parameters.RequestType.Attributes.ValueFromPipelineByPropertyName | Should be 'True'
             }
-        It 'Does UserType Parameter use advanced parameter Validation? ' {
-            $Function.Parameters.UserType.Attributes.TypeID.Name -contains 'ValidateNotNullOrEmptyAttribute' | Should Be 'False'
-            $Function.Parameters.UserType.Attributes.TypeID.Name -contains 'ValidateNotNullAttribute' | Should Be 'False'
-            $Function.Parameters.UserType.Attributes.TypeID.Name -contains 'ValidateScript' | Should Be 'False'
-            $Function.Parameters.UserType.Attributes.TypeID.Name -contains 'ValidateRangeAttribute' | Should Be 'False'
-            $Function.Parameters.UserType.Attributes.TypeID.Name -contains 'ValidatePatternAttribute' | Should Be 'False'
+        It 'Does RequestType Parameter use advanced parameter Validation? ' {
+            $Function.Parameters.RequestType.Attributes.TypeID.Name -contains 'ValidateNotNullOrEmptyAttribute' | Should Be 'False'
+            $Function.Parameters.RequestType.Attributes.TypeID.Name -contains 'ValidateNotNullAttribute' | Should Be 'False'
+            $Function.Parameters.RequestType.Attributes.TypeID.Name -contains 'ValidateScript' | Should Be 'False'
+            $Function.Parameters.RequestType.Attributes.TypeID.Name -contains 'ValidateRangeAttribute' | Should Be 'False'
+            $Function.Parameters.RequestType.Attributes.TypeID.Name -contains 'ValidatePatternAttribute' | Should Be 'False'
             }
-        It 'Has Parameter Help Text for UserType '{
-            $function.Definition.Contains('.PARAMETER UserType') | Should Be 'True'
+        It 'Has Parameter Help Text for RequestType '{
+            $function.Definition.Contains('.PARAMETER RequestType') | Should Be 'True'
+            }
+        It 'Has a Parameter called UserPrincipalName' {
+            $Function.Parameters.Keys.Contains('UserPrincipalName') | Should Be 'True'
+            }
+        It 'UserPrincipalName Parameter is Identified as Mandatory being False' {
+            [String]$Function.Parameters.UserPrincipalName.Attributes.Mandatory | Should be 'False'
+            }
+        It 'UserPrincipalName Parameter is of String Type' {
+            $Function.Parameters.UserPrincipalName.ParameterType.FullName | Should be 'System.String'
+            }
+        It 'UserPrincipalName Parameter is member of ParameterSets' {
+            [String]$Function.Parameters.UserPrincipalName.ParameterSets.Keys | Should Be '__AllParameterSets'
+            }
+        It 'UserPrincipalName Parameter Position is defined correctly' {
+            [String]$Function.Parameters.UserPrincipalName.Attributes.Position | Should be '2'
+            }
+        It 'Does UserPrincipalName Parameter Accept Pipeline Input?' {
+            [String]$Function.Parameters.UserPrincipalName.Attributes.ValueFromPipeline | Should be 'True'
+            }
+        It 'Does UserPrincipalName Parameter Accept Pipeline Input by PropertyName?' {
+            [String]$Function.Parameters.UserPrincipalName.Attributes.ValueFromPipelineByPropertyName | Should be 'True'
+            }
+        It 'Does UserPrincipalName Parameter use advanced parameter Validation? ' {
+            $Function.Parameters.UserPrincipalName.Attributes.TypeID.Name -contains 'ValidateNotNullOrEmptyAttribute' | Should Be 'False'
+            $Function.Parameters.UserPrincipalName.Attributes.TypeID.Name -contains 'ValidateNotNullAttribute' | Should Be 'False'
+            $Function.Parameters.UserPrincipalName.Attributes.TypeID.Name -contains 'ValidateScript' | Should Be 'False'
+            $Function.Parameters.UserPrincipalName.Attributes.TypeID.Name -contains 'ValidateRangeAttribute' | Should Be 'False'
+            $Function.Parameters.UserPrincipalName.Attributes.TypeID.Name -contains 'ValidatePatternAttribute' | Should Be 'False'
+            }
+        It 'Has Parameter Help Text for UserPrincipalName '{
+            $function.Definition.Contains('.PARAMETER UserPrincipalName') | Should Be 'True'
+            }
+        It 'Has a Parameter called RequestAction' {
+            $Function.Parameters.Keys.Contains('RequestAction') | Should Be 'True'
+            }
+        It 'RequestAction Parameter is Identified as Mandatory being False' {
+            [String]$Function.Parameters.RequestAction.Attributes.Mandatory | Should be 'False'
+            }
+        It 'RequestAction Parameter is of String Type' {
+            $Function.Parameters.RequestAction.ParameterType.FullName | Should be 'System.String'
+            }
+        It 'RequestAction Parameter is member of ParameterSets' {
+            [String]$Function.Parameters.RequestAction.ParameterSets.Keys | Should Be '__AllParameterSets'
+            }
+        It 'RequestAction Parameter Position is defined correctly' {
+            [String]$Function.Parameters.RequestAction.Attributes.Position | Should be '3'
+            }
+        It 'Does RequestAction Parameter Accept Pipeline Input?' {
+            [String]$Function.Parameters.RequestAction.Attributes.ValueFromPipeline | Should be 'True'
+            }
+        It 'Does RequestAction Parameter Accept Pipeline Input by PropertyName?' {
+            [String]$Function.Parameters.RequestAction.Attributes.ValueFromPipelineByPropertyName | Should be 'True'
+            }
+        It 'Does RequestAction Parameter use advanced parameter Validation? ' {
+            $Function.Parameters.RequestAction.Attributes.TypeID.Name -contains 'ValidateNotNullOrEmptyAttribute' | Should Be 'False'
+            $Function.Parameters.RequestAction.Attributes.TypeID.Name -contains 'ValidateNotNullAttribute' | Should Be 'False'
+            $Function.Parameters.RequestAction.Attributes.TypeID.Name -contains 'ValidateScript' | Should Be 'False'
+            $Function.Parameters.RequestAction.Attributes.TypeID.Name -contains 'ValidateRangeAttribute' | Should Be 'False'
+            $Function.Parameters.RequestAction.Attributes.TypeID.Name -contains 'ValidatePatternAttribute' | Should Be 'False'
+            }
+        It 'Has Parameter Help Text for RequestAction '{
+            $function.Definition.Contains('.PARAMETER RequestAction') | Should Be 'True'
             }
     }
     Context "Function $($function.Name) - Help Section" {
@@ -93,3 +155,5 @@
     }
 
  }
+
+

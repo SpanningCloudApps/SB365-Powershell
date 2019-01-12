@@ -6,6 +6,12 @@
         Used to consolidate requests into a single function.
     .PARAMETER AuthInfo
         This parameter takes an AuthInfo object from Get-SpanningAuthentication.
+    .PARAMETER RequestType
+        This parameter takes a RequestType of User or Tenant to determine the REST URI.
+    .PARAMETER UserPrincipalName
+        This parameter takes a UserPrincipalName for single user actions.
+    .PARAMETER RequestAction
+        This parameter takes a RequestAction to determine an licence to Assign or Unassign.
     .EXAMPLE
         This function is not caled directly.
     .NOTES
@@ -46,7 +52,7 @@
             Mandatory=$false,
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)]
-        [ValidateSet('List','Assign','Unassign')]
+        [ValidateSet('Assign','Unassign')]
         [String]
         #Action to take on UPN
         $RequestAction
