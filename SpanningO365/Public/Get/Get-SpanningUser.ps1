@@ -10,7 +10,7 @@
     .PARAMETER UserPrincipalName
         This parameter is the UPN of the user to disable.
     .PARAMETER UserType
-        This parameter filters to specific user types from the set All, Admins, NonAdmins, Assigned, Unassigned.
+        This parameter filters to specific user types from the set All, Admins, NonAdmins, Assigned, Unassigned, Deleted (from Active Directory), NotDeleted.
     .EXAMPLE
         Get-SpanningUser -UserPrincipalName ruby@doghousetoys.com
         Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
@@ -52,7 +52,7 @@
             ValueFromPipelineByPropertyName=$true,
             ParameterSetName = "Get Multiple Users")
         ]
-        [ValidateSet('All','Admins','NonAdmins','Assigned','Unassigned')]
+        [ValidateSet('All','Admins','NonAdmins','Assigned','Unassigned','Deleted','NotDeleted')]
         #User type to return
         [string]$UserType
     )
@@ -114,6 +114,16 @@
         {
             Write-Verbose 'UserType = Unassigned'
             Write-Output $temp_users | Where-Object {$_.Assigned -ne "true"}
+        }
+        Deleted
+        {
+            Write-Verbose 'UserType = Deleted'
+            Write-Output $temp_users | Where-Object {$_.IsDeleted -eq "true"}
+        }
+        NotDeleted
+        {
+            Write-Verbose 'UserType = NotDeleted'
+            Write-Output $temp_users | Where-Object {$_.IsDeleted -ne "true"}
         }
         default
         {

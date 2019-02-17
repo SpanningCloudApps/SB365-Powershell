@@ -45,7 +45,7 @@ Describe 'Get-SpanningUser Functional Tests' {
         msId              = "77a78e20-1933-4aa6-ba63-50d48470242b"
         assigned          = "True"
         isAdmin           = "False"
-        isDeleted         = "False"
+        isDeleted         = "True"
       }
     return $restResult | ConvertTo-Json
   } `
@@ -86,6 +86,20 @@ Describe 'Get-SpanningUser Functional Tests' {
     It "Get-SpanningUser -UserType All has 4 Users" {
       $users = Get-SpanningUser -AuthInfo $auth -UserType All
       $users.Count | Should -Be 4
+      # Assert
+      Assert-VerifiableMock
+    }
+
+    It "Get-SpanningUser -UserType Deleted has 1 User" {
+      [array]$users = Get-SpanningUser -AuthInfo $auth -UserType Deleted
+      $users.Count | Should -Be 1
+      # Assert
+      Assert-VerifiableMock
+    }
+
+    It "Get-SpanningUser -UserType NotDeleted has 3 Users" {
+      $users = Get-SpanningUser -AuthInfo $auth -UserType NotDeleted
+      $users.Count | Should -Be 3
       # Assert
       Assert-VerifiableMock
     }
