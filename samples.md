@@ -63,6 +63,8 @@ You can list the different users from the Spanning Portal with the **Get-Spannin
 - NonAdmins: Users who are not administrators
 - Assigned: Users assigned a Spanning Backup for Office 365 license
 - Unassigned: Users who are not assigned a Spanning Backup for Office 365 license
+- Deleted: Users deleted from Azure AD and present in Spanning Backup for Office 365
+- NotDeleted: Users who are active in Azure AD and present in Spanning Backup for Office 365
 
 To retrieve the status of a single user "ruby@doghousetoys.com":
 

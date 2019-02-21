@@ -75,9 +75,9 @@
         $AuthInfo = Get-AuthInfo
      }
      #$headers = usernfo[0]
-     $headers = $AuthInfo.Headers
+     #$headers = $AuthInfo.Headers
      #$region = usernfo[1]
-     $region = $AuthInfo.Region
+     #$region = $AuthInfo.Region
 
     # import users list so we can validate
     $existing_list = Get-SpanningUsers
@@ -110,9 +110,11 @@
         #once validated, we can actually execute the enable command
         $enableCount++
         if ($pscmdlet.ShouldProcess("$UserPrincipalName", "Enable-SpanningUser")){
-            $uri = "https://o365-api-$region.spanningbackup.com/user/$userPrincipalName/assign"
+            #ToDo Use Enable-SpanningUser
+            #$uri = "https://o365-api-$region.spanningbackup.com/user/$userPrincipalName/assign"
             #$uri
-            $results = Invoke-WebRequest -uri $uri -Headers $headers -Method POST | ConvertFrom-Json
+            #$results = Invoke-WebRequest -uri $uri -Headers $headers -Method POST | ConvertFrom-Json
+            $results = Enable-SpanningUser -AuthInfo $AuthInfo -UserPrincipalName $UserPrincipalName
             Write-Verbose "Processing for user complete"
             Write-Output $results
          }

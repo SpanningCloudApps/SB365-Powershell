@@ -92,9 +92,9 @@
         $AuthInfo = Get-AuthInfo
      }
      #$headers = usernfo[0]
-     $headers = $AuthInfo.Headers
+     #$headers = $AuthInfo.Headers
      #$region = usernfo[1]
-     $region = $AuthInfo.Region
+     #$region = $AuthInfo.Region
 
     # import users list so we can validate
     $existing_list = Get-SpanningUsers
@@ -126,9 +126,12 @@
         #once validated, we can actually execute the disable command
         $disableCount++
          if ($pscmdlet.ShouldProcess("$UserPrincipalName", "Disable-SpanningUser")){
-            $uri = "https://o365-api-$region.spanningbackup.com/user/$userPrincipalName/unassign"
+            #ToDo Use Disable-SpanningUser
+
+            #$uri = "https://o365-api-$region.spanningbackup.com/user/$userPrincipalName/unassign"
             #$uri
-            $results = Invoke-WebRequest -uri $uri -Headers $headers -Method POST | ConvertFrom-Json
+            #$results = Invoke-WebRequest -uri $uri -Headers $headers -Method POST | ConvertFrom-Json
+            $results = Disable-SpanningUser -AuthInfo $AuthInfo -UserPrincipalName $UserPrincipalName
             Write-Verbose "Processing for user '$($UserPrincipalName)' complete"
             Write-Output $results
          }

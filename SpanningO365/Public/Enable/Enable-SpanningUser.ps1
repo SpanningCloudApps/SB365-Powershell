@@ -51,13 +51,14 @@
        $AuthInfo = Get-AuthInfo
     }
     #$headers = usernfo[0]
-    $headers = $AuthInfo.Headers
+    #$headers = $AuthInfo.Headers
     #$region = usernfo[1]
-    $region = $AuthInfo.Region
+    #$region = $AuthInfo.Region
     if ($pscmdlet.ShouldProcess("$UserPrincipalName", "Enable-SpanningUser")){
         #Actually do the work
         Write-Verbose "Assigning license to $($UserPrincipalName)"
-        $results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/user/$UserPrincipalName/assign" -Headers $headers -Method POST | ConvertFrom-Json
+        #$results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/user/$UserPrincipalName/assign" -Headers $headers -Method POST | ConvertFrom-Json
+        $results = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User -UserPrincipalName $UserPrincipalName -RequestAction Assign
         Write-Output $results
     }
 

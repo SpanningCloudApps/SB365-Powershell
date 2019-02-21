@@ -10,7 +10,7 @@
     .PARAMETER UserPrincipalName
         This parameter is the UPN of the user to disable.
     .PARAMETER UserType
-        This parameter filters to specific user types from the set All, Admins, NonAdmins, Assigned, Unassigned.
+        This parameter filters to specific user types from the set All, Admins, NonAdmins, Assigned, Unassigned, Deleted (from Active Directory), NotDeleted.
     .EXAMPLE
         Get-SpanningUser -UserPrincipalName ruby@doghousetoys.com
         Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
@@ -52,7 +52,7 @@
             ValueFromPipelineByPropertyName=$true,
             ParameterSetName = "Get Multiple Users")
         ]
-        [ValidateSet('All','Admins','NonAdmins','Assigned','Unassigned')]
+        [ValidateSet('All','Admins','NonAdmins','Assigned','Unassigned','Deleted','NotDeleted')]
         #User type to return
         [string]$UserType
     )
@@ -65,24 +65,28 @@
      }
 
     #$headers = usernfo[0]
-    $headers = $AuthInfo.Headers
+    # $headers = $AuthInfo.Headers
     #$region = usernfo[1]
-    $region = $AuthInfo.Region
+    # $region = $AuthInfo.Region
 
-    #TODO : Clean this up
+    # #TODO : Clean this up
     if ($UserType){
-        $values2 = @()
-        $values = @()
-        $results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/users" -Headers $headers -Method GET | ConvertFrom-Json
-        $values2 += $results.users
-        do {
-            $results = Invoke-WebRequest -uri $results.nextLink -Headers $headers -Method GET | ConvertFrom-JSON
-            $values += $results.users
-        } until ($results.nextlink.Length -eq 0)
-        $values.count
-        $values3 = $values2 + $values
-        $temp_users = $values3
+        $temp_users = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User
+    #     $values2 = @()
+    #     $values = @()
+    #     $results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/users" -Headers $headers -Method GET | ConvertFrom-Json
+    #     $values2 += $results.users
+    #     do {
+    #         $results = Invoke-WebRequest -uri $results.nextLink -Headers $headers -Method GET | ConvertFrom-JSON
+    #         $values += $results.users
+    #     } until ($results.nextlink.Length -eq 0)
+
+    #     #$values.count
+    #     $values3 = $values2 + $values
+    #     $temp_users = $values3
     }
+
+
 
     switch ( $UserType )
     {
@@ -99,7 +103,7 @@
         NonAdmins
         {
             Write-Verbose 'UserType = NonAdmins'
-            $temp_users | Where-Object {$_.isAdmin -ne "true"}
+            Write-Output $temp_users | Where-Object {$_.isAdmin -ne "true"}
         }
         Assigned
         {
@@ -111,10 +115,21 @@
             Write-Verbose 'UserType = Unassigned'
             Write-Output $temp_users | Where-Object {$_.Assigned -ne "true"}
         }
+        Deleted
+        {
+            Write-Verbose 'UserType = Deleted'
+            Write-Output $temp_users | Where-Object {$_.IsDeleted -eq "true"}
+        }
+        NotDeleted
+        {
+            Write-Verbose 'UserType = NotDeleted'
+            Write-Output $temp_users | Where-Object {$_.IsDeleted -ne "true"}
+        }
         default
         {
             Write-Verbose 'UserType = null'
-            $results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/user/$UserPrincipalName" -Headers $headers -Method GET | ConvertFrom-Json
+            #$results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/user/$UserPrincipalName" -Headers $headers -Method GET | ConvertFrom-Json
+            $results = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User -UserPrincipalName $UserPrincipalName
             Write-Output $results
         }
     }
