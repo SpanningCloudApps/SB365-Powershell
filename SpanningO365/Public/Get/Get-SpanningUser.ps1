@@ -54,14 +54,31 @@
         ]
         [ValidateSet('All','Admins','NonAdmins','Assigned','Unassigned','Deleted','NotDeleted')]
         #User type to return
-        [string]$UserType
+        [string]$UserType,
+        [Parameter(
+            Mandatory=$true,
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName=$true,
+            HelpMessage="Connection object passed in Azure Automation",
+            ParameterSetName="UseConnectionObject")
+        ]
+        [ValidateNotNullOrEmpty()]
+        #The Connection object (a hash table) when used in Azure Automation:https://azure.microsoft.com/en-us/blog/authoring-integration-modules-for-azure-automation/
+        [Hashtable]$Connection
     )
     Write-Verbose "Get-SpanningUser"
 
+    #$conn = @{ApiToken = "29e80d56-b9b7-4a95-b759-d88f2db4d04c";AdminEmail = "MeganB@M365x470422.onmicrosoft.com";Region = "US";}
+
     # UserType : All (users), Admins, NonAdmins, Assigned, Unassigned
-    if (!$AuthInfo) {
-        Write-Verbose "No AuthInfo provided, checking Session State"
-        $AuthInfo = Get-AuthInfo
+    if ($null -eq $AuthInfo) {
+        if ($null -ne $Connection){
+            Write-Verbose "No AuthInfo provided, using Connection"
+            $AuthInfo = Get-SpanningAuthentication -AdminEmail $Connection.AdminEmail -ApiToken $Connection.ApiToken -Region $Connection.Region
+        } else {
+            Write-Verbose "No AuthInfo provided, checking Session State"
+            $AuthInfo = Get-AuthInfo
+        }
      }
 
     #$headers = usernfo[0]
