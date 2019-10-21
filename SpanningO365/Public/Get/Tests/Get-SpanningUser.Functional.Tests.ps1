@@ -68,7 +68,7 @@ Describe 'Get-SpanningUser Functional Tests' {
 
     It "GetSpanningUser Returns an [array]" {
       $users = Get-SpanningUser -AuthInfo $auth -UserType All
-      Write-Output -NoEnumerate $users | Should -BeOfType [array]
+      Write-Output $users -NoEnumerate | Should -BeOfType [array]
     }
 
     It "Alternate GetSpanningUser Returns an [array]" {
