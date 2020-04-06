@@ -11,6 +11,8 @@
         This parameter is the UPN of the user to disable.
     .PARAMETER UserType
         This parameter filters to specific user types from the set All, Admins, NonAdmins, Assigned, Unassigned, Deleted (from Active Directory), NotDeleted.
+    .PARAMETER Size
+        This parameter takes a page size parameter for the request. It defaults to 1000.
     .EXAMPLE
         Get-SpanningUser -UserPrincipalName ruby@doghousetoys.com
         Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
@@ -56,54 +58,27 @@
         #User type to return
         [string]$UserType,
         [Parameter(
-            Mandatory=$true,
+            Position=3,
+            Mandatory=$false,
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true,
-            HelpMessage="Connection object passed in Azure Automation",
-            ParameterSetName="UseConnectionObject")
-        ]
-        [ValidateNotNullOrEmpty()]
-        #The Connection object (a hash table) when used in Azure Automation:https://azure.microsoft.com/en-us/blog/authoring-integration-modules-for-azure-automation/
-        [Hashtable]$Connection
+            ParameterSetName = "Get Multiple Users")]
+        [Int]
+        #Request Size parameter for User requests, default 1000
+        $Size = 1000
     )
     Write-Verbose "Get-SpanningUser"
 
-    #$conn = @{ApiToken = "29e80d56-b9b7-4a95-b759-d88f2db4d04c";AdminEmail = "MeganB@M365x470422.onmicrosoft.com";Region = "US";}
-
     # UserType : All (users), Admins, NonAdmins, Assigned, Unassigned
-    if ($null -eq $AuthInfo) {
-        if ($null -ne $Connection){
-            Write-Verbose "No AuthInfo provided, using Connection"
-            $AuthInfo = Get-SpanningAuthentication -AdminEmail $Connection.AdminEmail -ApiToken $Connection.ApiToken -Region $Connection.Region
-        } else {
-            Write-Verbose "No AuthInfo provided, checking Session State"
-            $AuthInfo = Get-AuthInfo
-        }
-     }
-
-    #$headers = usernfo[0]
-    # $headers = $AuthInfo.Headers
-    #$region = usernfo[1]
-    # $region = $AuthInfo.Region
+    if (!$AuthInfo) {
+        Write-Verbose "No AuthInfo provided, checking Session State"
+        $AuthInfo = Get-AuthInfo
+    }
 
     # #TODO : Clean this up
     if ($UserType){
-        $temp_users = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User
-    #     $values2 = @()
-    #     $values = @()
-    #     $results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/users" -Headers $headers -Method GET | ConvertFrom-Json
-    #     $values2 += $results.users
-    #     do {
-    #         $results = Invoke-WebRequest -uri $results.nextLink -Headers $headers -Method GET | ConvertFrom-JSON
-    #         $values += $results.users
-    #     } until ($results.nextlink.Length -eq 0)
-
-    #     #$values.count
-    #     $values3 = $values2 + $values
-    #     $temp_users = $values3
+        $temp_users = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User -Size $Size
     }
-
-
 
     switch ( $UserType )
     {
