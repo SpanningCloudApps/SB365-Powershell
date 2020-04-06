@@ -95,6 +95,37 @@
         It 'Has Parameter Help Text for AdminEmail '{
             $function.Definition.Contains('.PARAMETER AdminEmail') | Should Be 'True'
             }
+        It 'Has a Parameter called Connection' {
+            $Function.Parameters.Keys.Contains('Connection') | Should Be 'True'
+            }
+        It 'Connection Parameter is Identified as Mandatory being False' {
+            [String]$Function.Parameters.Connection.Attributes.Mandatory | Should be 'False'
+            }
+        It 'Connection Parameter is of Hashtable Type' {
+            $Function.Parameters.Connection.ParameterType.FullName | Should be 'System.Collections.Hashtable'
+            }
+        It 'Connection Parameter is member of ParameterSets' {
+            [String]$Function.Parameters.Connection.ParameterSets.Keys | Should Be '__AllParameterSets'
+            }
+        It 'Connection Parameter Position is defined correctly' {
+            [String]$Function.Parameters.Connection.Attributes.Position | Should be '3'
+            }
+        It 'Does Connection Parameter Accept Pipeline Input?' {
+            [String]$Function.Parameters.Connection.Attributes.ValueFromPipeline | Should be 'True'
+            }
+        It 'Does Connection Parameter Accept Pipeline Input by PropertyName?' {
+            [String]$Function.Parameters.Connection.Attributes.ValueFromPipelineByPropertyName | Should be 'True'
+            }
+        It 'Does Connection Parameter use advanced parameter Validation? ' {
+            $Function.Parameters.Connection.Attributes.TypeID.Name -contains 'ValidateNotNullOrEmptyAttribute' | Should Be 'False'
+            $Function.Parameters.Connection.Attributes.TypeID.Name -contains 'ValidateNotNullAttribute' | Should Be 'False'
+            $Function.Parameters.Connection.Attributes.TypeID.Name -contains 'ValidateScript' | Should Be 'False'
+            $Function.Parameters.Connection.Attributes.TypeID.Name -contains 'ValidateRangeAttribute' | Should Be 'False'
+            $Function.Parameters.Connection.Attributes.TypeID.Name -contains 'ValidatePatternAttribute' | Should Be 'False'
+            }
+        It 'Has Parameter Help Text for Connection '{
+            $function.Definition.Contains('.PARAMETER Connection') | Should Be 'True'
+            }
     }
     Context "Function $($function.Name) - Help Section" {
 

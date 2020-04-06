@@ -11,6 +11,8 @@
         This parameter is the admin email associated with your Spanning Tenant
     .PARAMETER Region
         This parameter is your Spanning Region (US, EU or AP)
+    .PARAMETER Connection
+        This parameter takes a Azure Connection for secure automation
     .EXAMPLE
         Get-SpanningAuthentication
         Without any parameters you will be prompted for ApiToken, Region, and AdminEmail.
@@ -62,11 +64,28 @@
         ]
         [String]
         #The Admin Email address used to generate the API Token
-        $AdminEmail
+        $AdminEmail,
+        [Parameter(
+            Mandatory=$false,
+            Position=3,
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName=$true,
+            HelpMessage="Azure Connection property for secure automation.")
+        ]
+        #The Connection object (a hash table) when used in Azure Automation:https://azure.microsoft.com/en-us/blog/authoring-integration-modules-for-azure-automation/
+        [Hashtable]$Connection
     )
 
     Write-Verbose "Get-SpanningAuthentication..."
     Write-Verbose "Session ApiToken: $($Script:ApiToken)"
+
+    # If the Connection is Null check the other properties
+    if ($null -ne $Connection){
+        Write-Verbose "No AuthInfo provided, using Connection"
+        $ApiToken   = $Connection.ApiToken
+        $Region     = $Connection.Region
+        $AdminEmail = $Connection.AdminEmail
+    }
     # Check the ApiToken
     if ([string]::IsNullOrEmpty($Script:ApiToken) -and [string]::IsNullOrEmpty($ApiToken)) {
         $ApiToken = Read-Host 'Enter Api Token'
