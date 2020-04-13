@@ -43,7 +43,7 @@ The variables are populated by the Get-SpanningAuthentication cmdlet.
 
 ## RELATED LINKS
 
-[Get-SpanningAuthentication]()
+[Get-SpanningAuthentication](Get-SpanningAuthentication.md)
 
-[GitHub Repository: https://github.com/spanningcloudapps]()
+[GitHub Repository: https://github.com/spanningcloudapps](https://github.com/spanningcloudapps)
 

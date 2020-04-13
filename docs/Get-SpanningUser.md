@@ -19,7 +19,7 @@ Get-SpanningUser [[-AuthInfo] <Object>] [-UserPrincipalName] <String> [<CommonPa
 
 ### Get Multiple Users
 ```
-Get-SpanningUser [[-AuthInfo] <Object>] [[-UserType] <String>] [<CommonParameters>]
+Get-SpanningUser [[-AuthInfo] <Object>] [[-UserType] <String>] [[-Size] <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -90,9 +90,23 @@ Accept pipeline input: True (ByPropertyName, ByValue)
 Accept wildcard characters: False
 ```
 
+### -Size
+This parameter takes a page size parameter for the request. It defaults to 1000.
+
+```yaml
+Type: Int32
+Parameter Sets: Get Multiple Users
+Aliases:
+
+Required: False
+Position: 4
+Default value: 1000
+Accept pipeline input: True (ByPropertyName, ByValue)
+Accept wildcard characters: False
+```
+
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable.
-For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
@@ -104,7 +118,7 @@ Go to Settings | API Token to generate and revoke the token.
 
 ## RELATED LINKS
 
-[Get-SpanningAuthentication]()
+[Get-SpanningAuthentication](Get-SpanningAuthentication.md)
 
-[GitHub Repository: https://github.com/spanningcloudapps]()
+[GitHub Repository: https://github.com/spanningcloudapps](https://github.com/spanningcloudapps)
 

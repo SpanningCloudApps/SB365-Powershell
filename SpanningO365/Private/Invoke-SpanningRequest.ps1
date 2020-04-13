@@ -12,6 +12,8 @@
         This parameter takes a UserPrincipalName for single user actions.
     .PARAMETER RequestAction
         This parameter takes a RequestAction to determine an licence to Assign or Unassign.
+    .PARAMETER Size
+        This parameter takes a page size parameter for the request. It defaults to 1000.
     .EXAMPLE
         This function is not caled directly.
     .NOTES
@@ -55,7 +57,15 @@
         [ValidateSet('Assign','Unassign')]
         [String]
         #Action to take on UPN
-        $RequestAction
+        $RequestAction,
+        [Parameter(
+            Position=4,
+            Mandatory=$false,
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName=$true)]
+        [Int]
+        #Request Size parameter for User requests, default 1000
+        $Size = 1000
     )
 
     Write-Verbose "Invoke-SpanningRequest"
@@ -78,7 +88,9 @@
         if ([string]::IsNullOrEmpty($UserPrincipalName))
         {
           Write-Verbose "Invoke-SpanningRequest UPN null"
-          $request = "https://o365-api-$region.spanningbackup.com/users"
+          Write-Verbose "Invoke-SpanningRequest size parameter is: $Size"
+
+          $request = "https://o365-api-$region.spanningbackup.com/users?size=$Size"
            #TODO : Clean this up
           $values2 = @()
           $values = @()

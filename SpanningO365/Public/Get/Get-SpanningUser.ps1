@@ -11,6 +11,8 @@
         This parameter is the UPN of the user to disable.
     .PARAMETER UserType
         This parameter filters to specific user types from the set All, Admins, NonAdmins, Assigned, Unassigned, Deleted (from Active Directory), NotDeleted.
+    .PARAMETER Size
+        This parameter takes a page size parameter for the request. It defaults to 1000.
     .EXAMPLE
         Get-SpanningUser -UserPrincipalName ruby@doghousetoys.com
         Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
@@ -54,7 +56,16 @@
         ]
         [ValidateSet('All','Admins','NonAdmins','Assigned','Unassigned','Deleted','NotDeleted')]
         #User type to return
-        [string]$UserType
+        [string]$UserType,
+        [Parameter(
+            Position=3,
+            Mandatory=$false,
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName=$true,
+            ParameterSetName = "Get Multiple Users")]
+        [Int]
+        #Request Size parameter for User requests, default 1000
+        $Size = 1000
     )
     Write-Verbose "Get-SpanningUser"
 
@@ -62,31 +73,12 @@
     if (!$AuthInfo) {
         Write-Verbose "No AuthInfo provided, checking Session State"
         $AuthInfo = Get-AuthInfo
-     }
-
-    #$headers = usernfo[0]
-    # $headers = $AuthInfo.Headers
-    #$region = usernfo[1]
-    # $region = $AuthInfo.Region
+    }
 
     # #TODO : Clean this up
     if ($UserType){
-        $temp_users = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User
-    #     $values2 = @()
-    #     $values = @()
-    #     $results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/users" -Headers $headers -Method GET | ConvertFrom-Json
-    #     $values2 += $results.users
-    #     do {
-    #         $results = Invoke-WebRequest -uri $results.nextLink -Headers $headers -Method GET | ConvertFrom-JSON
-    #         $values += $results.users
-    #     } until ($results.nextlink.Length -eq 0)
-
-    #     #$values.count
-    #     $values3 = $values2 + $values
-    #     $temp_users = $values3
+        $temp_users = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User -Size $Size
     }
-
-
 
     switch ( $UserType )
     {

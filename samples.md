@@ -25,6 +25,8 @@ For these examples we will use the following information:
 
 The **Get-SpanningAuthentication** function creates the necessary authentication headers for calling the Spanning Backup API. If you call any other function without supplying the authentication information you will be prompted for the necessary information, so you might as well start here! While you could execute **Get-SpanningAuthentication** without any parameters and then fill in the prompts, the easiest way to start is to simply call the **Get-SpanningAuthentication** function with the necessary parameters for your tenant.
 
+If you are using this module in Azure Automation Accounts you can use the **Connection** parameter to pass a connection hashtable for easier storage of your connection variables in Azure.
+
 **Note:** These PowerShell samples are wrapped for clarity and use the backtick character "`" in the event you want to copy and paste them.
 
 ```powershell
@@ -134,7 +136,7 @@ Users are enabled or licensed for Spanning Backup for Office 365 using the **Ena
 Enable-SpanningUser -UserPrincipalName "ruby@doghousetoys.com"
 ```
 
-If you have a comma separated value file and want to use it for bulk licensing you can use the **Enable-SpanningUserFromCSVAdvanced** function. If your CSV file is formatted as follows:
+If you have a comma separated value file and want to use it for bulk licensing you can use the **Enable-SpanningUsersFromCSVAdvanced** function. If your CSV file is formatted as follows:
 
 ```plaintext
 Name,UPN,Department,Geography
@@ -147,7 +149,7 @@ Cheyenne,cheyenne@doghousetoys.com,Finance,US
 You have two options depending on how you wish to license your users. You can apply licenses to all users by referencing the path to the file and the UPN Column of 1 (CSV uses a zero based index for columns) and by omitting the user filter:
 
 ```powershell
-Enable-SpanningUserFromCSVAdvanced -Path "C:\Test\Users.csv" -UpnColumn 1
+Enable-SpanningUsersFromCSVAdvanced -Path "C:\Test\Users.csv" -UpnColumn 1
 ```
 
 The result should be displayed as follows:
@@ -164,7 +166,7 @@ cheyenne@doghousetoys.com  True
 Another option is to use a filter to include only those users matching your filter criteria. For example if you only want to limit your licensing to the US Geography you could use the following filter:
 
 ```powershell
-Enable-SpanningUserFromCSVAdvanced  -Path "C:\Test\Users.csv" -UpnColumn 1 `
+Enable-SpanningUsersFromCSVAdvanced  -Path "C:\Test\Users.csv" -UpnColumn 1 `
     -FilterColumn 3 -FilterColumnValue "US"
 ```
 
@@ -193,10 +195,10 @@ userPrincipalName          licensed
 kobe@doghousetoys.com      False
 ```
 
-In the event you wish to remove licenses in bulk you can use the **Disable-SpanningUserFromCSVAdvanced** function or the alternatives in the [Advanced Use Cases](#advanced) section later in this article. Like it's counterpart **Enable-SpanningUserFromCSVAdvanced** you can either disable all users listed in the CSV file or provide a filter column and filter value.
+In the event you wish to remove licenses in bulk you can use the **Disable-SpanningUsersFromCSVAdvanced** function or the alternatives in the [Advanced Use Cases](#advanced) section later in this article. Like it's counterpart **Enable-SpanningUsersFromCSVAdvanced** you can either disable all users listed in the CSV file or provide a filter column and filter value.
 
 ```powershell
-Disable-SpanningUserFromCSVAdvanced  -Path "C:\Test\Users.csv" -UpnColumn 1
+Disable-SpanningUsersFromCSVAdvanced  -Path "C:\Test\Users.csv" -UpnColumn 1
 ```
 
 The result should be:
@@ -210,10 +212,10 @@ jazzy@doghousetoys.com     False
 cheyenne@doghousetoys.com  False
 ```
 
-You can also use a filter on your CSV file if you only wish to remove licenses from a subset of users in the file. The process is the same as the **Enable-SpanningUserFromCSVAdvanced** function.
+You can also use a filter on your CSV file if you only wish to remove licenses from a subset of users in the file. The process is the same as the **Enable-SpanningUsersFromCSVAdvanced** function.
 
 ```powershell
-Disable-SpanningUserFromCSVAdvanced  -Path "C:\Test\Users.csv" -UpnColumn 1 `
+Disable-SpanningUsersFromCSVAdvanced  -Path "C:\Test\Users.csv" -UpnColumn 1 `
     -FilterColumn 3 -FilterColumnValue "US"
 ```
 

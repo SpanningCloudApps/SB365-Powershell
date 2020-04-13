@@ -31,12 +31,11 @@ Without any parameters you will be prompted for ApiToken, Region, and AdminEmail
 ### EXAMPLE 2
 ```
 $myApiToken = "your api token"
-```
-
 $myAdminEmail = "admin@mytenant.onmicrosoft.com"
 $myRegion = "US"
 
 Get-SpanningAuthentication -ApiToken $myApiToken -Region $myRegion -AdminEmail $myAdminEmail | Get-SpanningTenantInfo
+```
 
 Supply the three parameters from variables to Get-SpanningAuthentication and pipe the result to Get-SpanningTennantInfo.
 
@@ -72,9 +71,9 @@ Go to Settings | API Token to generate and revoke the token.
 
 ## RELATED LINKS
 
-[Get-SpanningAuthentication]()
+[Get-SpanningAuthentication](Get-SpanningAuthentication.md)
 
-[Get-SpanningTenantInfoPaymentStatus]()
+[Get-SpanningTenantInfoPaymentStatus](Get-SpanningTenantInfoPaymentStatus.md)
 
-[GitHub Repository: https://github.com/spanningcloudapps]()
+[GitHub Repository: https://github.com/spanningcloudapps](https://github.com/spanningcloudapps)
 

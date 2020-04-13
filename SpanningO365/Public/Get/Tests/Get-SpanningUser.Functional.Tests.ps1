@@ -23,7 +23,7 @@ Describe 'Get-SpanningUser Functional Tests' {
     return $restResult | ConvertTo-Json
   } `
   -ParameterFilter {
-    $uri -like "https://o365-api-??.spanningbackup.com/users"
+    $uri -like "https://o365-api-??.spanningbackup.com/users?size*"
   } -ModuleName SpanningO365
 
   #This mock creates two additional users for the second request and returns a blank next link to stop the loop
@@ -68,7 +68,7 @@ Describe 'Get-SpanningUser Functional Tests' {
 
     It "GetSpanningUser Returns an [array]" {
       $users = Get-SpanningUser -AuthInfo $auth -UserType All
-      Write-Output -NoEnumerate $users | Should -BeOfType [array]
+      Write-Output $users -NoEnumerate | Should -BeOfType [array]
     }
 
     It "Alternate GetSpanningUser Returns an [array]" {
