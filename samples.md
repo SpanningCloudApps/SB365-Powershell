@@ -25,6 +25,8 @@ For these examples we will use the following information:
 
 The **Get-SpanningAuthentication** function creates the necessary authentication headers for calling the Spanning Backup API. If you call any other function without supplying the authentication information you will be prompted for the necessary information, so you might as well start here! While you could execute **Get-SpanningAuthentication** without any parameters and then fill in the prompts, the easiest way to start is to simply call the **Get-SpanningAuthentication** function with the necessary parameters for your tenant.
 
+If you are using this module in Azure Automation Accounts you can use the **Connection** parameter to pass a connection hashtable for easier storage of your connection variables in Azure.
+
 **Note:** These PowerShell samples are wrapped for clarity and use the backtick character "`" in the event you want to copy and paste them.
 
 ```powershell
