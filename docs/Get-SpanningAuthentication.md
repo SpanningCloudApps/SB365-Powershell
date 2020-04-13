@@ -130,7 +130,7 @@ Go to Settings | API Token to generate and revoke the token.
 
 ## RELATED LINKS
 
-[Clear-SpanningAuthentication]()
+[Clear-SpanningAuthentication](Clear-SpanningAuthentication.md)
 
-[GitHub Repository: https://github.com/spanningcloudapps]()
+[GitHub Repository: https://github.com/spanningcloudapps](https://github.com/spanningcloudapps)
 

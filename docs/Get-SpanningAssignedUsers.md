@@ -76,9 +76,9 @@ Go to Settings | API Token to generate and revoke the token.
 
 ## RELATED LINKS
 
-[Get-SpanningAuthentication]()
+[Get-SpanningAuthentication](Get-SpanningAuthentication.md)
 
-[Get-SpanningUser -UserType Assigned](Get-SpanningUser)
+[Get-SpanningUser -UserType Assigned](Get-SpanningUser.md)
 
-[GitHub Repository: https://github.com/spanningcloudapps]()
+[GitHub Repository: https://github.com/spanningcloudapps](https://github.com/spanningcloudapps)
 

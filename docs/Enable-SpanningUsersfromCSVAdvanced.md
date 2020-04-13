@@ -175,11 +175,8 @@ Go to Settings | API Token to generate and revoke the token.
 
 ## RELATED LINKS
 
-[Get-SpanningAuthentication]()
+[Get-SpanningAuthentication](Get-SpanningAuthentication.md)
 
-[Disable-SpanningUsersfromCSVAdvanced]()
+[Disable-SpanningUsersfromCSVAdvanced](Disable-SpanningUsersfromCSVAdvanced.md)
 
-[GitHub Repository: https://github.com/spanningcloudapps
-
-TODO : Filter by column name rather than index]()
-
+[GitHub Repository: https://github.com/spanningcloudapps](https://github.com/spanningcloudapps)
