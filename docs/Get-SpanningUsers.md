@@ -13,7 +13,7 @@ Returns the user license information for all users from the Spanning Backup Port
 ## SYNTAX
 
 ```
-Get-SpanningUsers [[-AuthInfo] <Object>] [<CommonParameters>]
+Get-SpanningUsers [[-AuthInfo] <Object>] [[-Size] <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -42,8 +42,23 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 0
+Position: 1
 Default value: None
+Accept pipeline input: True (ByPropertyName, ByValue)
+Accept wildcard characters: False
+```
+
+### -Size
+This parameter takes a page size parameter for the request. It defaults to 1000.
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 4
+Default value: 1000
 Accept pipeline input: True (ByPropertyName, ByValue)
 Accept wildcard characters: False
 ```
@@ -63,7 +78,7 @@ Go to Settings | API Token to generate and revoke the token.
 
 [Get-SpanningAuthentication]()
 
-[Get-SpanningUser -UserType All]()
+[Get-SpanningUser -UserType All](Get-SpanningUser)
 
 [GitHub Repository: https://github.com/spanningcloudapps]()
 

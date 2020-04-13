@@ -14,7 +14,7 @@ Get-SpanningAuthentication creates the Spanning Auth Header needed for making al
 
 ```
 Get-SpanningAuthentication [[-ApiToken] <String>] [[-Region] <String>] [[-AdminEmail] <String>]
- [<CommonParameters>]
+ [[-Connection] <Hashtable>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -97,6 +97,21 @@ Aliases:
 
 Required: False
 Position: 3
+Default value: None
+Accept pipeline input: True (ByPropertyName, ByValue)
+Accept wildcard characters: False
+```
+
+### -Connection
+This parameter takes a Azure Connection for secure automation
+
+```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 4
 Default value: None
 Accept pipeline input: True (ByPropertyName, ByValue)
 Accept wildcard characters: False
