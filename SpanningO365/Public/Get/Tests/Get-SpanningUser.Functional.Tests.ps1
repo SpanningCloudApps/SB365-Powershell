@@ -103,5 +103,24 @@ Describe 'Get-SpanningUser Functional Tests' {
       # Assert
       Assert-VerifiableMock
     }
+    
+    #Test Get-SpanningUser -Size 100 -Verbose -UserType Admins
+    It "Get-SpanningUser -UserType Admins -Size 100 has 1 User" {
+      [array]$users = Get-SpanningUser -AuthInfo $auth -UserType Admins -Size 100
+      $users.Count | Should -Be 1
+      # Assert
+      Assert-VerifiableMock
+      #Did we call the loop twice? TODO : Mock the Size Parameter to evaluate the effectiveness at changing the Scope
+      Assert-MockCalled -CommandName Invoke-WebRequest -Times 2 -Exactly -ModuleName SpanningO365 -Scope It
+    }
+
+    It "Get-SpanningUser -Size 100 has 4 Users" {
+      [array]$users = Get-SpanningUser -AuthInfo $auth -Size 1
+      $users.Count | Should -Be 4
+      # Assert
+      Assert-VerifiableMock
+      #Did we call the loop twice? TODO : Mock the Size Parameter to evaluate the effectiveness at changing the Scope
+      Assert-MockCalled -CommandName Invoke-WebRequest -Times 2 -Exactly -ModuleName SpanningO365 -Scope It
+    }
   }
 }
