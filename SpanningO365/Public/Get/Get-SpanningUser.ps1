@@ -77,6 +77,7 @@
 
     # #TODO : Clean this up
     if ($UserType){
+        Write-Verbose "UserType: $($UserType) - Invoke-SpanningRequest"
         $temp_users = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User -Size $Size
     }
 
@@ -121,7 +122,7 @@
         {
             Write-Verbose 'UserType = null'
             #$results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/user/$UserPrincipalName" -Headers $headers -Method GET | ConvertFrom-Json
-            $results = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User -UserPrincipalName $UserPrincipalName
+            $results = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User -UserPrincipalName $UserPrincipalName -Size $Size
             Write-Output $results
         }
     }
