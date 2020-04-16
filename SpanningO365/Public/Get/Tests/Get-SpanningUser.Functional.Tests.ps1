@@ -103,7 +103,7 @@ Describe 'Get-SpanningUser Functional Tests' {
       # Assert
       Assert-VerifiableMock
     }
-    
+
     #Test Get-SpanningUser -Size 100 -Verbose -UserType Admins
     It "Get-SpanningUser -UserType Admins -Size 100 has 1 User" {
       [array]$users = Get-SpanningUser -AuthInfo $auth -UserType Admins -Size 100

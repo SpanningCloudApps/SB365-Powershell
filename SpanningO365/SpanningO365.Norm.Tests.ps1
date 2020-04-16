@@ -1,4 +1,7 @@
-﻿$Here = Split-Path -Parent $MyInvocation.MyCommand.Path
+﻿# Clear Eror Queue for easier reporting
+$Error.Clear()
+
+$Here = Split-Path -Parent $MyInvocation.MyCommand.Path
 
 $PrivateFunctions = Get-ChildItem "$here\Private\" -Filter '*.ps1' -Recurse | Where-Object {$_.name -NotMatch "Tests.ps1"}
 $PublicFunctions = Get-ChildItem "$here\Public\" -Filter '*.ps1' -Recurse | Where-Object {$_.name -NotMatch "Tests.ps1"}
@@ -95,4 +98,7 @@ Describe 'ScriptAnalyzer Rule Testing' {
         }
 }
 
-
+if ($Error.Count -gt 0)
+{
+    Write-Warning "Script Completed with $($Error.Count) error(s)."
+}
