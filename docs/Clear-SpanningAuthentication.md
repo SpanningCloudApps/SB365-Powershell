@@ -32,7 +32,7 @@ Clear the session ApiToken, Region, and AdminEmail variables.
 ## PARAMETERS
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
@@ -43,7 +43,7 @@ The variables are populated by the Get-SpanningAuthentication cmdlet.
 
 ## RELATED LINKS
 
-[Get-SpanningAuthentication]()
+[Get-SpanningAuthentication](Get-SpanningAuthentication.md)
 
-[GitHub Repository: https://github.com/spanningcloudapps]()
+[GitHub Repository: https://github.com/spanningcloudapps](https://github.com/spanningcloudapps)
 

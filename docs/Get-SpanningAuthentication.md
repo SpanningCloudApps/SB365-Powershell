@@ -14,7 +14,7 @@ Get-SpanningAuthentication creates the Spanning Auth Header needed for making al
 
 ```
 Get-SpanningAuthentication [[-ApiToken] <String>] [[-Region] <String>] [[-AdminEmail] <String>]
- [<CommonParameters>]
+ [[-Connection] <Hashtable>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -102,8 +102,23 @@ Accept pipeline input: True (ByPropertyName, ByValue)
 Accept wildcard characters: False
 ```
 
+### -Connection
+This parameter takes a Azure Connection for secure automation
+
+```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 4
+Default value: None
+Accept pipeline input: True (ByPropertyName, ByValue)
+Accept wildcard characters: False
+```
+
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
@@ -115,7 +130,7 @@ Go to Settings | API Token to generate and revoke the token.
 
 ## RELATED LINKS
 
-[Clear-SpanningAuthentication]()
+[Clear-SpanningAuthentication](Clear-SpanningAuthentication.md)
 
-[GitHub Repository: https://github.com/spanningcloudapps]()
+[GitHub Repository: https://github.com/spanningcloudapps](https://github.com/spanningcloudapps)
 

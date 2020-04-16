@@ -23,7 +23,7 @@ Describe 'Get-SpanningUser Functional Tests' {
     return $restResult | ConvertTo-Json
   } `
   -ParameterFilter {
-    $uri -like "https://o365-api-??.spanningbackup.com/users"
+    $uri -like "https://o365-api-??.spanningbackup.com/users?size*"
   } -ModuleName SpanningO365
 
   #This mock creates two additional users for the second request and returns a blank next link to stop the loop
@@ -68,7 +68,7 @@ Describe 'Get-SpanningUser Functional Tests' {
 
     It "GetSpanningUser Returns an [array]" {
       $users = Get-SpanningUser -AuthInfo $auth -UserType All
-      Write-Output -NoEnumerate $users | Should -BeOfType [array]
+      Write-Output $users -NoEnumerate | Should -BeOfType [array]
     }
 
     It "Alternate GetSpanningUser Returns an [array]" {
@@ -102,6 +102,25 @@ Describe 'Get-SpanningUser Functional Tests' {
       $users.Count | Should -Be 3
       # Assert
       Assert-VerifiableMock
+    }
+
+    #Test Get-SpanningUser -Size 100 -Verbose -UserType Admins
+    It "Get-SpanningUser -UserType Admins -Size 100 has 1 User" {
+      [array]$users = Get-SpanningUser -AuthInfo $auth -UserType Admins -Size 100
+      $users.Count | Should -Be 1
+      # Assert
+      Assert-VerifiableMock
+      #Did we call the loop twice? TODO : Mock the Size Parameter to evaluate the effectiveness at changing the Scope
+      Assert-MockCalled -CommandName Invoke-WebRequest -Times 2 -Exactly -ModuleName SpanningO365 -Scope It
+    }
+
+    It "Get-SpanningUser -Size 100 has 4 Users" {
+      [array]$users = Get-SpanningUser -AuthInfo $auth -Size 1
+      $users.Count | Should -Be 4
+      # Assert
+      Assert-VerifiableMock
+      #Did we call the loop twice? TODO : Mock the Size Parameter to evaluate the effectiveness at changing the Scope
+      Assert-MockCalled -CommandName Invoke-WebRequest -Times 2 -Exactly -ModuleName SpanningO365 -Scope It
     }
   }
 }

@@ -96,7 +96,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
@@ -108,11 +108,11 @@ Go to Settings | API Token to generate and revoke the token.
 
 ## RELATED LINKS
 
-[Get-SpanningAuthentication]()
+[Get-SpanningAuthentication](Get-SpanningAuthentication.md)
 
-[Get-SpanningUser]()
+[Get-SpanningUser](Get-SpanningUser.md)
 
-[Disable-SpanningUser]()
+[Disable-SpanningUser](Disable-SpanningUser.md)
 
-[GitHub Repository: https://github.com/spanningcloudapps]()
+[GitHub Repository: https://github.com/spanningcloudapps](https://github.com/spanningcloudapps)
 

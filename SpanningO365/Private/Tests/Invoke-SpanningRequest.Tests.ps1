@@ -126,6 +126,37 @@
         It 'Has Parameter Help Text for RequestAction '{
             $function.Definition.Contains('.PARAMETER RequestAction') | Should Be 'True'
             }
+        It 'Has a Parameter called Size' {
+            $Function.Parameters.Keys.Contains('Size') | Should Be 'True'
+            }
+        It 'Size Parameter is Identified as Mandatory being False' {
+            [String]$Function.Parameters.Size.Attributes.Mandatory | Should be 'False'
+            }
+        It 'Size Parameter is of Int Type' {
+            $Function.Parameters.Size.ParameterType.FullName | Should be 'System.Int32'
+            }
+        It 'Size Parameter is member of ParameterSets' {
+            [String]$Function.Parameters.Size.ParameterSets.Keys | Should Be '__AllParameterSets'
+            }
+        It 'Size Parameter Position is defined correctly' {
+            [String]$Function.Parameters.Size.Attributes.Position | Should be '4'
+            }
+        It 'Does Size Parameter Accept Pipeline Input?' {
+            [String]$Function.Parameters.Size.Attributes.ValueFromPipeline | Should be 'True'
+            }
+        It 'Does Size Parameter Accept Pipeline Input by PropertyName?' {
+            [String]$Function.Parameters.Size.Attributes.ValueFromPipelineByPropertyName | Should be 'True'
+            }
+        It 'Does Size Parameter use advanced parameter Validation? ' {
+            $Function.Parameters.Size.Attributes.TypeID.Name -contains 'ValidateNotNullOrEmptyAttribute' | Should Be 'False'
+            $Function.Parameters.Size.Attributes.TypeID.Name -contains 'ValidateNotNullAttribute' | Should Be 'False'
+            $Function.Parameters.Size.Attributes.TypeID.Name -contains 'ValidateScript' | Should Be 'False'
+            $Function.Parameters.Size.Attributes.TypeID.Name -contains 'ValidateRangeAttribute' | Should Be 'False'
+            $Function.Parameters.Size.Attributes.TypeID.Name -contains 'ValidatePatternAttribute' | Should Be 'False'
+            }
+        It 'Has Parameter Help Text for Size '{
+            $function.Definition.Contains('.PARAMETER Size') | Should Be 'True'
+            }
     }
     Context "Function $($function.Name) - Help Section" {
 
