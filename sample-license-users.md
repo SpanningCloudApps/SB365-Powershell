@@ -1,0 +1,102 @@
+# License Users with an Office 365 License
+
+## Summary
+
+If you have not reviewed the information in the [Usage Examples](samples.md) then you should start there to learn how to authenticate to the Spanning Backup API. Applying a Spanning License to all licensed users involves the following steps:
+
+1. Connect to Office 365
+1. Get a list of all Office 365 licensed users
+1. Calculate the number of available Spanning licenses
+1. Get a list of users that don't have a Spanning license
+1. Compare the two lists to determine who needs a Spanning license
+1. Test if you have enough licenses and offer an about
+1. Apply the licenses (or as many as are available)
+1. Optionally, report the remaining licenses
+
+## Connect to Office 365
+
+```powershell
+$creds = Get-Credential -Message "O365" -UserName "ruby@doghousetoys.com"
+Connect-MsolService -Credential $creds
+```
+
+## Get a list of all Office 365 licensed users
+
+```powershell
+$licensedO365Users = Get-MsolUser -All | where {$_.isLicensed -eq $true}
+```
+
+## Calculate the number of available Spanning licenses
+
+```powershell
+$token = "2a4d91f3-dc91-46c5-bfa9-a6f0adefed33"
+$admin = "ruby@doghousetoys.com"
+$region = "US"
+$auth = Get-SpanningAuthentication -ApiToken $token -Region $region -AdminEmail $admin
+
+# Get the details of the tenant
+$tenant = Get-SpanningTenantInfo
+# Calculate the available licenses
+$availableLicenses = $tenant.licenses - $tenant.assigned
+```
+
+## Get a list of users that don't have a Spanning license
+
+```powershell
+#List Unlicensed Users
+$unlicensedUsers = Get-SpanningUser -UserType Unassigned
+```
+
+## Compare the two lists to determine who needs a Spanning license
+
+```powershell
+$usersToLicense = @()
+
+foreach ($user in $licensedO365Users){
+    $userNeedsSpanning = $unlicensedUsers | where {$_.userPrincipalName -eq $user.UserPrincipalName}
+    if ($userNeedsSpanning){
+        $usersToLicense += $userNeedsSpanning
+    }
+}
+```
+
+## Test if you have enough licenses and offer an about
+
+```powershell
+$aborted = $false
+# Test, do we have enough licenses
+if ($availableLicenses -lt $usersToLicense.Count){
+    Write-Warning "You do not have enough licenses to protect all unlicensed users."
+    $response = read-host "Press a to abort, any other key to continue and assign as many licenses as you have left." 
+    $aborted = $response -eq "a"
+}
+```
+
+## Apply the licenses (or as many as are available)
+
+```powershell
+if (!$aborted){
+    foreach ($unlicensedUser in $usersToLicense){
+        if ($availableLicenses -gt 0){
+            # Note the -WhatIf parameter, this is for testing the script. Remove it for production
+            Enable-SpanningUser -UserPrincipalName $unlicensedUser.UserPrincipalName -WhatIf
+            $availableLicenses--
+        } else {
+            Write-Warning "You are out of licenses"
+            break
+        }
+    }
+} else {
+    Write-Warning "Process Aborted"
+}
+```
+
+## Optionally, report the remaining licenses
+
+```powershell
+# Get the details of the tenant
+$tenant = Get-SpanningTenantInfo
+# Calculate the available licenses
+$availableLicenses = $tenant.licenses - $tenant.assigned
+Write-Output "You have $($availableLicenses) licenses remaining."
+```
