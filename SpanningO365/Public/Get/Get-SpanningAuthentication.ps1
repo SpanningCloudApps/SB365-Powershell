@@ -43,6 +43,14 @@
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
+        [ValidateScript({
+            try {
+                [System.Guid]::Parse($_) | Out-Null
+                $true
+            } catch {
+                throw "$_. Token is malformed. Check the API Token value."
+            }
+        })]
         [String]
         #The API Token from the Spanning Backup Portal Settings Page
         $ApiToken,
