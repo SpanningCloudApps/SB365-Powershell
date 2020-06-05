@@ -250,10 +250,7 @@ Get-AzureADGroup -SearchString "Sales Team" | Get-AzureADGroupMember | `
 
 ### License Users with an Office 365 License
 
-```powershell
-#This sample is incomplete
-Get-AzureADUser | Where {$_.AssignedLicenses.Count -ne 0 }
-```
+View the complete example for [License Users with an Office 365 License](sample-license-users.md)
 
 ### Export Unlicensed Users to CSV
 
