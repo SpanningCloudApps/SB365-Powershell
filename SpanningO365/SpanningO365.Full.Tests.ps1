@@ -89,9 +89,4 @@ if ($PublicFunctions.count -gt 0) {
                 }
        }
     }
-
-if ($Error.Count -gt 0)
-{
-    Write-Warning "Script Completed with $($Error.Count) error(s)."
-}
     
