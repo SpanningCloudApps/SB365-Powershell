@@ -7,3 +7,6 @@ test*.csv
 test*.txt
 test.ignore
 
+# Release folder
+/release*
+
