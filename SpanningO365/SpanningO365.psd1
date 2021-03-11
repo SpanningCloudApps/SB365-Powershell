@@ -71,7 +71,7 @@
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
     FunctionsToExport = 'Get-SpanningAuthentication','Clear-SpanningAuthentication', `
                         'Get-SpanningTenantInfo','Get-SpanningUser','Enable-SpanningUser','Enable-SpanningUserList', `
-                        'Get-SpanningUsers','Disable-SpanningUser','Get-SpanningAdmins','Get-SpanningNonAdmins', `
+                        'Get-SpanningUsers','Disable-SpanningUser','Get-SpanningAdmins','Get-SpanningNonAdmins','Disable-SpanningUserList', `
                         'Get-SpanningAssignedUsers','Get-SpanningUnassignedUsers','Get-SpanningTenantInfoPaymentStatus', `
                         'Enable-SpanningUsersFromCSVAdvanced','Disable-SpanningUsersFromCSVAdvanced'
     
