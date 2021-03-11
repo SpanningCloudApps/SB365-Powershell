@@ -15,7 +15,7 @@
     .PARAMETER Size
         This parameter takes a page size parameter for the request. It defaults to 1000.
     .EXAMPLE
-        This function is not caled directly.
+        This function is not called directly.
     .NOTES
         The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
     .LINK
@@ -38,7 +38,7 @@
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
-        [ValidateSet('Tenant','User')]
+        [ValidateSet('Tenant','User','Users')]
         #Type of request
         [string]$RequestType,
         [Parameter(
@@ -49,6 +49,14 @@
         [String]
         #User Principal Name (email address) of the user to act on.
         $UserPrincipalName,
+        [Parameter(
+            Position=2,
+            Mandatory=$false,
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName=$true)]
+        [String[]]
+        #User Principal Names array of the users to act on.
+        $UserPrincipalNames,
         [Parameter(
             Position=3,
             Mandatory=$false,
@@ -128,12 +136,38 @@
           $results = Invoke-WebRequest -uri $request -Headers $headers -Method $method -UseBasicParsing | ConvertFrom-Json
         }
       }
+      Users
+      {
+        if ([string]::IsNullOrEmpty($UserPrincipalNames))
+        {
+          Write-Verbose "Invoke-SpanningRequest UPN[] null"
+        } else {
+          switch ($RequestAction) {
+            Assign {
+              Write-Verbose "Invoke-SpanningRequest $($UserPrincipalNames) Assign"
+              $request = "https://o365-api-$region.spanningbackup.com/users/assign"
+              $method = "POST"
+            }
+            Unassign {
+              Write-Verbose "Invoke-SpanningRequest $($UserPrincipalNames) Unassign"
+              $request = "https://o365-api-$region.spanningbackup.com/users/unassign"
+              $method = "POST"
+            }
+            Default {
+              Write-Verbose "Invoke-SpanningRequest $($UserPrincipalNames) only, no action."
+            }
+          }
+          Write-Verbose "Invoke-SpanningRequest: $($request)"
+          $results = Invoke-WebRequest -uri $request -Headers $headers -Method $method -Body $UserPrincipalNames -UseBasicParsing -ContentType "application/json" | ConvertFrom-Json
+
+        }
+      }
       Tenant
       {
         Write-Verbose "Invoke-SpanningRequest Tenant"
         $request = "https://o365-api-$region.spanningbackup.com/tenant"
         Write-Verbose "Invoke-SpanningRequest: $($request)"
-        $results = Invoke-WebRequest -uri $request -Headers $headers -Method $method -UseBasicParsing | ConvertFrom-Json
+        $results = Invoke-WebRequest -uri $request -Headers $headers -Method $method -UseBasicParsing  | ConvertFrom-Json
       }
     }
 
