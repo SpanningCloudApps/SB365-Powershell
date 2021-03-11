@@ -42,12 +42,12 @@
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true,
             HelpMessage="String array of UPNs to enable")]
-        [ValidateLength(1,500)]
+        [ValidateCount(1,500)]
         [String[]]
         #User Principal Name (email address) of the users to enable.
         $UserPrincipalNames
     )
-    Write-Verbose "Enable-SpanningUsers"
+    Write-Verbose "Enable-SpanningUserList"
 
     if (!$AuthInfo) {
        Write-Verbose "No AuthInfo provided, checking Session State"

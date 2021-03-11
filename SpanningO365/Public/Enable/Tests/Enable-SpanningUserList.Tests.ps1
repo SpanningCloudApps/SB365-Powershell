@@ -60,7 +60,7 @@
             $Function.Parameters.UserPrincipalNames.Attributes.TypeID.Name -contains 'ValidateScript' | Should Be 'False'
             $Function.Parameters.UserPrincipalNames.Attributes.TypeID.Name -contains 'ValidateRangeAttribute' | Should Be 'False'
             $Function.Parameters.UserPrincipalNames.Attributes.TypeID.Name -contains 'ValidatePatternAttribute' | Should Be 'False'
-            $Function.Parameters.UserPrincipalNames.Attributes.TypeID.Name -contains 'ValidateLengthAttribute' | Should Be 'True'
+            $Function.Parameters.UserPrincipalNames.Attributes.TypeID.Name -contains 'ValidateCountAttribute' | Should Be 'True'
             }
         It 'Has Parameter Help Text for UserPrincipalNames '{
             $function.Definition.Contains('.PARAMETER UserPrincipalNames') | Should Be 'True'
