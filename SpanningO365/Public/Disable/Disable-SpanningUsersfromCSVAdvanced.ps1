@@ -91,7 +91,7 @@
         Write-Verbose "No AuthInfo provided, checking Session State"
         $AuthInfo = Get-AuthInfo
      }
-     
+
     # import users list so we can validate
     $existing_list = Get-SpanningUsers
 
