@@ -23,7 +23,7 @@
         Disable-SpanningUsersfromCSVAdvanced -Path .\users.csv -UpnColumn 1 -FilterColumn 2 -FilterColumnValue "Finance" -WhatIf
         Test what would happen if you disabled the users with a value of Finance in the third column.
     .EXAMPLE
-        Disable-SpanningUsersfromCSVAdvanced -WhatIf
+        Disable-SpanningUsersfromCSVAdvanced -Path .\users.csv -UpnColumn 1 -WhatIf
         Process all entries in the CSV file and show the accounts that could be disable.
     .NOTES
         The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
@@ -45,7 +45,7 @@
             ValueFromPipelineByPropertyName=$true,
             HelpMessage="AuthInfo from Get-SpanningAuthentication")
         ]
-        #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
+        #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script variable will be checked. If null you will be prompted.
         $AuthInfo,
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
@@ -91,11 +91,7 @@
         Write-Verbose "No AuthInfo provided, checking Session State"
         $AuthInfo = Get-AuthInfo
      }
-     #$headers = usernfo[0]
-     #$headers = $AuthInfo.Headers
-     #$region = usernfo[1]
-     #$region = $AuthInfo.Region
-
+     
     # import users list so we can validate
     $existing_list = Get-SpanningUsers
 
@@ -109,7 +105,8 @@
     Write-Verbose "$($assigned_users.count) Spanning users currently assigned"
     Write-Verbose "Processing..."
 
-    $disableCount = 0
+    #$disableCount = 0
+    $userList = [System.Collections.ArrayList]@()
     # begin looping through the matched CSV
     foreach ($user in $match_csv) {
 
@@ -123,18 +120,16 @@
             continue
         }
 
-        #once validated, we can actually execute the disable command
-        $disableCount++
-         if ($pscmdlet.ShouldProcess("$UserPrincipalName", "Disable-SpanningUser")){
-            #ToDo Use Disable-SpanningUser
+        #once validated, we can actually add the user to disable
+        Write-Verbose "Adding user $UserPrincipalName to list"
+        $userList.Add($UserPrincipalName) | Out-Null
 
-            #$uri = "https://o365-api-$region.spanningbackup.com/user/$userPrincipalName/unassign"
-            #$uri
-            #$results = Invoke-WebRequest -uri $uri -Headers $headers -Method POST | ConvertFrom-Json
-            $results = Disable-SpanningUser -AuthInfo $AuthInfo -UserPrincipalName $UserPrincipalName
-            Write-Verbose "Processing for user '$($UserPrincipalName)' complete"
-            Write-Output $results
-         }
+    }
+
+    if ($pscmdlet.ShouldProcess("Processing $($userList.Count) users", "Disable-SpanningUserList")){
+        $results = Disable-SpanningUserList -AuthInfo $AuthInfo -UserPrincipalNames $userList
+        Write-Verbose "Processing for users complete"
+        Write-Output $results
     }
 
     $updated_users = Get-SpanningAssignedUsers

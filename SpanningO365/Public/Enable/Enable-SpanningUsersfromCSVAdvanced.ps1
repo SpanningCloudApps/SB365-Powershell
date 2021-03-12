@@ -23,7 +23,7 @@
         Enable-SpanningUsersfromCSVAdvanced -Path .\users.csv -UpnColumn 1 -FilterColumn 2 -FilterColumnValue "Finance" -WhatIf
         Test what would happen if you enabled the users with a value of Finance in the third column.
     .EXAMPLE
-        Enable-SpanningUsersfromCSVAdvanced -WhatIf
+        Enable-SpanningUsersfromCSVAdvanced -Path .\users.csv -UpnColumn 0 -WhatIf
         Process all entries in the CSV file and show the accounts that could be processed.
     .NOTES
         The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
@@ -38,7 +38,7 @@
         DefaultParametersetName='None')]
     param(
         [Parameter(Position=0,Mandatory=$false,ValueFromPipeline=$true,ValueFromPipelineByPropertyName=$true)]
-        $AuthInfo,#The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
+        $AuthInfo,#The AuthInfo result from Get-SpanningAuthentication. If not provided the Script variable will be checked. If null you will be prompted.
         [Parameter(Mandatory=$true)]
         [ValidateNotNullOrEmpty()]
         [String]$Path,
@@ -70,14 +70,11 @@
     } else {
         $match_csv = Import-CSV -path $Path
     }
+
     if (!$AuthInfo) {
         Write-Verbose "No AuthInfo provided, checking Session State"
         $AuthInfo = Get-AuthInfo
      }
-     #$headers = usernfo[0]
-     #$headers = $AuthInfo.Headers
-     #$region = usernfo[1]
-     #$region = $AuthInfo.Region
 
     # import users list so we can validate
     $existing_list = Get-SpanningUsers
@@ -92,7 +89,8 @@
     Write-Verbose "$($assigned_users.count) Spanning users currently assigned"
     Write-Verbose "Processing..."
 
-    $enableCount = 0
+    #$enableCount = 0
+    $userList = [System.Collections.ArrayList]@()
     # begin looping through the matched CSV
     foreach ($user in $match_csv) {
 
@@ -101,26 +99,23 @@
         Write-Verbose "Processing $($UserPrincipalName)"
 
         #Validate against existing users so we don't throw an error
-        #if ($existing_list.userPrincipalName -notcontains $UserPrincipalName -eq "True") {
         if ($existing_list.userPrincipalName -notcontains $UserPrincipalName) {
             Write-Verbose "User $($UserPrincipalName) was not found in list. Proceeding to next user"
             continue
         }
 
-        #once validated, we can actually execute the enable command
-        $enableCount++
-        if ($pscmdlet.ShouldProcess("$UserPrincipalName", "Enable-SpanningUser")){
-            #ToDo Use Enable-SpanningUser
-            #$uri = "https://o365-api-$region.spanningbackup.com/user/$userPrincipalName/assign"
-            #$uri
-            #$results = Invoke-WebRequest -uri $uri -Headers $headers -Method POST | ConvertFrom-Json
-            $results = Enable-SpanningUser -AuthInfo $AuthInfo -UserPrincipalName $UserPrincipalName
-            Write-Verbose "Processing for user complete"
-            Write-Output $results
-         }
+        #once validated, we can actually add the user to be processed
+        Write-Verbose "Adding user $UserPrincipalName to list"
+        $userList.Add($UserPrincipalName) | Out-Null
     }
 
-    if ($pscmdlet.ShouldProcess("Count of users to enable $($enableCount)")){
+    if ($pscmdlet.ShouldProcess("Processing $($userList.Count) users", "Enable-SpanningUserList")){
+        $results = Enable-SpanningUserList -AuthInfo $AuthInfo -UserPrincipalNames $userList
+        Write-Verbose "Processing for users complete"
+        Write-Output $results
+    }
+
+    if ($pscmdlet.ShouldProcess("Count of users to enable $($userList.Count)")){
         $updated_users = Get-SpanningAssignedUsers
         Write-Verbose "$($updated_users.count) Users are now enabled for Spanning"
     }
