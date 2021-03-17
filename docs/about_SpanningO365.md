@@ -1,7 +1,7 @@
 ﻿# About SpanningO365 PowerShell Module
 
 # SHORT DESCRIPTION
-The **SpanningO365** module enables administrators to use the Spanning Backup for Office 365 API in PowerShell scripts and automation projects. Once Authenticated an Administrator can use the functions in the module to evaluate licensed and unlicensed users, enable and disable licenses, and determin the status of the Spanning tenant.
+The **SpanningO365** module enables administrators to use the Spanning Backup for Office 365 API in PowerShell scripts and automation projects. Once Authenticated an Administrator can use the functions in the module to evaluate licensed and unlicensed users, enable and disable licenses, and determine the status of the Spanning tenant.
 
 All of the cmdlets that are available in this module are documented on the [SpanningO365 page](SpanningO365.md)
 
