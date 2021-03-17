@@ -55,7 +55,7 @@
     }
 
     $userPrincipalNamesJson = ([PSCustomObject]@{
-        usersPrincipalNames = $UserPrincipalNames
+        userPrincipalNames = $UserPrincipalNames
         } | ConvertTo-Json )
 
     if ($pscmdlet.ShouldProcess("$UserPrincipalNames", "Enable-SpanningUsers")){
