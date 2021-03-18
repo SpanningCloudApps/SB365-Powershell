@@ -15,6 +15,7 @@ The **SpanningO365** module enables administrators to use the Spanning Backup fo
 Clears the session Authentication variables
 
 ### [Disable-SpanningUser](Disable-SpanningUser.md)
+[DEPRECATED] - Use Disable-SpanningUserList
 Removes the user license from a licensed user
 
 ### [Disable-SpanningUserList](Disable-SpanningUserList.md)
@@ -24,6 +25,7 @@ Remove licenses from a list of user accounts
 Disable licenses for Spanning users from a comma separated value file.
 
 ### [Enable-SpanningUser](Enable-SpanningUser.md)
+[DEPRECATED] - Use Enable-SpanningUserList
 Apply a license to a user account
 
 ### [Enable-SpanningUserList](Enable-SpanningUserList.md)

@@ -8,6 +8,7 @@ schema: 2.0.0
 # Enable-SpanningUser
 
 ## SYNOPSIS
+[DEPRECATED] - Use Enable-SpanningUserList
 Apply a license to a user account
 
 ## SYNTAX
