@@ -1,9 +1,9 @@
 ﻿function Enable-SpanningUsersFromCSVAdvanced {
     <#
     .SYNOPSIS
-        Enable licenses for Spanning users from a comma seperated value file.
+        Enable licenses for Spanning users from a comma separated value file.
     .DESCRIPTION
-        Enable licenses for Spanning users from a comma seperated value file.
+        Enable licenses for Spanning users from a comma separated value file.
         If Authentication information is not supplied, or if you have not previously called Get-SpanningAuthentication, you will be prompted for ApiToken, Region, and Admin Email
     .PARAMETER AuthInfo
         This parameter takes an AuthInfo object from Get-SpanningAuthentication.

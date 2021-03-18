@@ -8,7 +8,7 @@ schema: 2.0.0
 # Enable-SpanningUsersFromCSVAdvanced
 
 ## SYNOPSIS
-Enable licenses for Spanning users from a comma seperated value file.
+Enable licenses for Spanning users from a comma separated value file.
 
 ## SYNTAX
 
@@ -25,7 +25,7 @@ Enable-SpanningUsersFromCSVAdvanced [[-AuthInfo] <Object>] -Path <String> -UpnCo
 ```
 
 ## DESCRIPTION
-Enable licenses for Spanning users from a comma seperated value file.
+Enable licenses for Spanning users from a comma separated value file.
 If Authentication information is not supplied, or if you have not previously called Get-SpanningAuthentication, you will be prompted for ApiToken, Region, and Admin Email
 
 ## EXAMPLES
@@ -56,7 +56,7 @@ Process all entries in the CSV file and show the accounts that could be processe
 
 ### -AuthInfo
 The AuthInfo result from Get-SpanningAuthentication.
-If not provided the Script varable will be checked.
+If not provided the Script variable will be checked.
 If null you will be prompted.
 
 ```yaml
@@ -163,7 +163,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
