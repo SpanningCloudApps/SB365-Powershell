@@ -33,7 +33,7 @@
             ValueFromPipelineByPropertyName=$true,
             HelpMessage="AuthInfo from Get-SpanningAuthentication")
         ]
-        #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
+        #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script variable will be checked. If null you will be prompted.
         $AuthInfo,
 
         [Parameter(

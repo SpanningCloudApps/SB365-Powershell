@@ -46,7 +46,7 @@ if ($PrivateFunctions.count -gt 0) {
            } 
       $function = $AllFunctions.Where{ $_.Name -eq $PrivateFunction.BaseName}
       # $PrivateFunctionTests = $PrivateFunctionstests.Where{$_.Name -match $PrivateFunction.BaseName }
-      $PrivateFunctionTests = $PrivateFunctionstests.Where{$_.Name -like "$($PublicFunction.BaseName).*" }
+      $PrivateFunctionTests = $PrivateFunctionstests.Where{$_.Name -like "$($PrivateFunction.BaseName).*" }
       
             foreach ($PrivateFunctionTest in $PrivateFunctionTests) {
                 . $($PrivateFunctionTest.FullName) $function

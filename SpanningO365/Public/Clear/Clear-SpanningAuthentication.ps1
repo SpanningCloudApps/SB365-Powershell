@@ -4,7 +4,7 @@
   Clears the session Authentication variables
 .DESCRIPTION
   Clears all script level session variables associated with authentication.
-  This cmdlet is useful when switching bewteen environments requireing different API Tokens.
+  This cmdlet is useful when switching between environments requiring different API Tokens.
 
 .EXAMPLE
   Clear-SpanningAuthentication

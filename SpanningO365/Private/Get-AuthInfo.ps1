@@ -7,7 +7,7 @@
     .PARAMETER AuthInfo
         This parameter takes an AuthInfo object from Get-SpanningAuthentication.
     .EXAMPLE
-        This function is not caled directly.
+        This function is not called directly.
     .NOTES
         The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
     .LINK
@@ -22,7 +22,7 @@
             ValueFromPipelineByPropertyName=$true,
             HelpMessage="AuthInfo from Get-SpanningAuthentication")
         ]
-        #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script varable will be checked. If null you will be prompted.
+        #The AuthInfo result from Get-SpanningAuthentication. If not provided the Script variable will be checked. If null you will be prompted.
         $AuthInfo
     )
     Write-Verbose "Get-AuthInfo"
