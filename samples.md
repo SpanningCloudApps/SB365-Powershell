@@ -130,10 +130,11 @@ trial
 
 ## Enabling Users
 
-Users are enabled or licensed for Spanning Backup for Office 365 using the **Enable-SpanningUser** function. This function takes a UserPrincipalName and applies a Spanning license to the user. Once enabled, the user will be included in the next scheduled backup. The **Enable-SpanningUser** function accepts input from the pipeline and can be included in more complex user and group queries if necessary. See the [Advanced Use Cases](#advanced) section later in this article.
+Users are enabled or licensed for Spanning Backup for Office 365 using the **Enable-SpanningUserList** function. This function takes an array of UserPrincipalNames and applies a Spanning license to the user or users. Once enabled, the user will be included in the next scheduled backup. The **Enable-SpanningUserList** function accepts input from the pipeline and can be included in more complex user and group queries if necessary. See the [Advanced Use Cases](#advanced) section later in this article.
 
 ```powershell
-Enable-SpanningUser -UserPrincipalName "ruby@doghousetoys.com"
+$users = "cheyenne@doghousetoys.com","ruby@doghousetoys.com"
+Enable-SpanningUserList -UserPrincipalNames $users
 ```
 
 If you have a comma separated value file and want to use it for bulk licensing you can use the **Enable-SpanningUsersFromCSVAdvanced** function. If your CSV file is formatted as follows:
@@ -181,21 +182,22 @@ cheyenne@doghousetoys.com  True
 
 ## Disabling Users
 
-If you need to revoke a Spanning Backup for Office 365 license you can use the **Disable-SpanningUser** function. This function requires a UPN for the target user. You will be prompted to confirm the removal of the license as this will also delete the associated backups for the user.
+If you need to revoke a Spanning Backup for Office 365 license you can use the **Disable-SpanningUserList** function. This function requires an array of UPNs for the target user or users. You will be prompted to confirm the removal of the license as this will also delete the associated backups for the users in 30 days.
 
 ```powershell
-Disable-SpanningUser -UserPrincipalName "kobe@doghousetoys.com"
+$users = "kobe@doghousetoys.com","ruby@doghousetoys.com"
+Disable-SpanningUserList -UserPrincipalNames $users
 ```
 
 The result will confirm the license removal.
 
 ```plaintext
-userPrincipalName          licensed
------------------          --------
-kobe@doghousetoys.com      False
+userPrincipalName                                licensed
+-----------------                                --------
+{kobe@doghousetoys.com,ruby@doghousetoys.com}      False
 ```
 
-In the event you wish to remove licenses in bulk you can use the **Disable-SpanningUsersFromCSVAdvanced** function or the alternatives in the [Advanced Use Cases](#advanced) section later in this article. Like it's counterpart **Enable-SpanningUsersFromCSVAdvanced** you can either disable all users listed in the CSV file or provide a filter column and filter value.
+In the event you wish to remove licenses in bulk from a CSV file, you can use the **Disable-SpanningUsersFromCSVAdvanced** function or the alternatives in the [Advanced Use Cases](#advanced) section later in this article. Like it's counterpart **Enable-SpanningUsersFromCSVAdvanced** you can either disable all users listed in the CSV file or provide a filter column and filter value.
 
 ```powershell
 Disable-SpanningUsersFromCSVAdvanced  -Path "C:\Test\Users.csv" -UpnColumn 1
@@ -204,12 +206,9 @@ Disable-SpanningUsersFromCSVAdvanced  -Path "C:\Test\Users.csv" -UpnColumn 1
 The result should be:
 
 ```plaintext
-userPrincipalName          licensed
--------------------------  --------
-willa@doghousetoys.com     False
-kobe@doghousetoys.com      False
-jazzy@doghousetoys.com     False
-cheyenne@doghousetoys.com  False
+userPrincipalNames                                                                                licensed
+-------------------------                                                                         --------
+{willa@doghousetoys.com, kobe@doghousetoys.com, jazzy@doghousetoys.com, cheyenne@doghousetoys.com}  False
 ```
 
 You can also use a filter on your CSV file if you only wish to remove licenses from a subset of users in the file. The process is the same as the **Enable-SpanningUsersFromCSVAdvanced** function.
@@ -222,10 +221,9 @@ Disable-SpanningUsersFromCSVAdvanced  -Path "C:\Test\Users.csv" -UpnColumn 1 `
 The result should be:
 
 ```plaintext
-userPrincipalName          licensed
--------------------------  --------
-willa@doghousetoys.com     False
-cheyenne@doghousetoys.com  False
+userPrincipalName                                   licensed
+-------------------------                           --------
+{willa@doghousetoys.com, cheyenne@doghousetoys.com}  False
 ```
 
 ## <a name="advanced"></a>Advanced Use Cases
@@ -243,9 +241,14 @@ $cred = Get-Credential -Message "Azure AD Admin" -UserName "ruby@doghousetoys.co
 
 #Uses AzureAd Module
 Connect-AzureAd -Credential $cred
+#Create an ArrayList
+$userList = [System.Collections.ArrayList]@()
 
 Get-AzureADGroup -SearchString "Sales Team" | Get-AzureADGroupMember | `
-    foreach {Enable-SpanningUser -UserPrincipalName $_.UserPrincipalName }
+    foreach {$userList.Add($_.UserPrincipalName)}
+#Submit the list to Spanning
+Enable-SpanningUserList -UserPrincipalNames $userList
+    
 ```
 
 ### License Users with an Office 365 License
@@ -267,9 +270,8 @@ In the event you wish to enable or disable users in bulk you can use the **-What
 ```powershell
 $users2activate = Get-Content -Path "C:\Test\Users.csv"
 
-foreach ($user in $users2activate){
-    Enable-SpanningUser -UserPrincipalName $user.UPN -WhatIf
-}
+Enable-SpanningUserList -UserPrincipalNames $users2activate -WhatIf
+
 ```
 
 PowerShell will not actually enable the license. It will return What if: statements.
