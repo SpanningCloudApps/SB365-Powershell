@@ -25,10 +25,16 @@ If Authentication information is not supplied, or if you have not previously cal
 
 ### EXAMPLE 1
 ```
-$users = "AutomateB@M365x571734.OnMicrosoft.com","BiancaP@M365x571734.OnMicrosoft.com"
+$users = "cheyenne@doghousetoys.com","ruby@doghousetoys.com"
+Disable-SpanningUserList -UserPrincipalNames $users -AuthInfo $auth
 ```
 
+### EXAMPLE 2
+```
+$users = "cheyenne@doghousetoys.com","ruby@doghousetoys.com"
 Disable-SpanningUserList -UserPrincipalNames $users
+```
+
 Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
 
 ## PARAMETERS

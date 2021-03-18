@@ -10,10 +10,13 @@
     .PARAMETER UserPrincipalNames
         This parameter is the array of UPNs of the users to enable.
     .EXAMPLE
-        $users = "AutomateB@M365x571734.OnMicrosoft.com","BiancaP@M365x571734.OnMicrosoft.com"
+        $users = "cheyenne@doghousetoys.com","ruby@doghousetoys.com"
+        Enable-SpanningUserList -UserPrincipalNames $users -AuthInfo $auth
+    .EXAMPLE
+        $users = "cheyenne@doghousetoys.com","ruby@doghousetoys.com"
         Enable-SpanningUserList -UserPrincipalNames $users
         Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
-    .NOTES
+        .NOTES
         The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
     .LINK
         Get-SpanningAuthentication
