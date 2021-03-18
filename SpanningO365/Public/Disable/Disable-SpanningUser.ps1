@@ -1,7 +1,7 @@
 ﻿function Disable-SpanningUser {
     <#
     .SYNOPSIS
-    Removes the user license from a licensed user
+    [DEPRECATED] Removes the user license from a licensed user
     .DESCRIPTION
     Removes the user license asignment from the Spanning Backup Portal for the supplied user principal name.
     If Authentication information is not supplied, or if you have not previously called Get-SpanningAuthentication, you will be prompted for ApiToken, Region, and Admin Email
@@ -13,6 +13,8 @@
     Disable-SpanningUser -UserPrincipalName user@domain.com
     Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
     .NOTES
+    [DEPRECATED]
+    This function is deprecated. Please use Disable-SpanningUserList instead.
     The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
     .LINK
         Get-SpanningAuthentication
@@ -45,14 +47,12 @@
     )
     Write-Verbose "Disable-SpanningUser"
 
+    Write-Warning "Disable-SpanningUser is deprecated, use Disable-SpanningUserList instead"
+
     if (!$AuthInfo) {
        Write-Verbose "No AuthInfo provided, checking Session State"
        $AuthInfo = Get-AuthInfo
     }
-    #$headers = usernfo[0]
-    #$headers = $AuthInfo.Headers
-    #$region = usernfo[1]
-    #$region = $AuthInfo.Region
 
     if ($pscmdlet.ShouldProcess("$UserPrincipalName", "Disable-SpanningUser")){
         #Actually do the work
