@@ -77,7 +77,8 @@ if ($PublicFunctions.count -gt 0) {
             }
 
             $function = $AllFunctions.Where{ $_.Name -eq $PublicFunction.BaseName}
-            $publicfunctionTests = $Publicfunctionstests.Where{$_.Name -match $PublicFunction.BaseName }
+            #$publicfunctionTests = $Publicfunctionstests.Where{$_.Name -match $PublicFunction.BaseName }
+            $publicfunctionTests = $Publicfunctionstests.Where{$_.Name -like "$($PublicFunction.BaseName).*" }
 
             foreach ($publicfunctionTest in $publicfunctionTests) {
                 . $($PublicFunctionTest.FullName) $function

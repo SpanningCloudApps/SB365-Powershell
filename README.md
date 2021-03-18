@@ -41,3 +41,8 @@ You can view the detailed documentation in the [Documentation](./docs/about_Span
 ## Introductory Video
 
 [![Watch the introduction video.](./docs/images/video-placeholder.jpg)](https://spanning.wistia.com/medias/7j46uee1ko)
+
+## Build and Maintenance
+
+This module is tested with [Pester](https://github.com/pester/Pester) and [PesterHelpers](https://github.com/PowerShellModules/PesterHelpers).
+Documentation is generated with [platyPS](https://github.com/PowerShell/platyPS)

@@ -12,7 +12,7 @@
     RootModule = '.\SpanningO365.psm1'
     
     # Version number of this module.
-    ModuleVersion = '3.4.0.2'
+    ModuleVersion = '3.5.0.0'
     
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -27,7 +27,7 @@
     CompanyName = 'Spanning Cloud Apps'
     
     # Copyright statement for this module
-    Copyright = '(c) 2018-20 Spanning Cloud Apps. All rights reserved.'
+    Copyright = '(c) 2018-21 Spanning Cloud Apps. All rights reserved.'
     
     # Description of the functionality provided by this module
     Description = 'Spanning Backup for Office 365 REST API PowerShell Module provides PowerShell access to manage user licenses and get user and tenant information.'
@@ -70,8 +70,8 @@
     
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
     FunctionsToExport = 'Get-SpanningAuthentication','Clear-SpanningAuthentication', `
-                        'Get-SpanningTenantInfo','Get-SpanningUser','Enable-SpanningUser', `
-                        'Get-SpanningUsers','Disable-SpanningUser','Get-SpanningAdmins','Get-SpanningNonAdmins', `
+                        'Get-SpanningTenantInfo','Get-SpanningUser','Enable-SpanningUser','Enable-SpanningUserList', `
+                        'Get-SpanningUsers','Disable-SpanningUser','Get-SpanningAdmins','Get-SpanningNonAdmins','Disable-SpanningUserList', `
                         'Get-SpanningAssignedUsers','Get-SpanningUnassignedUsers','Get-SpanningTenantInfoPaymentStatus', `
                         'Enable-SpanningUsersFromCSVAdvanced','Disable-SpanningUsersFromCSVAdvanced'
     
