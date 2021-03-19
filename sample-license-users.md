@@ -67,8 +67,7 @@ $aborted = $false
 # Test, do we have enough licenses
 if ($availableLicenses -lt $usersToLicense.Count){
     Write-Warning "You do not have enough licenses to protect all unlicensed users."
-    $response = read-host "Press a to abort, any other key to continue and assign as many licenses as you have left." 
-    $aborted = $response -eq "a"
+    $aborted = $true
 }
 ```
 
@@ -76,16 +75,14 @@ if ($availableLicenses -lt $usersToLicense.Count){
 
 ```powershell
 if (!$aborted){
-    foreach ($unlicensedUser in $usersToLicense){
-        if ($availableLicenses -gt 0){
-            # Note the -WhatIf parameter, this is for testing the script. Remove it for production
-            Enable-SpanningUser -UserPrincipalName $unlicensedUser.UserPrincipalName -WhatIf
-            $availableLicenses--
-        } else {
-            Write-Warning "You are out of licenses"
-            break
-        }
+    if ($availableLicenses -gt 0){
+        # Note the -WhatIf parameter, this is for testing the script. Remove it for production
+        Enable-SpanningUserList -UserPrincipalNames $usersToLicense -WhatIf
+    } else {
+        Write-Warning "You are out of licenses"
+        break
     }
+
 } else {
     Write-Warning "Process Aborted"
 }

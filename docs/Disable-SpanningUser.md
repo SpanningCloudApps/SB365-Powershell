@@ -8,6 +8,7 @@ schema: 2.0.0
 # Disable-SpanningUser
 
 ## SYNOPSIS
+[DEPRECATED] - Use Disable-SpanningUserList
 Removes the user license from a licensed user
 
 ## SYNTAX

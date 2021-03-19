@@ -1,6 +1,7 @@
 ﻿function Enable-SpanningUser {
     <#
     .SYNOPSIS
+        [DEPRECATED]
         Apply a license to a user account
     .DESCRIPTION
         Apply a license to the UserPrincipalName.
@@ -13,6 +14,8 @@
         Enable-SpanningUser -UserPrincipalName user@domain.com
         Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
     .NOTES
+        [DEPRECATED]
+        This function is deprecated. Please use Enable-SpanningUserList instead.
         The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
     .LINK
         Get-SpanningAuthentication
@@ -46,14 +49,13 @@
     )
     Write-Verbose "Enable-SpanningUser"
 
+    Write-Warning "Enable-SpanningUser id deprecated, use Enable-SpanningUserList instead"
+
     if (!$AuthInfo) {
        Write-Verbose "No AuthInfo provided, checking Session State"
        $AuthInfo = Get-AuthInfo
     }
-    #$headers = usernfo[0]
-    #$headers = $AuthInfo.Headers
-    #$region = usernfo[1]
-    #$region = $AuthInfo.Region
+
     if ($pscmdlet.ShouldProcess("$UserPrincipalName", "Enable-SpanningUser")){
         #Actually do the work
         Write-Verbose "Assigning license to $($UserPrincipalName)"
