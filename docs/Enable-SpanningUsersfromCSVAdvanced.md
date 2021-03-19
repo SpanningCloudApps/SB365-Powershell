@@ -47,7 +47,7 @@ Test what would happen if you enabled the users with a value of Finance in the t
 
 ### EXAMPLE 3
 ```
-Enable-SpanningUsersfromCSVAdvanced -WhatIf
+Enable-SpanningUsersfromCSVAdvanced -Path .\users.csv -UpnColumn 0 -WhatIf
 ```
 
 Process all entries in the CSV file and show the accounts that could be processed.

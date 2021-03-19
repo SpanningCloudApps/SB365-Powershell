@@ -47,7 +47,7 @@ Test what would happen if you disabled the users with a value of Finance in the 
 
 ### EXAMPLE 3
 ```
-Disable-SpanningUsersfromCSVAdvanced -WhatIf
+Disable-SpanningUsersfromCSVAdvanced -Path .\users.csv -UpnColumn 0 -WhatIf
 ```
 
 Process all entries in the CSV file and show the accounts that could be disable.

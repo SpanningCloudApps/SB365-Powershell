@@ -126,11 +126,26 @@
 
     }
 
-    if ($pscmdlet.ShouldProcess("Processing $($userList.Count) users", "Disable-SpanningUserList")){
-        $results = Disable-SpanningUserList -AuthInfo $AuthInfo -UserPrincipalNames $userList
-        Write-Verbose "Processing for users complete"
-        Write-Output $results
+
+    #Break List into batches of 500
+    $group = 500
+    $i = 0
+    $userBatch = @()
+    $results = @()
+    do {
+        #Send the batch of Users 500 at a time.
+        $userBatch = $userList[$i..(($i+= $group) - 1)]
+        if ($pscmdlet.ShouldProcess("Processing $($userBatch.Count) users", "Disable-SpanningUserList")){
+            $resultsBatch = Disable-SpanningUserList -AuthInfo $AuthInfo -UserPrincipalNames $userBatch
+
+            #Need to join the results
+            $results += $resultsBatch
+        }
     }
+    until ($i -gt $userList.count -1)
+
+    # Write the combined output
+    Write-Output $results
 
     $updated_users = Get-SpanningAssignedUsers
     Write-Verbose "$($updated_users.count) Users are now enabled for Spanning"
