@@ -109,11 +109,27 @@
         $userList.Add($UserPrincipalName) | Out-Null
     }
 
-    if ($pscmdlet.ShouldProcess("Processing $($userList.Count) users", "Enable-SpanningUserList")){
-        $results = Enable-SpanningUserList -AuthInfo $AuthInfo -UserPrincipalNames $userList
-        Write-Verbose "Processing for users complete"
-        Write-Output $results
+    #Break List into batches of 500
+    $group = 500
+    $i = 0
+    $userBatch = @()
+    $results = @()
+    do {
+        #Send the batch of Users 500 at a time.
+        $userBatch = $userList[$i..(($i+= $group) - 1)]
+        if ($pscmdlet.ShouldProcess("Processing $($userBatch.Count) users", "Enable-SpanningUserList")){
+            $resultsBatch = Enable-SpanningUserList -AuthInfo $AuthInfo -UserPrincipalNames $userBatch
+
+            #Need to join the results
+            $results += $resultsBatch
+        }
     }
+    until ($i -gt $userList.count -1)
+
+    # Write the combined output
+    Write-Output $results
+
+    Write-Verbose "Processing for users complete"
 
     if ($pscmdlet.ShouldProcess("Count of users to enable $($userList.Count)")){
         $updated_users = Get-SpanningAssignedUsers
