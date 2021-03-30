@@ -28,6 +28,7 @@
         GitHub Repository: https://github.com/spanningcloudapps
     #>
     [CmdletBinding()]
+    [OutputType("System.Object[]",ParameterSetName = "Get Multiple Users")]
     param(
         [Parameter(
             Position=0,
@@ -86,37 +87,44 @@
         All
         {
             Write-Verbose 'UserType = All'
-            Write-Output $temp_users
+            [array]$returnUsers = $temp_users
+            return ,$returnUsers
         }
         Admins
         {
             Write-Verbose 'UserType = Admins'
-            Write-Output $temp_users | Where-Object {$_.isAdmin -eq "true"}
+            [array]$returnUsers = $temp_users | Where-Object {$_.isAdmin -eq "true"}
+            return ,$returnUsers
         }
         NonAdmins
         {
             Write-Verbose 'UserType = NonAdmins'
-            Write-Output $temp_users | Where-Object {$_.isAdmin -ne "true"}
+            [array]$returnUsers = $temp_users | Where-Object {$_.isAdmin -ne "true"}
+            return ,$returnUsers
         }
         Assigned
         {
             Write-Verbose 'UserType = Assigned'
-            Write-Output $temp_users | Where-Object {$_.Assigned -eq "true"}
+            [array]$returnUsers = $temp_users | Where-Object {$_.Assigned -eq "true"}
+            return ,$returnUsers
         }
         Unassigned
         {
             Write-Verbose 'UserType = Unassigned'
-            Write-Output $temp_users | Where-Object {$_.Assigned -ne "true"}
+            [array]$returnUsers = $temp_users | Where-Object {$_.Assigned -ne "true"}
+            return ,$returnUsers
         }
         Deleted
         {
             Write-Verbose 'UserType = Deleted'
-            Write-Output $temp_users | Where-Object {$_.IsDeleted -eq "true"}
+            [array]$returnUsers = $temp_users | Where-Object {$_.IsDeleted -eq "true"}
+            return ,$returnUsers
         }
         NotDeleted
         {
             Write-Verbose 'UserType = NotDeleted'
-            Write-Output $temp_users | Where-Object {$_.IsDeleted -ne "true"}
+            [array]$returnUsers = $temp_users | Where-Object {$_.IsDeleted -ne "true"}
+            return ,$returnUsers
         }
         default
         {

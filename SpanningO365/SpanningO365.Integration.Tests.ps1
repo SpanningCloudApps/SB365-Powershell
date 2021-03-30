@@ -95,7 +95,7 @@ Describe "Get-SpanningTenantInfo Integration Test" -Tag "Integration" {
 	Context "Get-SpanningUser" {
 		
 		It "Get-SpanningUser - by UPN" {
-			$(Get-SpanningUser -UserPrincipalName $AdminEmail).UserPrincipalName | Should -Be $AdminEmail
+			$(Get-SpanningUser -UserPrincipalName $AdminEmail).email | Should -Be $AdminEmail
 		}
 		
 		It "Get-SpanningUser - by Type Admins" {
