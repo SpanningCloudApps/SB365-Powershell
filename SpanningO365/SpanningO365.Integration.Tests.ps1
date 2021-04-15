@@ -37,9 +37,7 @@ param (
 
 	# TODO - Add these tests.
     # Clear-SpanningAuthentication
-    # Disable-SpanningUser
     # Disable-SpanningUsersFromCSVAdvanced
-    # Enable-SpanningUser
     # Enable-SpanningUsersFromCSVAdvanced
 
 # 
@@ -121,6 +119,20 @@ Describe "Get-SpanningTenantInfo Integration Test" -Tag "Integration" {
 		}
 		It "Get-SpanningUser - by Type All" {
 			$(Get-SpanningUser -UserType All).Count | Should -BeGreaterThan 0
+		}
+	}
+
+	Context "Enable-SpanningUser" {
+		It "Enable-SpanningUser - by UPN" {
+			$users = Get-SpanningUser -UserType Unassigned
+			$(Enable-SpanningUser -UserPrincipalName $users[0].userPrincipalName).userPrincipalName | Should -Be $users[0].userPrincipalName
+		}
+	}
+
+	Context "Disable-SpanningUser" {
+		It "Disable-SpanningUser - by UPN" {
+			$users = Get-SpanningUser -UserType Assigned
+			$(Disable-SpanningUser -UserPrincipalName $users[0].userPrincipalName -Confirm:$false).userPrincipalName | Should -Be $users[0].userPrincipalName
 		}
 	}
 }

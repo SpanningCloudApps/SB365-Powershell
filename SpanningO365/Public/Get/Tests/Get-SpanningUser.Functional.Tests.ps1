@@ -2,7 +2,7 @@ Describe 'Get-SpanningUser Functional Tests' {
   Mock -CommandName Invoke-WebRequest -Verifiable -MockWith {
     #This mock creates a data set of two users for the first request. It returns a nextLink to validate the loop.
     $restResult = @{
-      nextLink="https://o365-api-us.spanningbackup.com/users?msIdOffset=42317567-8833-4b6b-863f-07bb5d58e484&sortPropOffset=HumaydZ%40M365x186877.onmicrosoft.com&size=50"
+      nextLink="https://o365-api-us.spanningbackup.com/external/users?msIdOffset=42317567-8833-4b6b-863f-07bb5d58e484&sortPropOffset=HumaydZ%40M365x186877.onmicrosoft.com&size=50"
       users=@()
     }
     #User Result
@@ -23,7 +23,7 @@ Describe 'Get-SpanningUser Functional Tests' {
     return $restResult | ConvertTo-Json
   } `
   -ParameterFilter {
-    $uri -like "https://o365-api-??.spanningbackup.com/users?size*"
+    $uri -like "https://o365-api-??.spanningbackup.com/external/users?size*"
   } -ModuleName SpanningO365
 
   #This mock creates two additional users for the second request and returns a blank next link to stop the loop
@@ -50,7 +50,7 @@ Describe 'Get-SpanningUser Functional Tests' {
     return $restResult | ConvertTo-Json
   } `
   -ParameterFilter {
-    $uri -like "https://o365-api-??.spanningbackup.com/users?msIdOffset*"
+    $uri -like "https://o365-api-??.spanningbackup.com/external/users?msIdOffset*"
   } -ModuleName SpanningO365
 
   Context 'Testing validation for Get-SpanningUser'{

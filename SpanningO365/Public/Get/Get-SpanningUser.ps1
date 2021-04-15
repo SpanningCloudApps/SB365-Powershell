@@ -129,7 +129,7 @@
         default
         {
             Write-Verbose 'UserType = null'
-            #$results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/user/$UserPrincipalName" -Headers $headers -Method GET | ConvertFrom-Json
+            # Return the User
             $results = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User -UserPrincipalName $UserPrincipalName -Size $Size
             Write-Output $results
         }
