@@ -54,12 +54,20 @@
        $AuthInfo = Get-AuthInfo
     }
 
+    $userPrincipalNamesJson = ([PSCustomObject]@{
+        userPrincipalNames = @($UserPrincipalName)
+        } | ConvertTo-Json )
+
     if ($pscmdlet.ShouldProcess("$UserPrincipalName", "Disable-SpanningUser")){
         #Actually do the work
         Write-Verbose "Disable license for $($UserPrincipalName)"
-        #$results = Invoke-WebRequest -uri "https://o365-api-$region.spanningbackup.com/user/$UserPrincipalName/unassign" -Headers $headers -Method POST | ConvertFrom-Json
-        $results = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User -UserPrincipalName $UserPrincipalName -RequestAction Unassign
-        Write-Output $results
+        #$results = Invoke-WebRequest -uri "$apiRootUrl/user/$UserPrincipalName/unassign" -Headers $headers -Method POST | ConvertFrom-Json
+        $results = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType Users -UserPrincipalNames $userPrincipalNamesJson -RequestAction Unassign
+        $resultObj = [PSCustomObject]@{
+            userPrincipalName = $results.userPrincipalNames[0]
+            licensed = $results.licensed
+            }
+        Write-Output $resultObj
     }
 
 }

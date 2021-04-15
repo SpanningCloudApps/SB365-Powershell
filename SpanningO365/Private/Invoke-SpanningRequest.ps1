@@ -86,6 +86,7 @@
     $headers = $AuthInfo.Headers
     $region = $AuthInfo.Region
     $method = "GET"
+    $apiRootUrl = "https://o365-api-$region.spanningbackup.com/external"
 
     Write-Verbose "Invoke-SpanningRequest Request Type $($RequestType)"
 
@@ -98,7 +99,7 @@
           Write-Verbose "Invoke-SpanningRequest UPN null"
           Write-Verbose "Invoke-SpanningRequest size parameter is: $Size"
 
-          $request = "https://o365-api-$region.spanningbackup.com/users?size=$Size"
+          $request = "$apiRootUrl/users?size=$Size"
            #TODO : Clean this up
           $values2 = @()
           $values = @()
@@ -118,18 +119,21 @@
         } else {
           switch ($RequestAction) {
             Assign {
-              Write-Verbose "Invoke-SpanningRequest $($UserPrincipalName) Assign"
-              $request = "https://o365-api-$region.spanningbackup.com/user/$userPrincipalName/assign"
+              # Single assignment is deprecated
+              Write-Warning "Invoke-SpanningRequest $($UserPrincipalName) Assign is deprecated"
+              #$request = "$apiRootUrl/users/$userPrincipalName/assign"
               $method = "POST"
             }
             Unassign {
-              Write-Verbose "Invoke-SpanningRequest $($UserPrincipalName) Unassign"
-              $request = "https://o365-api-$region.spanningbackup.com/user/$userPrincipalName/unassign"
+              # Single un-assignment is deprecated
+              Write-Warning "Invoke-SpanningRequest $($UserPrincipalName) Unassign is deprecated"
+              #$request = "$apiRootUrl/users/$userPrincipalName/unassign"
               $method = "POST"
             }
             Default {
+              # Change this to Use the new users/upn TODO Test this path
               Write-Verbose "Invoke-SpanningRequest $($UserPrincipalName) only"
-              $request = "https://o365-api-$region.spanningbackup.com/user/$UserPrincipalName"
+              $request = "$apiRootUrl/users/$UserPrincipalName"
             }
           }
           Write-Verbose "Invoke-SpanningRequest: $($request)"
@@ -144,13 +148,17 @@
         } else {
           switch ($RequestAction) {
             Assign {
+              # Change for new endpoint
               Write-Verbose "Invoke-SpanningRequest $($UserPrincipalNames) Assign"
-              $request = "https://o365-api-$region.spanningbackup.com/users/assign"
+              #$request = "https://o365-api-$region.spanningbackup.com/users/assign"
+              $request = "$apiRootUrl/users/assign"
               $method = "POST"
             }
             Unassign {
+              # Change for new endpoint
               Write-Verbose "Invoke-SpanningRequest $($UserPrincipalNames) Unassign"
-              $request = "https://o365-api-$region.spanningbackup.com/users/unassign"
+              #$request = "https://o365-api-$region.spanningbackup.com/users/unassign"
+              $request = "$apiRootUrl/users/unassign"
               $method = "POST"
             }
             Default {
@@ -165,7 +173,7 @@
       Tenant
       {
         Write-Verbose "Invoke-SpanningRequest Tenant"
-        $request = "https://o365-api-$region.spanningbackup.com/tenant"
+        $request = "$apiRootUrl/tenant"
         Write-Verbose "Invoke-SpanningRequest: $($request)"
         $results = Invoke-WebRequest -uri $request -Headers $headers -Method $method -UseBasicParsing  | ConvertFrom-Json
       }
