@@ -83,6 +83,12 @@
        $AuthInfo = Get-AuthInfo
     }
 
+    # Force TLS 1.2
+    if ([Net.ServicePointManager]::SecurityProtocol -ne [Net.SecurityProtocolType]::SystemDefault){
+      Write-Verbose "Applying TLS 1.2"
+      [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+    }
+
     $headers = $AuthInfo.Headers
     $region = $AuthInfo.Region
     $method = "GET"
