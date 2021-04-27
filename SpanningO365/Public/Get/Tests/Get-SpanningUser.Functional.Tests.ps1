@@ -73,7 +73,7 @@ Describe 'Get-SpanningUser Functional Tests' {
 
     It "Alternate GetSpanningUser Returns an [array]" {
       $users = Get-SpanningUser -AuthInfo $auth -UserType All
-      $users -is [array] | Should Be $true
+      $users -is [array] | Should -Be $true
     }
 
     It "Get-SpanningUser -UserType Assigned has 2 Users" {
