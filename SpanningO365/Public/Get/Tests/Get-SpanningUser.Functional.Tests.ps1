@@ -1,4 +1,11 @@
 Describe 'Get-SpanningUser Functional Tests' {
+  BeforeAll {
+    $api = "addc5b8c-1565-4454-aec5-5878544f0727"
+    $admin = "MeganB@M365x186877.OnMicrosoft.com"
+    $region = "US"
+    $auth = Get-SpanningAuthentication -ApiToken $api -Region $region -AdminEmail $admin
+    $auth | Out-Null # ToDo - Hide ScriptAnalyzer Scope Error
+  }
   Mock -CommandName Invoke-WebRequest -Verifiable -MockWith {
     #This mock creates a data set of two users for the first request. It returns a nextLink to validate the loop.
     $restResult = @{
@@ -54,10 +61,6 @@ Describe 'Get-SpanningUser Functional Tests' {
   } -ModuleName SpanningO365
 
   Context 'Testing validation for Get-SpanningUser'{
-    $api = "addc5b8c-1565-4454-aec5-5878544f0727"
-    $admin = "MeganB@M365x186877.OnMicrosoft.com"
-    $region = "US"
-    $auth = Get-SpanningAuthentication -ApiToken $api -Region $region -AdminEmail $admin
 
     It "Get-SpanningUser -UserType Admins has more than 0 Admins" {
       [array]$users = Get-SpanningUser -AuthInfo $auth -UserType Admins
