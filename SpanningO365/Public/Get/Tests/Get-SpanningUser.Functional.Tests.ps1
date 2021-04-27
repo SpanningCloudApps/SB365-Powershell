@@ -65,7 +65,7 @@ Describe 'Get-SpanningUser Functional Tests' {
     It "Get-SpanningUser -UserType Admins has more than 0 Admins" {
       [array]$users = Get-SpanningUser -AuthInfo $auth -UserType Admins
       $users.Count | Should -Be 1
-      # Assert
+      # ToDo Assert-VerifiableMock to Should -InvokeVerifiable https://pester.dev/docs/commands/Should#invokeverifiable
       Assert-VerifiableMock
     }
 
@@ -82,28 +82,28 @@ Describe 'Get-SpanningUser Functional Tests' {
     It "Get-SpanningUser -UserType Assigned has 2 Users" {
       $users = Get-SpanningUser -AuthInfo $auth -UserType Assigned
       $users.Count | Should -Be 2
-      # Assert
+      # ToDo Assert-VerifiableMock to Should -InvokeVerifiable https://pester.dev/docs/commands/Should#invokeverifiable
       Assert-VerifiableMock
     }
 
     It "Get-SpanningUser -UserType All has 4 Users" {
       $users = Get-SpanningUser -AuthInfo $auth -UserType All
       $users.Count | Should -Be 4
-      # Assert
+      # ToDo Assert-VerifiableMock to Should -InvokeVerifiable https://pester.dev/docs/commands/Should#invokeverifiable
       Assert-VerifiableMock
     }
 
     It "Get-SpanningUser -UserType Deleted has 1 User" {
       [array]$users = Get-SpanningUser -AuthInfo $auth -UserType Deleted
       $users.Count | Should -Be 1
-      # Assert
+      # ToDo Assert-VerifiableMock to Should -InvokeVerifiable https://pester.dev/docs/commands/Should#invokeverifiable
       Assert-VerifiableMock
     }
 
     It "Get-SpanningUser -UserType NotDeleted has 3 Users" {
       $users = Get-SpanningUser -AuthInfo $auth -UserType NotDeleted
       $users.Count | Should -Be 3
-      # Assert
+      # ToDo Assert-VerifiableMock to Should -InvokeVerifiable https://pester.dev/docs/commands/Should#invokeverifiable
       Assert-VerifiableMock
     }
 
@@ -111,9 +111,10 @@ Describe 'Get-SpanningUser Functional Tests' {
     It "Get-SpanningUser -UserType Admins -Size 100 has 1 User" {
       [array]$users = Get-SpanningUser -AuthInfo $auth -UserType Admins -Size 100
       $users.Count | Should -Be 1
-      # Assert
+      # ToDo Assert-VerifiableMock to Should -InvokeVerifiable https://pester.dev/docs/commands/Should#invokeverifiable
       Assert-VerifiableMock
       #Did we call the loop twice? TODO : Mock the Size Parameter to evaluate the effectiveness at changing the Scope
+      # ToDo Assert-MockCalled to Should -Invoke https://pester.dev/docs/commands/Should#invoke
       Assert-MockCalled -CommandName Invoke-WebRequest -Times 2 -Exactly -ModuleName SpanningO365 -Scope It
     }
 
@@ -123,6 +124,7 @@ Describe 'Get-SpanningUser Functional Tests' {
       # Assert
       Assert-VerifiableMock
       #Did we call the loop twice? TODO : Mock the Size Parameter to evaluate the effectiveness at changing the Scope
+      # ToDo Assert-MockCalled to Should -Invoke https://pester.dev/docs/commands/Should#invoke
       Assert-MockCalled -CommandName Invoke-WebRequest -Times 2 -Exactly -ModuleName SpanningO365 -Scope It
     }
   }
