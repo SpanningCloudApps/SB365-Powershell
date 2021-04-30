@@ -1,13 +1,13 @@
-Describe 'Clear-SpanningAuthentication Functional Tests' -Tag "Functional" {
-  BeforeAll {
-    $api = "addc5b8c-1565-4454-aec5-5878544f0727"
-    $admin = "MeganB@M365x186877.OnMicrosoft.com"
-    $region = "US"
-    $auth = Get-SpanningAuthentication -ApiToken $api -Region $region -AdminEmail $admin
-    $auth | Out-Null # ToDo - Hide ScriptAnalyzer Scope Error
-  }
+BeforeAll {
+  $api = "addc5b8c-1565-4454-aec5-5878544f0727"
+  $admin = "MeganB@M365x186877.OnMicrosoft.com"
+  $region = "US"
+  $auth = Get-SpanningAuthentication -ApiToken $api -Region $region -AdminEmail $admin
+  $auth | Out-Null # ToDo - Hide ScriptAnalyzer Scope Error
+}
+Describe 'Clear-SpanningAuthentication Functional Tests' -Tag 'Functional' {
 
-  Context 'Testing validation for Clear-SpanningAuthentication'{
+  Context 'Testing validation for Clear-SpanningAuthentication' {
 
     It "Get-SpanningAuthentication populates script variables" {
       $auth | Should -not -Be $null
@@ -25,6 +25,5 @@ Describe 'Clear-SpanningAuthentication Functional Tests' -Tag "Functional" {
         $Script:AuthInfo | Should -Be $null
       }
     }
-
   }
 }

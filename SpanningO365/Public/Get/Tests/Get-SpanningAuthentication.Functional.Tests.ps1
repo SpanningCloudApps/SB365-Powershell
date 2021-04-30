@@ -15,7 +15,8 @@ Describe "Get-SpanningAuthentication Functional Tests" -Tag "Functional" {
   BeforeEach {
     Clear-SpanningAuthentication
   }
-  Context 'Testing response validation for Get-SpanningAuthentication' {
+  
+  Context 'Testing response validation for Get-SpanningAuthentication'{
 
     It "Get-SpanningAuthentication returns valid region" {
       (Get-SpanningAuthentication -ApiToken $api -Region $region -AdminEmail $admin).Region | Should -Be $region
