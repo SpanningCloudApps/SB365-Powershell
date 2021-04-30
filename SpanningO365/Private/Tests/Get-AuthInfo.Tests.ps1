@@ -1,4 +1,13 @@
-﻿Describe 'Get-AuthInfo Tests' {
+﻿Param (
+    [String]$Module
+)
+BeforeAll{
+    $functionName = (Get-Item $PSCommandPath ).BaseName.Replace(".Tests","")
+    $ModuleData = Get-Module $Module
+    $Function = $ModuleData.Invoke({Param($Module) Get-Command -Module $Module}, $Module) | Where-Object { $_.Name -eq $functionName}
+    $Function | Out-Null # ToDo - Hide ScriptAnalyzer Scope Error
+}
+Describe 'Get-AuthInfo Tests' -Tag "Structure" {
 
    Context 'Parameters for Get-AuthInfo'{
 
