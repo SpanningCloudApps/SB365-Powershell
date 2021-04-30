@@ -1,4 +1,4 @@
-Describe 'Clear-SpanningAuthentication Functional Tests' {
+Describe 'Clear-SpanningAuthentication Functional Tests' -Tag "Functional" {
   BeforeAll {
     $api = "addc5b8c-1565-4454-aec5-5878544f0727"
     $admin = "MeganB@M365x186877.OnMicrosoft.com"

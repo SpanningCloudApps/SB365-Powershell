@@ -1,4 +1,4 @@
-Describe 'Get-SpanningAuthentication Functional Tests' {
+Describe "Get-SpanningAuthentication Functional Tests" -Tag "Functional" {
   BeforeAll {
     $api = "addc5b8c-1565-4454-aec5-5878544f0727"
     $admin = "MeganB@M365x186877.OnMicrosoft.com"
@@ -15,8 +15,7 @@ Describe 'Get-SpanningAuthentication Functional Tests' {
   BeforeEach {
     Clear-SpanningAuthentication
   }
-
-  Context 'Testing response validation for Get-SpanningAuthentication'{
+  Context 'Testing response validation for Get-SpanningAuthentication' {
 
     It "Get-SpanningAuthentication returns valid region" {
       (Get-SpanningAuthentication -ApiToken $api -Region $region -AdminEmail $admin).Region | Should -Be $region
