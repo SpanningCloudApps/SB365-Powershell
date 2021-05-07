@@ -12,7 +12,7 @@
     RootModule = '.\SpanningO365.psm1'
     
     # Version number of this module.
-    ModuleVersion = '4.0.0.1'
+    ModuleVersion = '4.1.0.0'
     
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -72,7 +72,7 @@
     FunctionsToExport = 'Get-SpanningAuthentication','Clear-SpanningAuthentication', `
                         'Get-SpanningTenantInfo','Get-SpanningUser','Enable-SpanningUser','Enable-SpanningUserList', `
                         'Get-SpanningUsers','Disable-SpanningUser','Get-SpanningAdmins','Get-SpanningNonAdmins','Disable-SpanningUserList', `
-                        'Get-SpanningAssignedUsers','Get-SpanningUnassignedUsers','Get-SpanningTenantInfoPaymentStatus', `
+                        'Get-SpanningAssignedUsers','Get-SpanningUnassignedUsers','Get-SpanningTenantInfoPaymentStatus', 'Get-SpanningTenantBackupSummary', `
                         'Enable-SpanningUsersFromCSVAdvanced','Disable-SpanningUsersFromCSVAdvanced'
     
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
