@@ -15,7 +15,7 @@ Describe "Get-SpanningAuthentication Functional Tests" -Tag "Functional" {
   BeforeEach {
     Clear-SpanningAuthentication
   }
-  
+
   Context 'Testing response validation for Get-SpanningAuthentication'{
 
     It "Get-SpanningAuthentication returns valid region" {
