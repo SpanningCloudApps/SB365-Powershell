@@ -3,7 +3,7 @@
     .SYNOPSIS
         Returns the tenant backup summary information
     .DESCRIPTION
-        Returns the tenant backup summary information from the Spanning Backup Portal. Backup Summary is availalable for the past 7 days.
+        Returns the tenant backup summary information from the Spanning Backup Portal. Backup Summary is available for the past 7 days.
     .PARAMETER AuthInfo
         This parameter takes an AuthInfo object from Get-SpanningAuthentication.
     .PARAMETER StartDate
