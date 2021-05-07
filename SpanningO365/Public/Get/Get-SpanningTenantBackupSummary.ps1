@@ -23,11 +23,11 @@
         Supply the three parameters from variables to Get-SpanningAuthentication and pipe the result to Get-SpanningTenantBackupSummary
 .EXAMPLE
         Get-SpanningTenantBackupSummary -StartDate (Get-Date).AddDays(-5)
-        Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called. The default is for today.
+        Call with StartDate 5 days in the past. The default EndDate is today.
 .EXAMPLE
         Get-SpanningTenantBackupSummary -StartDate "11/21/2020" -EndDate "11/23/2020"
-        Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called. The default is for today.
-    
+        Request a specific time frame, no more that 7 days in the past.
+
     .NOTES
         The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
     .LINK

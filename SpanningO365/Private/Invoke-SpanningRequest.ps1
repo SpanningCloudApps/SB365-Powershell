@@ -202,7 +202,7 @@
       TenantBackupSummary
       {
         Write-Verbose "Invoke-SpanningRequest TenantBackupSummary"
-        
+
         if ($StartDate)
         {
           # Convert date to Int
@@ -216,7 +216,7 @@
             }
             else {
                 # Tenant Backup Summary Request with Start only
-                $request = "$apiRootUrl/tenant/backups/summary?start=$startDateInt"                   
+                $request = "$apiRootUrl/tenant/backups/summary?start=$startDateInt"
             }
         } else {
             # Tenant Backup Summary Request
