@@ -46,7 +46,7 @@ param (
 Describe "Get-SpanningTenantInfo Integration Test" -Tag "Integration" {
 	
 	# No mocking here. Context blocks are used for organization, not scope.
-	Context "Get-SpanningTenantInfo" {
+	Context "Get-SpanningAuthentication" {
 	
 		It "Get-SpanningAuthentication - returns AuthInfo" {
 			$auth = Get-SpanningAuthentication -ApiToken $ApiToken -Region $Region -AdminEmail $AdminEmail
@@ -57,6 +57,9 @@ Describe "Get-SpanningTenantInfo Integration Test" -Tag "Integration" {
 			$auth = Get-SpanningAuthentication -ApiToken $ApiToken -Region $Region -AdminEmail $AdminEmail
 			$($auth.Region) | Should -Be $Region
 		}
+	}
+
+	Context "Get-SpanningTenantInfo" {
 		
 		It "Get-SpanningTenantInfo - Users" {
 			$(Get-SpanningTenantInfo).Users | Should -BeGreaterThan 0 
@@ -64,6 +67,21 @@ Describe "Get-SpanningTenantInfo Integration Test" -Tag "Integration" {
 		
 		It "Get-SpanningTenantInfoPaymentStatus" {
 			$(Get-SpanningTenantInfoPaymentStatus) | Should -BeIn @("trial","paid")
+		}
+	}
+
+	Context "Get-SpanningTenantBackupSummary" {
+
+		It "Get-SpanningTenantBackupSummary - Today" {
+			(Get-SpanningTenantBackupSummary).Count | Should -Be 5
+		}
+
+		It "Get-SpanningTenantBackupSummary - 4 Day Range" {
+			(Get-SpanningTenantBackupSummary -StartDate (Get-Date).AddDays(-6) -EndDate (Get-Date).AddDays(-2) | Where-Object {$_.type -eq "MAIL"}).Count | Should -Be 4
+		}
+
+		It "Get-SpanningTenantBackupSummary - Includes Workload MAIL" {
+			(Get-SpanningTenantBackupSummary).foreach({$PSItem.type}) | Should -Contain "MAIL"
 		}
 	}
 	
@@ -93,7 +111,7 @@ Describe "Get-SpanningTenantInfo Integration Test" -Tag "Integration" {
 	Context "Get-SpanningUser" {
 		
 		It "Get-SpanningUser - by UPN" {
-			$(Get-SpanningUser -UserPrincipalName $AdminEmail).email | Should -Be $AdminEmail
+			$(Get-SpanningUser -UserPrincipalName $AdminEmail).userInfo.email | Should -Be $AdminEmail
 		}
 		
 		It "Get-SpanningUser - by Type Admins" {

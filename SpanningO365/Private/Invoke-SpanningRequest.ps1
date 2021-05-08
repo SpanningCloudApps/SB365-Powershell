@@ -38,7 +38,7 @@
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
-        [ValidateSet('Tenant','User','Users')]
+        [ValidateSet('Tenant','User','Users','TenantBackupSummary')]
         #Type of request
         [string]$RequestType,
         [Parameter(
@@ -73,7 +73,23 @@
             ValueFromPipelineByPropertyName=$true)]
         [Int]
         #Request Size parameter for User requests, default 1000
-        $Size = 1000
+        $Size = 1000,
+        [Parameter(
+            Position=5,
+            Mandatory=$false,
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName=$true)
+        ]
+        #Starting date of the tenant backup summary query
+        [datetime]$StartDate,
+        [Parameter(
+            Position=6,
+            Mandatory=$false,
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName=$true)
+        ]
+        #Ending date of the tenant backup summary query
+        [datetime]$EndDate
     )
 
     Write-Verbose "Invoke-SpanningRequest"
@@ -180,6 +196,33 @@
       {
         Write-Verbose "Invoke-SpanningRequest Tenant"
         $request = "$apiRootUrl/tenant"
+        Write-Verbose "Invoke-SpanningRequest: $($request)"
+        $results = Invoke-WebRequest -uri $request -Headers $headers -Method $method -UseBasicParsing  | ConvertFrom-Json
+      }
+      TenantBackupSummary
+      {
+        Write-Verbose "Invoke-SpanningRequest TenantBackupSummary"
+
+        if ($StartDate)
+        {
+          # Convert date to Int
+          $startDateInt = [Math]::Round((Get-Date -Date $StartDate -UFormat %s)) * 1000
+            if ($EndDate)
+            {
+              # Convert date to Int
+              $endDateInt = [Math]::Round((Get-Date -Date $EndDate -UFormat %s)) * 1000
+                # Tenant Backup Summary Request with Start and End
+                $request = "$apiRootUrl/tenant/backups/summary?start=$startDateInt&end=$endDateInt"
+            }
+            else {
+                # Tenant Backup Summary Request with Start only
+                $request = "$apiRootUrl/tenant/backups/summary?start=$startDateInt"
+            }
+        } else {
+            # Tenant Backup Summary Request
+            $request = "$apiRootUrl/tenant/backups/summary"
+        }
+
         Write-Verbose "Invoke-SpanningRequest: $($request)"
         $results = Invoke-WebRequest -uri $request -Headers $headers -Method $method -UseBasicParsing  | ConvertFrom-Json
       }

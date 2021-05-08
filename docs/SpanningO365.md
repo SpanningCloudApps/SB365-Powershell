@@ -46,6 +46,9 @@ Get-SpanningAuthentication creates the Spanning Auth Header needed for making al
 ### [Get-SpanningNonAdmins](Get-SpanningNonAdmins.md)
 Returns the non-admin users from the Spanning Backup Portal
 
+### [Get-SpanningTenantBackupSummary](Get-SpanningTenantBackupSummary.md)
+Returns the tenant backup summary information
+
 ### [Get-SpanningTenantInfo](Get-SpanningTenantInfo.md)
 Returns the tenant information from the Spanning Backup Portal
 
