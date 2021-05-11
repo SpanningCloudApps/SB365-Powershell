@@ -77,7 +77,7 @@ Describe "Get-SpanningTenantInfo Integration Test" -Tag "Integration" {
 		}
 
 		It "Get-SpanningTenantBackupSummary - 4 Day Range" {
-			(Get-SpanningTenantBackupSummary -StartDate (Get-Date).AddDays(-6) -EndDate (Get-Date).AddDays(-2) | Where-Object {$_.type -eq "MAIL"}).Count | Should -Be 4
+			(Get-SpanningTenantBackupSummary -StartDate (Get-Date).AddDays(-6) -EndDate (Get-Date).AddDays(-2) | Where-Object {$_.type -eq "MAIL"}).Count | Should -BeGreaterOrEqual 4
 		}
 
 		It "Get-SpanningTenantBackupSummary - Includes Workload MAIL" {
