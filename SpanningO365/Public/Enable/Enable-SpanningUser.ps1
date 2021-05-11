@@ -49,7 +49,7 @@
     )
     Write-Verbose "Enable-SpanningUser"
 
-    Write-Warning "Enable-SpanningUser id deprecated, use Enable-SpanningUserList instead"
+    Write-Warning "Enable-SpanningUser is deprecated, use Enable-SpanningUserList instead"
 
     if (!$AuthInfo) {
        Write-Verbose "No AuthInfo provided, checking Session State"
