@@ -244,7 +244,7 @@ Connect-AzureAd -Credential $cred
 #Create an ArrayList
 $userList = [System.Collections.ArrayList]@()
 
-Get-AzureADGroup -SearchString "Sales Team" | Get-AzureADGroupMember | `
+Get-AzureADGroup -SearchString "Sales Team" | Get-AzureADGroupMember -All $true | `
     foreach {$userList.Add($_.UserPrincipalName)}
 #Submit the list to Spanning
 Enable-SpanningUserList -UserPrincipalNames $userList
