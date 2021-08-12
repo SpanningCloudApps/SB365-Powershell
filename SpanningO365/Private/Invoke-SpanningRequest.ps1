@@ -110,6 +110,9 @@
     $method = "GET"
     $apiRootUrl = "https://o365-api-$region.spanningbackup.com/external"
 
+    #ProgressPreference prevents wasted time showing progress. This improves the processing time.
+    $ProgressPreference = "SilentlyContinue"
+
     Write-Verbose "Invoke-SpanningRequest Request Type $($RequestType)"
 
     switch ( $RequestType )
