@@ -14,6 +14,9 @@
         This parameter takes a RequestAction to determine an licence to Assign or Unassign.
     .PARAMETER Size
         This parameter takes a page size parameter for the request. It defaults to 1000.
+    .PARAMETER Status
+        This parameter takes an optional parameter to include the User Backup Status in the result.
+        Note, this can significantly increase both the result size and the time required for PowerShell to process the results.
     .EXAMPLE
         This function is not called directly.
     .NOTES
@@ -89,7 +92,15 @@
             ValueFromPipelineByPropertyName=$true)
         ]
         #Ending date of the tenant backup summary query
-        [datetime]$EndDate
+        [datetime]$EndDate,
+        [Parameter(
+            Position=7,
+            Mandatory=$false,
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName=$true)]
+        [bool]
+        #Include backup status for users $false by default
+        $Status = $false
     )
 
     Write-Verbose "Invoke-SpanningRequest"
@@ -123,8 +134,10 @@
         {
           Write-Verbose "Invoke-SpanningRequest UPN null"
           Write-Verbose "Invoke-SpanningRequest size parameter is: $Size"
+          Write-Verbose "Invoke-SpanningRequest Status parameter is: $($Status.ToString().ToLower())"
 
-          $Uri = "$apiRootUrl/users?size=$Size"
+          #$Uri = "$apiRootUrl/users?size=$Size&status=$Status"
+          $Uri = "{0}/users?size={1}&status={2}" -f $apiRootUrl, $Size, $Status.ToString().ToLower()
 
           $retryCount = 0
           $maxRetries = 3
@@ -147,8 +160,8 @@
 
               } catch {
                 #TODO : Mock this to test responses
-                  Write-Verbose "StatusCode: " $_.Exception.Response.StatusCode.value__
-                  Write-Verbose "StatusDescription:" $_.Exception.Response.StatusDescription
+                  Write-Verbose "StatusCode: $($_.Exception.Response.StatusCode.value__)"
+                  Write-Verbose "StatusDescription: $($_.Exception.Response.StatusDescription)"
 
                   if($_.ErrorDetails.Message){
                       Write-Verbose "Inner Error: $_.ErrorDetails.Message"
@@ -197,7 +210,7 @@
             Default {
               # Change this to Use the new users/upn TODO Test this path
               Write-Verbose "Invoke-SpanningRequest $($UserPrincipalName) only"
-              $request = "$apiRootUrl/users/$UserPrincipalName"
+              $request = "{0}/users/{1}?status={2}" -f $apiRootUrl, $UserPrincipalName, $Status.ToString().ToLower()
             }
           }
           Write-Verbose "Invoke-SpanningRequest: $($request)"

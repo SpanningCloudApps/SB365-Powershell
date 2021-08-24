@@ -13,6 +13,9 @@
         This parameter filters to specific user types from the set All, Admins, NonAdmins, Assigned, Unassigned, Deleted (from Active Directory), NotDeleted.
     .PARAMETER Size
         This parameter takes a page size parameter for the request. It defaults to 1000.
+    .PARAMETER Status
+        This parameter takes an optional parameter to include the User Backup Status in the result.
+        Note, this can significantly increase both the result size and the time required for PowerShell to process the results.
     .EXAMPLE
         Get-SpanningUser -UserPrincipalName ruby@doghousetoys.com
         Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
@@ -66,7 +69,15 @@
             ParameterSetName = "Get Multiple Users")]
         [Int]
         #Request Size parameter for User requests, default 1000
-        $Size = 1000
+        $Size = 1000,
+        [Parameter(
+            Position=4,
+            Mandatory=$false,
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName=$true)]
+        [bool]
+        #Include backup status for users $false by default
+        $Status = $false
     )
     Write-Verbose "Get-SpanningUser"
 
@@ -79,7 +90,7 @@
     # #TODO : Clean this up
     if ($UserType){
         Write-Verbose "UserType: $($UserType) - Invoke-SpanningRequest"
-        $temp_users = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User -Size $Size
+        $temp_users = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User -Size $Size -Status $Status
     }
 
     switch ( $UserType )
@@ -130,7 +141,7 @@
         {
             Write-Verbose 'UserType = null'
             # Return the User
-            $results = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User -UserPrincipalName $UserPrincipalName -Size $Size
+            $results = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User -UserPrincipalName $UserPrincipalName -Size $Size -Status $Status
             Write-Output $results
         }
     }
