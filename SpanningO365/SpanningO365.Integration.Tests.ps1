@@ -12,11 +12,6 @@ A Pester integration test file for the SpanningO365 module. This file uses
 the local file system and runs the functions in the module together to verify
 that they run correctly.
 
-#Pester 3 & 4 Syntax
-$params = @{ApiToken = 'whosagoo-ddog-ruby-isagoodgirlright!'; Region = 'US'; AdminEmail = 'ruby@sharepointdog.com'}
-$test = @{Path =  '.\SpanningO365.Integration.Tests.ps1'; Parameters = $params}
-Invoke-Pester -Script $test
-
 #Pester 5.1 Syntax
 $params = @{ApiToken = 'whosagoo-ddog-ruby-isagoodgirlright!'; Region = 'US'; AdminEmail = 'ruby@sharepointdog.com'}
 $container = New-PesterContainer -Path './SpanningO365.Integration.Tests.ps1' -Data $params
