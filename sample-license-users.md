@@ -77,7 +77,7 @@ if ($availableLicenses -lt $usersToLicense.Count){
 if (!$aborted){
     if ($availableLicenses -gt 0){
         # Note the -WhatIf parameter, this is for testing the script. Remove it for production
-        Enable-SpanningUserList -UserPrincipalNames $usersToLicense -WhatIf
+        Enable-SpanningUserList -UserPrincipalNames $usersToLicense.userPrincipalName -WhatIf
     } else {
         Write-Warning "You are out of licenses"
         break
