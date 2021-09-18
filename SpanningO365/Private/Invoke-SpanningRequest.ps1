@@ -14,6 +14,9 @@
         This parameter takes a RequestAction to determine an licence to Assign or Unassign.
     .PARAMETER Size
         This parameter takes a page size parameter for the request. It defaults to 1000.
+    .PARAMETER Status
+        This parameter takes an optional parameter to include the User Backup Status in the result.
+        Note, this can significantly increase both the result size and the time required for PowerShell to process the results.
     .EXAMPLE
         This function is not called directly.
     .NOTES
@@ -89,7 +92,15 @@
             ValueFromPipelineByPropertyName=$true)
         ]
         #Ending date of the tenant backup summary query
-        [datetime]$EndDate
+        [datetime]$EndDate,
+        [Parameter(
+            Position=7,
+            Mandatory=$false,
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName=$true)]
+        [bool]
+        #Include backup status for users $false by default
+        $Status = $false
     )
 
     Write-Verbose "Invoke-SpanningRequest"
@@ -110,6 +121,9 @@
     $method = "GET"
     $apiRootUrl = "https://o365-api-$region.spanningbackup.com/external"
 
+    #ProgressPreference prevents wasted time showing progress. This improves the processing time.
+    $ProgressPreference = "SilentlyContinue"
+
     Write-Verbose "Invoke-SpanningRequest Request Type $($RequestType)"
 
     switch ( $RequestType )
@@ -120,21 +134,62 @@
         {
           Write-Verbose "Invoke-SpanningRequest UPN null"
           Write-Verbose "Invoke-SpanningRequest size parameter is: $Size"
+          Write-Verbose "Invoke-SpanningRequest Status parameter is: $($Status.ToString().ToLower())"
 
-          $request = "$apiRootUrl/users?size=$Size"
-           #TODO : Clean this up
-          $values2 = @()
-          $values = @()
-          $response = Invoke-WebRequest -uri $request -Headers $headers -Method GET -UseBasicParsing | ConvertFrom-Json
-          $values2 += $response.users
-          do {
-              $response = Invoke-WebRequest -uri $response.nextLink -Headers $headers -Method GET -UseBasicParsing | ConvertFrom-JSON
-              $values += $response.users
-          } until ($response.nextlink.Length -eq 0)
+          #$Uri = "$apiRootUrl/users?size=$Size&status=$Status"
+          $Uri = "{0}/users?size={1}&status={2}" -f $apiRootUrl, $Size, $Status.ToString().ToLower()
 
-          #$values.count
-          $values3 = $values2 + $values
-          $results = $values3
+          $retryCount = 0
+          $maxRetries = 3
+          $pauseDuration = 2
+          $allRecords = @()
+
+          while ($null -ne $Uri){
+              Write-Verbose "Request URI: $Uri"
+              try {
+
+                  $query = Invoke-WebRequest -uri $Uri -Headers $headers -Method GET -UseBasicParsing | ConvertFrom-Json
+                  $allRecords += $query.users
+
+                  if($query.nextLink){
+                      # set the url to get the next page of records
+                      $Uri = $query.nextLink
+                  } else {
+                      $Uri = $null
+                  }
+
+              } catch {
+                #TODO : Mock this to test responses
+                  Write-Verbose "StatusCode: $($_.Exception.Response.StatusCode.value__)"
+                  Write-Verbose "StatusDescription: $($_.Exception.Response.StatusDescription)"
+
+                  if($_.ErrorDetails.Message){
+                      Write-Verbose "Inner Error: $_.ErrorDetails.Message"
+                  }
+
+                  # Check for a 429 in case we need to slow down
+                  if($_.Exception.Response.StatusCode.value__ -eq 429 ){
+                      #If it's a 429 you can get the retry after
+                      #$retryAfter = $_.Exception.Response.Headers["Retry-After"]
+                      # just ignore, leave the url the same to retry but pause first
+                      if($retryCount -ge $maxRetries){
+                          # not going to retry again
+                          $Uri = $null
+                          Write-Verbose 'Not going to retry...'
+                      } else {
+                          $retryCount += 1
+                          Write-Verbose "Retry attempt $retryCount after a $pauseDuration second pause..."
+                          Start-Sleep -Seconds $pauseDuration
+                      }
+
+                  } else {
+                      # not going to retry -- set the url to null to fall back out of the while loop
+                      $Uri = $null
+                  }
+              }
+          }
+
+          $results = $allRecords #| ConvertTo-Json
 
           Write-Verbose "Invoke-SpanningRequest User Loop"
 
@@ -155,7 +210,7 @@
             Default {
               # Change this to Use the new users/upn TODO Test this path
               Write-Verbose "Invoke-SpanningRequest $($UserPrincipalName) only"
-              $request = "$apiRootUrl/users/$UserPrincipalName"
+              $request = "{0}/users/{1}?status={2}" -f $apiRootUrl, $UserPrincipalName, $Status.ToString().ToLower()
             }
           }
           Write-Verbose "Invoke-SpanningRequest: $($request)"

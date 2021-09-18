@@ -12,11 +12,6 @@ A Pester integration test file for the SpanningO365 module. This file uses
 the local file system and runs the functions in the module together to verify
 that they run correctly.
 
-#Pester 3 & 4 Syntax
-$params = @{ApiToken = 'whosagoo-ddog-ruby-isagoodgirlright!'; Region = 'US'; AdminEmail = 'ruby@sharepointdog.com'}
-$test = @{Path =  '.\SpanningO365.Integration.Tests.ps1'; Parameters = $params}
-Invoke-Pester -Script $test
-
 #Pester 5.1 Syntax
 $params = @{ApiToken = 'whosagoo-ddog-ruby-isagoodgirlright!'; Region = 'US'; AdminEmail = 'ruby@sharepointdog.com'}
 $container = New-PesterContainer -Path './SpanningO365.Integration.Tests.ps1' -Data $params
@@ -77,7 +72,7 @@ Describe "Get-SpanningTenantInfo Integration Test" -Tag "Integration" {
 		}
 
 		It "Get-SpanningTenantBackupSummary - 4 Day Range" {
-			(Get-SpanningTenantBackupSummary -StartDate (Get-Date).AddDays(-6) -EndDate (Get-Date).AddDays(-2) | Where-Object {$_.type -eq "MAIL"}).Count | Should -Be 4
+			(Get-SpanningTenantBackupSummary -StartDate (Get-Date).AddDays(-6) -EndDate (Get-Date).AddDays(-2) | Where-Object {$_.type -eq "MAIL"}).Count | Should -BeGreaterOrEqual 4
 		}
 
 		It "Get-SpanningTenantBackupSummary - Includes Workload MAIL" {
@@ -111,7 +106,7 @@ Describe "Get-SpanningTenantInfo Integration Test" -Tag "Integration" {
 	Context "Get-SpanningUser" {
 		
 		It "Get-SpanningUser - by UPN" {
-			$(Get-SpanningUser -UserPrincipalName $AdminEmail).userInfo.email | Should -Be $AdminEmail
+			$(Get-SpanningUser -UserPrincipalName $AdminEmail).userPrincipalName | Should -Be $AdminEmail
 		}
 		
 		It "Get-SpanningUser - by Type Admins" {

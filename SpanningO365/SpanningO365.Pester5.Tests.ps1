@@ -11,7 +11,7 @@
 
 #Pester 5.1 Syntax
 $params = @{Module = "SpanningO365"}
-$container = New-PesterContainer -Path ".\SpanningO365\Private\" -Data $params
+$container = New-PesterContainer -Path ".\SpanningO365.Pester5.Tests.ps1" -Data $params
 Invoke-Pester -Container $container -Output Detailed -TagFilter "Structure", "Function"
 
 
