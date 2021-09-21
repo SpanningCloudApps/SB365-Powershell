@@ -283,6 +283,41 @@ What if: Performing the operation "Enable-SpanningUser" on target "jazzy@doghous
 What if: Performing the operation "Enable-SpanningUser" on target "cheyenne@doghousetoys.com".
 ```
 
+### Get User Backup Status
+
+You can get the status of a user's backup by including the `-Status` parameter.
+
+```powershell
+$user = Get-SpanningUser -UserPrincipalName ruby@doghousetoys.com -Status $true
+$user.backupSummary
+```
+
+```plaintext
+date       type     userId backup
+----       ----     ------ ------
+09/21/2021 MAIL      48003 @{total=1; partial=0; failed=0; successful=1; data=}
+09/21/2021 CALENDAR  48003 @{total=1; partial=0; failed=0; successful=1; data=}
+09/21/2021 CONTACT   48003 @{total=1; partial=0; failed=0; successful=1; data=}
+09/21/2021 DRIVE     48003 @{total=1; partial=0; failed=0; successful=1; data=}
+```
+
+### Get Tenant Backup Status
+
+You can get the overall status of the tenant using the `Get-SpanningTenantBackupSummary` cmdlet.
+
+```powershell
+Get-SpanningTenantBackupSummary
+```
+
+```plaintext
+date       type     backup
+----       ----     ------
+09/21/2021 CALENDAR @{total=8; partial=0; failed=3; successful=5; data=}
+09/21/2021 CONTACT  @{total=8; partial=0; failed=3; successful=5; data=}
+09/21/2021 DRIVE    @{total=2; partial=0; failed=0; successful=2; data=}
+09/21/2021 SPSITE   @{total=4; partial=0; failed=0; successful=4; data=}
+```
+
 ## Thank You!
 
 Thank you for reading this far. If you have problems or successes please let me know. I'd love to hear how you are using the module!
