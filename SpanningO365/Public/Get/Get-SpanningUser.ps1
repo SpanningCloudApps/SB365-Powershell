@@ -77,7 +77,32 @@
             ValueFromPipelineByPropertyName=$true)]
         [bool]
         #Include backup status for users $false by default
-        $Status = $false
+        $Status = $false,
+        [Parameter(
+            Position=5,
+            Mandatory=$false,
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName=$true)]
+        [ValidateSet('All','InAAD','NotInAAD')] 
+        [string]
+        #Limit to users in or not in AAD
+        $InAAD = 'All',
+        [Parameter(
+            Position=6,
+            Mandatory=$false,
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName=$true)
+        ]
+        #Starting date of the user backup summary query
+        [datetime]$StartDate,
+        [Parameter(
+            Position=7,
+            Mandatory=$false,
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName=$true)
+        ]
+        #Ending date of the user backup summary query
+        [datetime]$EndDate
     )
     Write-Verbose "Get-SpanningUser"
 
@@ -90,7 +115,24 @@
     # #TODO : Clean this up
     if ($UserType){
         Write-Verbose "UserType: $($UserType) - Invoke-SpanningRequest"
-        $temp_users = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User -Size $Size -Status $Status
+        #$temp_users = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User -Size $Size -Status $Status
+
+        if ($StartDate)
+        {
+            if ($EndDate)
+            {
+                # Tenant Backup Summary Request with Start and End
+                $temp_users = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User -Size $Size -Status $Status  -StartDate $StartDate -EndDate $EndDate
+            }
+            else {
+                # Tenant Backup Summary Request with Start only
+                $temp_users = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User -Size $Size -Status $Status -StartDate $StartDate
+            }
+        }
+        else {
+            # Tenant Backup Summary Request
+            $temp_users = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User -Size $Size -Status $Status
+        }
     }
 
     switch ( $UserType )
@@ -141,7 +183,23 @@
         {
             Write-Verbose 'UserType = null'
             # Return the User
-            $results = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User -UserPrincipalName $UserPrincipalName -Size $Size -Status $Status
+            #$results = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User -UserPrincipalName $UserPrincipalName -Size $Size -Status $Status -InAAD $InAAD
+            if ($StartDate)
+            {
+                if ($EndDate)
+                {
+                    # Tenant Backup Summary Request with Start and End
+                    $results = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User -UserPrincipalName $UserPrincipalName -Size $Size -Status $Status -InAAD $InAAD -StartDate $StartDate -EndDate $EndDate
+                }
+                else {
+                    # Tenant Backup Summary Request with Start only
+                    $results = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User -UserPrincipalName $UserPrincipalName -Size $Size -Status $Status -InAAD $InAAD -StartDate $StartDate
+                }
+            }
+            else {
+                # Tenant Backup Summary Request
+                $results = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User -UserPrincipalName $UserPrincipalName -Size $Size -Status $Status -InAAD $InAAD
+            }
             Write-Output $results
         }
     }

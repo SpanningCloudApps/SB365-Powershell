@@ -100,7 +100,16 @@
             ValueFromPipelineByPropertyName=$true)]
         [bool]
         #Include backup status for users $false by default
-        $Status = $false
+        $Status = $false,
+        [Parameter(
+            Position=8,
+            Mandatory=$false,
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName=$true)]
+        [ValidateSet('All','InAAD','NotInAAD')]
+        [string]
+        #Limit to users in or not in AAD
+        $InAAD = 'All'
     )
 
     Write-Verbose "Invoke-SpanningRequest"
@@ -136,8 +145,49 @@
           Write-Verbose "Invoke-SpanningRequest size parameter is: $Size"
           Write-Verbose "Invoke-SpanningRequest Status parameter is: $($Status.ToString().ToLower())"
 
+          Write-Verbose "Invoke-SpanningRequest InAAD parameter is: $($InAAD.ToString().ToLower())"
+
           #$Uri = "$apiRootUrl/users?size=$Size&status=$Status"
           $Uri = "{0}/users?size={1}&status={2}" -f $apiRootUrl, $Size, $Status.ToString().ToLower()
+
+          switch ($InAAD)
+          {
+            'InAAD'
+            {
+              $Uri = $Uri + "&inActiveDirectory=true"
+              Write-Verbose "Invoke-SpanningRequest added InAAD 'true' parameter"
+
+            }
+            'NotInAAD'
+            {
+              $Uri = $Uri + "&inActiveDirectory=false"
+              Write-Verbose "Invoke-SpanningRequest added InAAD 'false' parameter"
+
+            }
+          }
+
+          if ($Status -eq 'true'){
+            if ($StartDate)
+            {
+              # Convert date to Int
+              $startDateInt = [Math]::Round((Get-Date -Date $StartDate -UFormat %s)) * 1000
+                if ($EndDate)
+                {
+                  # Convert date to Int
+                  $endDateInt = [Math]::Round((Get-Date -Date $EndDate -UFormat %s)) * 1000
+                    # Tenant Backup Summary Request with Start and End
+                    #$Uri = "$Uri?start=$startDateInt&end=$endDateInt"
+                    $Uri = "{0}&start={1}&end={2}" -f $Uri, $startDateInt, $endDateInt
+                }
+                else {
+                    # Tenant Backup Summary Request with Start only
+                    #$Uri = "$Uri?start=$startDateInt"
+                    $Uri = "{0}&start={1}" -f $Uri, $startDateInt
+                }
+            }
+          }
+
+          Write-Verbose "Invoke-SpanningRequest URI parameter is: $($Uri)"
 
           $retryCount = 0
           $maxRetries = 3
@@ -210,7 +260,26 @@
             Default {
               # Change this to Use the new users/upn TODO Test this path
               Write-Verbose "Invoke-SpanningRequest $($UserPrincipalName) only"
-              $request = "{0}/users/{1}?status={2}" -f $apiRootUrl, $UserPrincipalName, $Status.ToString().ToLower()
+              #$request = "{0}/users/{1}?status={2}" -f $apiRootUrl, $UserPrincipalName, $Status.ToString().ToLower()
+
+              if ($StartDate)
+              {
+                # Convert date to Int
+                $startDateInt = [Math]::Round((Get-Date -Date $StartDate -UFormat %s)) * 1000
+                  if ($EndDate)
+                  {
+                    # Convert date to Int
+                    $endDateInt = [Math]::Round((Get-Date -Date $EndDate -UFormat %s)) * 1000
+                    # User Backup Summary Request with Start and End
+                    $request = "{0}/users/{1}?status={2}&start={3}&end={4}" -f $apiRootUrl, $UserPrincipalName, $Status.ToString().ToLower(), $startDateInt, $endDateInt
+                  }
+                  else {
+                    # User Backup Summary Request with Start only
+                    $request = "{0}/users/{1}?status={2}&start={3}" -f $apiRootUrl, $UserPrincipalName, $Status.ToString().ToLower(), $startDateInt
+                  }
+              } else {
+                 $request = "{0}/users/{1}?status={2}" -f $apiRootUrl, $UserPrincipalName, $Status.ToString().ToLower()
+              }
             }
           }
           Write-Verbose "Invoke-SpanningRequest: $($request)"
