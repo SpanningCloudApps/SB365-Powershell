@@ -104,6 +104,37 @@ Describe 'Get-SpanningUser Tests' -Tag "Structure" {
         It 'Has Parameter Help Text for UserType '{
             $function.Definition.Contains('.PARAMETER UserType') | Should -Be 'True'
             }
+        It 'Has a Parameter called Status' {
+            $Function.Parameters.Keys.Contains('Status') | Should -Be 'True'
+            }
+        It 'Status Parameter is Identified as Mandatory being False' {
+            [String]$Function.Parameters.Status.Attributes.Mandatory | Should -Be 'False'
+            }
+        It 'Status Parameter is of Boolean Type' {
+            $Function.Parameters.Status.ParameterType.FullName | Should -Be 'System.Boolean'
+            }
+        It 'Status Parameter is member of AllParameterSets' {
+            [String]$Function.Parameters.Status.ParameterSets.Keys | Should -Be '__AllParameterSets'
+            }
+        It 'Status Parameter Position is defined correctly' {
+            [String]$Function.Parameters.Status.Attributes.Position | Should -Be '4'
+            }
+        It 'Does Status Parameter Accept Pipeline Input?' {
+            [String]$Function.Parameters.Status.Attributes.ValueFromPipeline | Should -Be 'True'
+            }
+        It 'Does Status Parameter Accept Pipeline Input by PropertyName?' {
+            [String]$Function.Parameters.Status.Attributes.ValueFromPipelineByPropertyName | Should -Be 'True'
+            }
+        It 'Does Status Parameter use advanced parameter Validation? ' {
+            $Function.Parameters.Status.Attributes.TypeID.Name -contains 'ValidateNotNullOrEmptyAttribute' | Should -Be 'False'
+            $Function.Parameters.Status.Attributes.TypeID.Name -contains 'ValidateNotNullAttribute' | Should -Be 'False'
+            $Function.Parameters.Status.Attributes.TypeID.Name -contains 'ValidateScript' | Should -Be 'False'
+            $Function.Parameters.Status.Attributes.TypeID.Name -contains 'ValidateRangeAttribute' | Should -Be 'False'
+            $Function.Parameters.Status.Attributes.TypeID.Name -contains 'ValidatePatternAttribute' | Should -Be 'False'
+            }
+        It 'Has Parameter Help Text for Status '{
+            $function.Definition.Contains('.PARAMETER Status') | Should -Be 'True'
+            }
     }
     Context "Function $($function.Name) - Help Section" {
 
