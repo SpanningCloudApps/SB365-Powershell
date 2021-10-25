@@ -55,17 +55,17 @@ Return the backup status for a single user.
 ### EXAMPLE 4
 ```
 $user = Get-SpanningUser -UserPrincipalName ruby@doghousetoys.com -Status $true -Start (Get-Date).AddDays(-5)
+$user.backupSummary
 ```
 
-$user.backupSummary
 Return the backup status for a single user beginning 5 days ago.
 
 ### EXAMPLE 5
 ```
 $user = Get-SpanningUser -UserPrincipalName ruby@doghousetoys.com -Status $true -Start (Get-Date).AddDays(-5) -End (Get-Date).AddDays(-1)
+$user.backupSummary
 ```
 
-$user.backupSummary
 Return the backup status for a single user beginning 5 days ago ending 1 day ago.
 
 ## PARAMETERS
@@ -202,14 +202,12 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 
 ## OUTPUTS
 
-### System.Object[]
 ## NOTES
 The Spanning API Token is generated in the Spanning Admin Portal.
 Go to Settings | API Token to generate and revoke the token.
 
 ## RELATED LINKS
 
-[Get-SpanningAuthentication]()
+[Get-SpanningAuthentication](Get-SpanningAuthentication.md)
 
-[GitHub Repository: https://github.com/spanningcloudapps]()
-
+[GitHub Repository: https://github.com/spanningcloudapps](https://github.com/spanningcloudapps)
