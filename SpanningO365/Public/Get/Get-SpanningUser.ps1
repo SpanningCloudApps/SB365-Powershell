@@ -33,11 +33,11 @@
         Get-SpanningUser -UserPrincipalName ruby@doghousetoys.com -Status $true
         Return the backup status for a single user.
     .EXAMPLE
-        $user = Get-SpanningUser -UserPrincipalName ruby@doghousetoys.com -Status $true -Start (Get-Date).AddDays(-5)
+        $user = Get-SpanningUser -UserPrincipalName ruby@doghousetoys.com -Status $true -StartDate (Get-Date).AddDays(-5)
         $user.backupSummary
         Return the backup status for a single user beginning 5 days ago.
     .EXAMPLE
-        $user = Get-SpanningUser -UserPrincipalName ruby@doghousetoys.com -Status $true -Start (Get-Date).AddDays(-5) -End (Get-Date).AddDays(-1)
+        $user = Get-SpanningUser -UserPrincipalName ruby@doghousetoys.com -Status $true -StartDate (Get-Date).AddDays(-5) -EndDate (Get-Date).AddDays(-1)
         $user.backupSummary
         Return the backup status for a single user beginning 5 days ago ending 1 day ago.
     .NOTES
