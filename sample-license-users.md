@@ -74,7 +74,7 @@ if ($availableLicenses -lt $usersToLicense.Count){
 ## Apply the licenses (or as many as are available)
 
 ```powershell
-if (!$aborted){
+if (-not ($aborted)){
     if ($availableLicenses -gt 0){
         # Note the -WhatIf parameter, this is for testing the script. Remove it for production
         Enable-SpanningUserList -UserPrincipalNames $usersToLicense.userPrincipalName -WhatIf
