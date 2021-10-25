@@ -14,14 +14,14 @@ Returns the user information information from the Spanning Backup Portal
 
 ### Get Single User
 ```
-Get-SpanningUser [[-AuthInfo] <Object>] [-UserPrincipalName] <String> [[-Status] <Boolean>]
- [<CommonParameters>]
+Get-SpanningUser [[-AuthInfo] <Object>] [-UserPrincipalName] <String> [[-Status] <Boolean>] [[-InAAD] <String>]
+ [[-StartDate] <DateTime>] [[-EndDate] <DateTime>] [<CommonParameters>]
 ```
 
 ### Get Multiple Users
 ```
 Get-SpanningUser [[-AuthInfo] <Object>] [[-UserType] <String>] [[-Size] <Int32>] [[-Status] <Boolean>]
- [<CommonParameters>]
+ [[-InAAD] <String>] [[-StartDate] <DateTime>] [[-EndDate] <DateTime>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -33,21 +33,40 @@ If Authentication information is not supplied, or if you have not previously cal
 ### EXAMPLE 1
 ```
 Get-SpanningUser -UserPrincipalName ruby@doghousetoys.com
-Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
 ```
+
+Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
 
 ### EXAMPLE 2
 ```
 Get-SpanningUser -UserType Admins
+```
+
 Return only Admin Users
 Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
-```
 
 ### EXAMPLE 3
 ```
 Get-SpanningUser -UserPrincipalName ruby@doghousetoys.com -Status $true
-Return the backup status for a single user.
 ```
+
+Return the backup status for a single user.
+
+### EXAMPLE 4
+```
+$user = Get-SpanningUser -UserPrincipalName ruby@doghousetoys.com -Status $true -Start (Get-Date).AddDays(-5)
+```
+
+$user.backupSummary
+Return the backup status for a single user beginning 5 days ago.
+
+### EXAMPLE 5
+```
+$user = Get-SpanningUser -UserPrincipalName ruby@doghousetoys.com -Status $true -Start (Get-Date).AddDays(-5) -End (Get-Date).AddDays(-1)
+```
+
+$user.backupSummary
+Return the backup status for a single user beginning 5 days ago ending 1 day ago.
 
 ## PARAMETERS
 
@@ -128,6 +147,53 @@ Accept pipeline input: True (ByPropertyName, ByValue)
 Accept wildcard characters: False
 ```
 
+### -InAAD
+This parameter checks for the users that exist or do not exist in Azure Active Directory.
+The default is All users without respect to AAD status.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 6
+Default value: All
+Accept pipeline input: True (ByPropertyName, ByValue)
+Accept wildcard characters: False
+```
+
+### -StartDate
+This parameter takes the Start Date for the user backup status report.
+
+```yaml
+Type: DateTime
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 7
+Default value: None
+Accept pipeline input: True (ByPropertyName, ByValue)
+Accept wildcard characters: False
+```
+
+### -EndDate
+This parameter takes the End Date for the user backup status report.
+(This value is optional, and defaults to today.)
+
+```yaml
+Type: DateTime
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 8
+Default value: None
+Accept pipeline input: True (ByPropertyName, ByValue)
+Accept wildcard characters: False
+```
+
 ### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable.
 For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
@@ -136,12 +202,14 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 
 ## OUTPUTS
 
+### System.Object[]
 ## NOTES
 The Spanning API Token is generated in the Spanning Admin Portal.
 Go to Settings | API Token to generate and revoke the token.
 
 ## RELATED LINKS
 
-[Get-SpanningAuthentication](Get-SpanningAuthentication.md)
+[Get-SpanningAuthentication]()
 
-[GitHub Repository: https://github.com/spanningcloudapps](https://github.com/spanningcloudapps)
+[GitHub Repository: https://github.com/spanningcloudapps]()
+

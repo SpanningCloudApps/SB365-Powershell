@@ -17,6 +17,12 @@
     .PARAMETER Status
         This parameter takes an optional parameter to include the User Backup Status in the result.
         Note, this can significantly increase both the result size and the time required for PowerShell to process the results.
+    .PARAMETER StartDate
+        This parameter takes the Start Date for the user backup status report.
+    .PARAMETER EndDate
+        This parameter takes the End Date for the user backup status report. (This value is optional, and defaults to today.)
+    .PARAMETER InAAD
+        This parameter checks for the users that exist or do not exist in Azure Active Directory. The default is All users without respect to AAD status.
     .EXAMPLE
         This function is not called directly.
     .NOTES
