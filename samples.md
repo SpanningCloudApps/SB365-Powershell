@@ -295,10 +295,45 @@ $user.backupSummary
 ```plaintext
 date       type     userId backup
 ----       ----     ------ ------
-09/21/2021 MAIL      48003 @{total=1; partial=0; failed=0; successful=1; data=}
-09/21/2021 CALENDAR  48003 @{total=1; partial=0; failed=0; successful=1; data=}
-09/21/2021 CONTACT   48003 @{total=1; partial=0; failed=0; successful=1; data=}
-09/21/2021 DRIVE     48003 @{total=1; partial=0; failed=0; successful=1; data=}
+09/21/2021 MAIL      12345 @{total=1; partial=0; failed=0; successful=1; data=}
+09/21/2021 CALENDAR  12345 @{total=1; partial=0; failed=0; successful=1; data=}
+09/21/2021 CONTACT   12345 @{total=1; partial=0; failed=0; successful=1; data=}
+09/21/2021 DRIVE     12345 @{total=1; partial=0; failed=0; successful=1; data=}
+```
+
+### Get User Historical Backup Status
+
+You can get the historical backup status for a user or users by including the `-Status` and `-StartDate` (and optional `-EndDate`) parameters.
+
+```powershell
+$user = Get-SpanningUser -UserPrincipalName ruby@doghousetoys.com -Status $true -StartDate (Get-Date).AddDays(-5)
+$user.backupSummary
+```
+
+```plaintext
+date       type     userId backup
+----       ----     ------ ------
+10/25/2021 MAIL      12345 @{total=1; partial=0; failed=0; successful=1; data=}
+10/25/2021 DRIVE     12345 @{total=1; partial=0; failed=0; successful=1; data=}
+10/25/2021 CONTACT   12345 @{total=1; partial=0; failed=0; successful=1; data=}
+10/25/2021 CALENDAR  12345 @{total=1; partial=0; failed=0; successful=1; data=}
+10/24/2021 MAIL      12345 @{total=1; partial=0; failed=0; successful=1; data=}
+10/24/2021 DRIVE     12345 @{total=1; partial=0; failed=0; successful=1; data=}
+10/24/2021 CONTACT   12345 @{total=1; partial=0; failed=0; successful=1; data=}
+10/24/2021 CALENDAR  12345 @{total=1; partial=0; failed=0; successful=1; data=}
+10/23/2021 CONTACT   12345 @{total=1; partial=0; failed=0; successful=1; data=}
+10/23/2021 CALENDAR  12345 @{total=1; partial=0; failed=0; successful=1; data=}
+10/23/2021 MAIL      12345 @{total=1; partial=0; failed=0; successful=1; data=}
+10/23/2021 DRIVE     12345 @{total=1; partial=0; failed=0; successful=1; data=}
+10/22/2021 MAIL      12345 @{total=1; partial=0; failed=0; successful=1; data=}
+10/22/2021 DRIVE     12345 @{total=1; partial=0; failed=0; successful=1; data=}
+10/22/2021 CONTACT   12345 @{total=1; partial=0; failed=0; successful=1; data=}
+10/22/2021 CALENDAR  12345 @{total=1; partial=0; failed=0; successful=1; data=}
+10/21/2021 CALENDAR  12345 @{total=1; partial=0; failed=0; successful=1; data=}
+10/21/2021 MAIL      12345 @{total=1; partial=0; failed=0; successful=1; data=}
+10/21/2021 DRIVE     12345 @{total=1; partial=0; failed=0; successful=1; data=}
+10/21/2021 CONTACT   12345 @{total=1; partial=0; failed=0; successful=1; data=}
+10/20/2021 MAIL      12345 @{total=1; partial=0; failed=0; successful=1; data=}
 ```
 
 ### Get Tenant Backup Status
