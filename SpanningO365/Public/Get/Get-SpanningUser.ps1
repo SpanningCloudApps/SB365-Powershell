@@ -23,6 +23,9 @@
         Get-SpanningUser -UserType Admins
         Return only Admin Users
         Without any parameters you will be prompted for ApiToken, Region, and AdminEmail if Get-SpanningAuthentication has not been previously called.
+    .EXAMPLE
+        Get-SpanningUser -UserPrincipalName ruby@doghousetoys.com -Status $true
+        Return the backup status for a single user.
     .NOTES
         The Spanning API Token is generated in the Spanning Admin Portal. Go to Settings | API Token to generate and revoke the token.
     .LINK
