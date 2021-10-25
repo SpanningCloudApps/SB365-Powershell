@@ -10,7 +10,7 @@
     .PARAMETER Path
         The path to the CSV file.
     .PARAMETER UpnColumn
-        The column containint the user UPN.
+        The column containing the user UPN.
     .PARAMETER FilterColumn
         The column to apply the filter to.
     .PARAMETER FilterColumnValue

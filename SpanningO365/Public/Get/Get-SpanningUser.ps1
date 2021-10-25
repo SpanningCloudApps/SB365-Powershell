@@ -100,7 +100,7 @@
             Mandatory=$false,
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)]
-        [ValidateSet('All','InAAD','NotInAAD')] 
+        [ValidateSet('All','InAAD','NotInAAD')]
         [string]
         #Limit to users in or not in AAD
         $InAAD = 'All',
