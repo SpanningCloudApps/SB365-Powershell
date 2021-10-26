@@ -12,7 +12,7 @@
     RootModule = '.\SpanningO365.psm1'
     
     # Version number of this module.
-    ModuleVersion = '4.2.0.0'
+    ModuleVersion = '4.2.1.0'
     
     # Supported PSEditions
     # CompatiblePSEditions = @()
