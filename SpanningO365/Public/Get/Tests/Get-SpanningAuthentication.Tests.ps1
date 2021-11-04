@@ -71,6 +71,9 @@ Describe 'Get-SpanningAuthentication Tests' -Tag "Structure" {
             $Function.Parameters.Region.Attributes.TypeID.Name -contains 'ValidateRangeAttribute' | Should -Be 'False'
             $Function.Parameters.Region.Attributes.TypeID.Name -contains 'ValidatePatternAttribute' | Should -Be 'False'
             }
+        It 'Does Region Parameter have 4 Valid Values?' {
+            $Function.Parameters.Region.Attributes.ValidValues.count | Should -Be 4
+        }
         It 'Has Parameter Help Text for Region '{
             $function.Definition.Contains('.PARAMETER Region') | Should -Be 'True'
             }
