@@ -10,7 +10,7 @@
     .PARAMETER AdminEmail
         This parameter is the admin email associated with your Spanning Tenant
     .PARAMETER Region
-        This parameter is your Spanning Region (US, EU or AP)
+        This parameter is your Spanning Region (US, EU, AP, or CA)
     .PARAMETER Connection
         This parameter takes a Azure Connection for secure automation
     .EXAMPLE
@@ -60,7 +60,7 @@
             ValueFromPipeline=$true,
             ValueFromPipelineByPropertyName=$true)
         ]
-        [ValidateSet('US','EU','AP')]
+        [ValidateSet('US','EU','AP','CA')]
         [String]
         #The Region for your Spanning Backups
         $Region,
@@ -105,7 +105,7 @@
     }
     #Check the Region
     if (!$Script:Region -and !$Region) {
-        $Region = Read-Host 'Enter Spanning Region (US, EU or AP)'
+        $Region = Read-Host 'Enter Spanning Region (US, EU, AP, or CA)'
         # Alternatively
         # throw [System.ArgumentException]'You must supply a Region value'
     }

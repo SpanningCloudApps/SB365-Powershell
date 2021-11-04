@@ -13,6 +13,7 @@ Now that you have the API Token you only need to know your region and the email 
 - https<span></span>://o365-**us**.spanningbackup.com/ is the **US** Region for the United States
 - https<span></span>://o365-**eu**.spanningbackup.com/ is the **EU** Region for Europe
 - https<span></span>://o365-**ap**.spanningbackup.com/ is the **AP** Region for Australia/Pacific
+- https<span></span>://o365-**ca**.spanningbackup.com/ is the **CA** Region for Canada
 
 ```plaintext
 For these examples we will use the following information:
