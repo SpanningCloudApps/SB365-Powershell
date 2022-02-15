@@ -12,7 +12,7 @@
     RootModule = '.\SpanningO365.psm1'
     
     # Version number of this module.
-    ModuleVersion = '4.3.0.0'
+    ModuleVersion = '4.4.0.0'
     
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -27,7 +27,7 @@
     CompanyName = 'Spanning Cloud Apps'
     
     # Copyright statement for this module
-    Copyright = '(c) 2018-21 Spanning Cloud Apps. All rights reserved.'
+    Copyright = '(c) 2018-22 Spanning Cloud Apps. All rights reserved.'
     
     # Description of the functionality provided by this module
     Description = 'Spanning Backup for Office 365 REST API PowerShell Module provides PowerShell access to manage user licenses and get user and tenant information.'
