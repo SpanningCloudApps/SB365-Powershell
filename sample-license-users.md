@@ -57,7 +57,7 @@ $i = 0
 foreach ($user in $licensedO365Users){
     $i = $i + 1
     $pct = $i/$UserCount * 100
-    Write-Progress -Activity "Checking Users" -Status "Processing Call QueueUSer $i of $UserCount - $($user.UserPrincipalName)" -PercentComplete $pct
+    Write-Progress -Activity "Checking Users" -Status "Processing User Queue $i of $UserCount - $($user.UserPrincipalName)" -PercentComplete $pct
     $userNeedsSpanning = $unlicensedUsers | where {$_.userPrincipalName -eq $user.UserPrincipalName}
     if ($userNeedsSpanning){
         $usersToLicense += $userNeedsSpanning
@@ -66,7 +66,7 @@ foreach ($user in $licensedO365Users){
 Write-Progress -Activity "Checking Users" -Completed
 ```
 
-## Test if you have enough licenses and offer an about
+## Test if you have enough licenses and offer an abort
 
 ```powershell
 $aborted = $false
