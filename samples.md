@@ -155,15 +155,12 @@ You have two options depending on how you wish to license your users. You can ap
 Enable-SpanningUsersFromCSVAdvanced -Path "C:\Test\Users.csv" -UpnColumn 1
 ```
 
-The result should be displayed as follows:
+The result should be:
 
 ```plaintext
-userPrincipalName          licensed
--------------------------  --------
-willa@doghousetoys.com     True
-kobe@doghousetoys.com      True
-jazzy@doghousetoys.com     True
-cheyenne@doghousetoys.com  True
+userPrincipalNames                                                                                  licensed
+-------------------------                                                                           --------
+{willa@doghousetoys.com, kobe@doghousetoys.com, jazzy@doghousetoys.com, cheyenne@doghousetoys.com}  True
 ```
 
 Another option is to use a filter to include only those users matching your filter criteria. For example if you only want to limit your licensing to the US Geography you could use the following filter:
@@ -173,13 +170,12 @@ Enable-SpanningUsersFromCSVAdvanced  -Path "C:\Test\Users.csv" -UpnColumn 1 `
     -FilterColumn 3 -FilterColumnValue "US"
 ```
 
-The result will be displayed as follows:
+The result should be:
 
 ```plaintext
-userPrincipalName          licensed
--------------------------  --------
-willa@doghousetoys.com     True
-cheyenne@doghousetoys.com  True
+userPrincipalNames                                   licensed
+-------------------------                            --------
+{willa@doghousetoys.com, cheyenne@doghousetoys.com}  True
 ```
 
 ## Disabling Users
