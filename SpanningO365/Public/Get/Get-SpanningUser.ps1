@@ -139,16 +139,16 @@
             if ($EndDate)
             {
                 # Tenant Backup Summary Request with Start and End
-                $temp_users = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User -Size $Size -Status $Status  -StartDate $StartDate -EndDate $EndDate
+                $temp_users = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User -Size $Size -Status $Status  -StartDate $StartDate -EndDate $EndDate -InAAD $InAAD
             }
             else {
                 # Tenant Backup Summary Request with Start only
-                $temp_users = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User -Size $Size -Status $Status -StartDate $StartDate
+                $temp_users = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User -Size $Size -Status $Status -StartDate $StartDate -InAAD $InAAD
             }
         }
         else {
             # Tenant Backup Summary Request
-            $temp_users = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User -Size $Size -Status $Status
+            $temp_users = Invoke-SpanningRequest -AuthInfo $AuthInfo -RequestType User -Size $Size -Status $Status -InAAD $InAAD
         }
     }
 
