@@ -10,10 +10,14 @@
 .DESCRIPTION
 
 #Pester 5.1 Syntax
+# Run from \SB365-PowerShell\SpanningO365
 $params = @{Module = "SpanningO365"}
 $container = New-PesterContainer -Path ".\SpanningO365.Pester5.Tests.ps1" -Data $params
 Invoke-Pester -Container $container -Output Detailed -TagFilter "Structure", "Function"
 
+# Troubleshooting:
+# If you get "weird" results when the tests worked in the past confirn that there is only one version of the module imported.
+# Get-Module SpanningO365 should only return one module. Use Remove-Module SpanningO365 before the test run to ensure a clean run.
 
 #>
 
