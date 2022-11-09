@@ -40,7 +40,7 @@ You can view the detailed documentation in the [Documentation](./docs/about_Span
 
 ## Introductory Video
 
-[![Watch the introduction video.](./docs/images/video-placeholder.jpg)](https://spanning.wistia.com/medias/7j46uee1ko)
+[![Watch the introduction video.](./docs/images/video-placeholder.jpg)](https://itglue.wistia.com/medias/n9qj1yzkx0)
 
 ## Build and Maintenance
 
