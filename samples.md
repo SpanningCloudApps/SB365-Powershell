@@ -106,7 +106,7 @@ Get-SpanningUsers
 
 ## Get Tenant Information
 
-You can use PowerShell to determine the status of your Spanning tenant and current payment status. The **Get-SpanningTenantInfo** function returns the number of licenses, users, assignments, and payment status. The **Get-SpanningTenantPaymentInfo** returns only the payment status.
+You can use PowerShell to determine the status of your Spanning tenant and current payment status. The **Get-SpanningTenantInfo** function returns the number of licenses (Standard and Archive), users, assignments, and payment status. The **Get-SpanningTenantPaymentInfo** returns only the payment status.
 
 ```powershell
 Get-SpanningTenantInfo
@@ -115,9 +115,13 @@ Get-SpanningTenantInfo
 Will return a status like this:
 
 ```plaintext
-licenses users assigned status
--------- ----- -------- ------
-100      106   9        trial
+licenses         : 15
+archivedLicenses : 5
+users            : 26
+assigned         : 11
+assignedStandard : 9
+assignedArchive  : 2
+status           : paid
 ```
 
 ```powershell

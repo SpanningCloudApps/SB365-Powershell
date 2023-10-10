@@ -48,7 +48,16 @@
         [ValidateCount(1,500)]
         [String[]]
         #User Principal Name (email address) of the users to enable.
-        $UserPrincipalNames
+        $UserPrincipalNames,
+        [Parameter(
+            Position=9,
+            Mandatory=$false,
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName=$true)]
+        [ValidateSet('STANDARD','ARCHIVE')]
+        [string]
+        #Select the license type to apply, Standard or Archive
+        $LicenseType = 'STANDARD'
     )
     Write-Verbose "Enable-SpanningUserList"
 
@@ -59,6 +68,7 @@
 
     $userPrincipalNamesJson = ([PSCustomObject]@{
         userPrincipalNames = $UserPrincipalNames
+        licenseType = $LicenseType
         } | ConvertTo-Json )
 
     if ($pscmdlet.ShouldProcess("$UserPrincipalNames", "Enable-SpanningUsers")){
