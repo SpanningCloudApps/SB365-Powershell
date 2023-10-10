@@ -37,7 +37,7 @@ $auth = Get-SpanningAuthentication -ApiToken $token -Region $region -AdminEmail 
 # Get the details of the tenant
 $tenant = Get-SpanningTenantInfo
 # Calculate the available licenses
-$availableLicenses = $tenant.licenses - $tenant.assigned
+$availableLicenses = $tenant.licenses - $tenant.assignedStandard
 ```
 
 ## Get a list of users that don't have a Spanning license
@@ -100,6 +100,6 @@ if (-not ($aborted)){
 # Get the details of the tenant
 $tenant = Get-SpanningTenantInfo
 # Calculate the available licenses
-$availableLicenses = $tenant.licenses - $tenant.assigned
+$availableLicenses = $tenant.licenses - $tenant.assignedStandard
 Write-Output "You have $($availableLicenses) licenses remaining."
 ```
